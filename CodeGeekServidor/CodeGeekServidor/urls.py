@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.views.generic import TemplateView #Cambiar o eliminar despues no se utilizara
+from django.urls.conf import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='index.html')), #Cambiar despues a metodo
+    path('', include('apps.VistasGenerales.urls')), #Cambiar despues a metodo
 ]
