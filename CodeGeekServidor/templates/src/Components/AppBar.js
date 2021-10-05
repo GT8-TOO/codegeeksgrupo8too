@@ -7,8 +7,7 @@ import {
   Button,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import useStyles from '../Styles/AppbarCSS';
-import Logo from '../Media/codet.png';
+import useStyles from '../Styled/AppbarCSS';
 
 const Appbar = (props) =>{
   const classes = useStyles()
@@ -31,29 +30,13 @@ const Appbar = (props) =>{
                 color="inherit" 
                 aria-label="menu" 
                 sx ={{mr:2}}><MenuIcon/></IconButton>:
-              <div style={{width:'70%', display:'inline-block'}}>
-                <img 
-                  className={classes.img}
-                  src={Logo} 
-                  alt="Logo del grupo de trabajo" 
-                  height="100" 
-                  width="100" />
-                <h1 className={classes.text}>Code Geek App</h1>
-              </div>}
+                <h1 className={classes.text}>Sistema de Gestión de reservas de Laboratorios de Aprendizaje</h1>}
           </Toolbar>
-          {logeado ? 
+          {logeado? 
             <div>
               <Button className={classes.button} color="inherit">Cerrar sesion</Button>
             </div>:
-            <div className={classes.divInicio}>
-              <Button 
-                className={classes.button} 
-                variant="outlined" 
-                color="inherit">Iniciar Sesion</Button>
-              <Button 
-                className={classes.button} 
-                variant="outlined" 
-                color="inherit">Registrarse</Button>
+            <div>
             </div>}
         </AppBar>
       </Box>

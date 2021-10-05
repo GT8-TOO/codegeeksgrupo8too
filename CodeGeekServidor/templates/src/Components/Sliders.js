@@ -1,29 +1,35 @@
 import React, {useState} from "react";
 import Slider from 'infinite-react-carousel';
-import '../Styles/Sliders.css';
+import '../Styled/Sliders.css';
 
 const Sliders = (props)=>{
 // eslint-disable-next-line
   const [settings, setSettings]=useState({
     autoplay: props.autoplay,
-    arrows: false, 
+    arrows: props.arrows, 
     arrowsScroll:1,
-    autoplaySpeed:props.speed
+    autoplaySpeed:props.speed,
   })
 
   return(
-    <div>
-      <Slider {...settings}>
+    <div style={{zIndex:'-1'}}>
+      {props.inicio?
+        <Slider className="slider" {...settings} >
         {props.images.map(image=><div className="div" key={image.id} >
-          {props.inicio ?
-            // eslint-disable-next-line
-            <img 
-              className="slider_images" 
-              src={image.image}
-              alt ={image.description}/> :              
-            <p>Hola mundo</p>}
+          <img 
+            className="slider_images" 
+            src={image.image}
+            height="500"
+            alt ={image.description}/>               
       </div>)}
-      </Slider>
+      </Slider>:
+      <Slider {...settings}>
+        {props.images.map(image=><div key={image.id} >
+          <img 
+            src={image.image}
+            alt ={image.description}/>               
+        </div>)}
+      </Slider>}
     </div>
   );
 }

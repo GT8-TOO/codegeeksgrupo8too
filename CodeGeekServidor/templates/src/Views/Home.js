@@ -1,13 +1,17 @@
 import React from 'react';
-import AppBar from '../Components/AppBar';
-import Slider from '../Components/Sliders';
 import { createStyles, makeStyles } from "@mui/styles";
-// eslint-disable-next-line
-import { createTheme, ThemeProvider } from "@material-ui/core";
-import {Button, styled} from '@mui/material';
+import {
+  Button,
+  Box
+} from '@mui/material';
+
+//Components
+import Slider from '../Components/Sliders';
+import AppBar from '../Components/AppBar';
+import Footer from '../Components/Footer';
 
 // eslint-disable-next-line
-const useStyles = makeStyles((theme: Theme)=>
+const useStyles = makeStyles((theme)=>
   createStyles({
     text :{
       display:'block',
@@ -22,27 +26,18 @@ const useStyles = makeStyles((theme: Theme)=>
       display:'inline-block',
       position:'absolute',
       width:'40%',
-      height:'630px',
-      margin:'4% 15px',
+      zIndex:'10',
+      margin:'3% 5%',
       borderRadius:'30px',
       boxShadow: '0px 0px 10px 1px #434343',
     },
+    button:{
+      display: 'block',
+      position:'absolute',
+      width:'30%',
+    },
   }),
 );
-// eslint-disable-next-line
-const ColorButton = styled(Button)(({ theme }) => ({
-  backgroundColor: '#142850',
-  display:'inline-block',
-  position:'relative',
-  width:'20%',
-  margin:'10px 20%',
-  '&:hover': {
-    backgroundColor:'#27496D',
-  },
-}));
-
-// eslint-disable-next-line
-const theme =createTheme();
 
 const Index =()=>{
   const classes = useStyles();
@@ -79,6 +74,18 @@ const Index =()=>{
           <br/>
           Generar un sistema capaz de poder llevar a cabo el mantenimiento de los horarios de laboratorios
         </p>
+        <Box textAlign='center'>
+        <Button 
+          className={classes.button} 
+          variant="outlined" 
+          color="inherit">Iniciar Sesion</Button>
+        <br/>
+        <br/>
+        <Button 
+          className={classes.button} 
+          variant="outlined" 
+          color="inherit">Registrarse</Button>
+          </Box>
        <p 
           style={{
             position:'relative',
@@ -86,10 +93,15 @@ const Index =()=>{
             color:'#27496D',
             fontSize:"15px",
             fontFamily:"Lucida Handwriting",
-            marginTop:"400px",
             }}>Proyecto de ciclo de TOO 115 ciclo 2 - 2021</p>
       </div>
-      <Slider images={images} autoplay={true} speed={3000} inicio={true}/>
+      <Slider 
+        images={images} 
+        autoplay={true} 
+        speed={3000} 
+        inicio={true} 
+        arrows={false}/>
+      <Footer/>
     </div>
     );
 }

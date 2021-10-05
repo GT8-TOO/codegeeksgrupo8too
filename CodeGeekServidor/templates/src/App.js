@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 
 //Vistas 
-import Index from './Views/Index';
+import Home from './Views/Home';
 
 // eslint-disable-next-line 
 const baseURL = "";
@@ -17,7 +17,7 @@ const App=() =>{
     <Router>
       <div>
         <Switch>
-          <Route exact path="/"><Index/></Route>
+          <Route exact path="/"><Home/></Route>
         </Switch>
       </div>
     </Router>
