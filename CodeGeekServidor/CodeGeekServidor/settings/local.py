@@ -7,8 +7,12 @@ ALLOWED_HOSTS=[]
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'geek',
+        'USER': 'codet',
+        'PASSWORD': 'admint',
+        'HOST': 'geek3.czoy1vdwgmhj.us-east-1.rds.amazonaws.com',
+        'PORT': '1521',
     }
 }
 
