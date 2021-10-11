@@ -36,12 +36,13 @@ class Local(models.Model):
 
 class Puntuacion(models.Model):
     dui = models.BigIntegerField(primary_key=True)
-    cod_local = models.ForeignKey(Local, models.DO_NOTHING, db_column='cod_local')
+    cod_local = models.ForeignKey(Local, models.DO_NOTHING, db_column='cod_local', related_name='cod_local_Puntuacion') #Field E303 ralated_name
 
     class Meta:
         managed = False
         db_table = 'puntuacion'
         unique_together = (('dui', 'cod_local'),)
+
 
 class Imagen(models.Model):
     cod_imagen = models.CharField(primary_key=True, max_length=10)

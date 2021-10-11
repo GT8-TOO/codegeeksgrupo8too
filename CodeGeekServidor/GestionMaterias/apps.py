@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class CatalogolocalesConfig(AppConfig):
+class GestionmateriasConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'CatalogoLocales'
+    name = 'GestionMaterias'

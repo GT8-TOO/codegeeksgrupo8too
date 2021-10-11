@@ -1,6 +1,6 @@
 from django.db import models
 from GestionUsuarios.models import Docente
-from GestionUsuarios.models import Administrador
+
 
 # Create your models here.
 
@@ -27,7 +27,7 @@ class Ciclo(models.Model):
 
 class EsParteDe(models.Model):
     dui = models.OneToOneField(Docente, models.DO_NOTHING, db_column='dui', primary_key=True)
-    emp_dui = models.ForeignKey(Docente, models.DO_NOTHING, db_column='emp_dui')
+    emp_dui = models.ForeignKey(Docente, models.DO_NOTHING, db_column='emp_dui', related_name='emp_duis') #Field.E303
     cod_catedra = models.ForeignKey(Catedra, models.DO_NOTHING, db_column='cod_catedra')
     coordinador = models.BigIntegerField(blank=True, null=True)
 
@@ -103,7 +103,7 @@ class Pensum(models.Model):
 
 class RequisitoDe(models.Model):
     mat_cod_materia = models.OneToOneField(Materia, models.DO_NOTHING, db_column='mat_cod_materia', primary_key=True)
-    cod_materia = models.ForeignKey(Materia, models.DO_NOTHING, db_column='cod_materia')
+    cod_materia = models.ForeignKey(Materia, models.DO_NOTHING, db_column='cod_materia', related_name='cod_materia_RquisitoDe') #field.E305
 
     class Meta:
         managed = False
