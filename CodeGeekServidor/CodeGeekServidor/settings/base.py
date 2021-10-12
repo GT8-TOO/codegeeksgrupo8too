@@ -30,6 +30,11 @@ BASE_APPS = [
 ]
 
 LOCAL_APPS =[
+    'GestionMaterias',
+    'GestionLocales',
+    'GestionUsuarios',
+    'GestionReservas',
+
 ]
 
 THIRD_APPS=[

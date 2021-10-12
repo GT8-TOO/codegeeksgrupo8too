@@ -89,7 +89,7 @@ class Edificio(models.Model):
 
 class EsParteDe(models.Model):
     dui = models.OneToOneField(Docente, models.DO_NOTHING, db_column='dui', primary_key=True)
-    emp_dui = models.ForeignKey(Docente, models.DO_NOTHING, db_column='emp_dui')
+    emp_dui = models.ForeignKey(Docente, models.DO_NOTHING, db_column='emp_dui', related_name='emp_duis')
     cod_catedra = models.ForeignKey(Catedra, models.DO_NOTHING, db_column='cod_catedra')
     coordinador = models.BigIntegerField(blank=True, null=True)
 
@@ -203,7 +203,7 @@ class Pensum(models.Model):
 
 class Puntuacion(models.Model):
     dui = models.BigIntegerField(primary_key=True)
-    cod_local = models.ForeignKey(Local, models.DO_NOTHING, db_column='cod_local')
+    cod_local = models.ForeignKey(Local, models.DO_NOTHING, db_column='cod_local', related_name='cod_local_Puntuacion') #Field E303 ralated_name
 
     class Meta:
         managed = False
@@ -213,7 +213,7 @@ class Puntuacion(models.Model):
 
 class RequisitoDe(models.Model):
     mat_cod_materia = models.OneToOneField(Materia, models.DO_NOTHING, db_column='mat_cod_materia', primary_key=True)
-    cod_materia = models.ForeignKey(Materia, models.DO_NOTHING, db_column='cod_materia')
+    cod_materia = models.ForeignKey(Materia, models.DO_NOTHING, db_column='cod_materia', related_name='cod_materia_requisitoDe') #Fields.E305
 
     class Meta:
         managed = False
@@ -226,11 +226,11 @@ class Reserva(models.Model):
     cod_horario = models.BigIntegerField()
     cod_local = models.ForeignKey(Local, models.DO_NOTHING, db_column='cod_local', blank=True, null=True)
     cod_materia = models.ForeignKey(Materia, models.DO_NOTHING, db_column='cod_materia', blank=True, null=True)
-    doc_dui = models.ForeignKey(Docente, models.DO_NOTHING, db_column='doc_dui')
+    doc_dui = models.ForeignKey(Docente, models.DO_NOTHING, db_column='doc_dui', related_name='doc_dui_Reserva') #Fields.E304
     emp_dui = models.ForeignKey(Docente, models.DO_NOTHING, db_column='emp_dui')
     dui = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='dui')
     adm_dui = models.BigIntegerField()
-    adm_emp_dui = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='adm_emp_dui')
+    adm_emp_dui = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='adm_emp_dui', related_name='adm_emp_dui_Reserva') #Fields.E304
     estado_solicitud = models.CharField(max_length=20)
     fecha_envio = models.DateField()
     fecha_aprobacion = models.DateField()
