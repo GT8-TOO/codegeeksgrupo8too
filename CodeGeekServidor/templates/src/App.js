@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,18 +7,20 @@ import {
 
 //Vistas 
 import Home from './Views/Home';
+import User from './Views/User';
+import Login from './Views/Login';
 
 // eslint-disable-next-line 
-const baseURL = "";
+const baseURL = "http://localhost:8000";
 
 const App=() =>{
  return (
     <Router>
-      <div>
-        <Switch>
-          <Route exact path="/"><Home/></Route>
-        </Switch>
-      </div>
+      <Switch>
+        <Route path ="/user/login"><Login/></Route>
+        <Route path="/user/:windows"><User/></Route>
+        <Route exact path="/"><Home/></Route>
+      </Switch>
     </Router>
 
   );

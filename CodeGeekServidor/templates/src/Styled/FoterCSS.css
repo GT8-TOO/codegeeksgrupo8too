@@ -20,7 +20,7 @@
       margin-left:25px;
 }
 .title{
-      position:fixed;
+      position:absolute;
       font-style:italic;
       text-align:center;
       bottom:0;

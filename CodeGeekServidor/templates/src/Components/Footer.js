@@ -7,9 +7,6 @@ import {
 } from '@mui/material';
 
 const Footer =(props)=>{
-  const prueba =()=>{
-    console.log("Mensaje prueba")
-  }
 
   return(
     <div>
@@ -24,16 +21,14 @@ const Footer =(props)=>{
             width="85"/>
           <p className="title">Code Geek App</p>
         </div>
-        <div style={{display:'inline-block', width:'30%', postion:'fixed'}}>
+        <div style={{display:'inline-block', width:'30%', postion:'relative'}}>
           <Tooltip title="Enviar correo">
           <Icon 
-            onClick={prueba}
             style={{
               display:'inline-block',
-              margin:'10px',
-              marginLeft:'80%',
+              margin :'14px 85%',
               cursor:'pointer',
-              postion:'fixed',
+              postion:'absolute',
               }} ><EmailIcon/></Icon>
           </Tooltip>
         </div>
