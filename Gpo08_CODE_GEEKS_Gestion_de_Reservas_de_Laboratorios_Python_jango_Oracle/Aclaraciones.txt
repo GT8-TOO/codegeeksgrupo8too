@@ -1,0 +1,3 @@
+Aclaraciones:
+Los Diagramas de Casos de uso y diagramas de secuencia del sistema fueron diseñados en ASTAH COMMUNITY
+El modelo del domino fue diseñado con power designer
