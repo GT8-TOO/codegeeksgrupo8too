@@ -78,12 +78,14 @@ const Index =()=>{
         <Button 
           className={classes.button} 
           variant="outlined" 
+          href="/login"
           color="inherit">Iniciar Sesion</Button>
         <br/>
         <br/>
         <Button 
           className={classes.button} 
           variant="outlined" 
+          href="/Register"
           color="inherit">Registrarse</Button>
           </Box>
        <p 
