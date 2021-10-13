@@ -19,12 +19,13 @@ const User =()=>{
     <div style={{display:'flex'}}>
       <SlideBar/>
       <div>
-        {windows ==="home" &&<div><button onClick={aumentar}> Aumentar
-        </button>
-          <p>{estado}</p>
-        </div>
-        }
-        {windows ==="report" &&<p>Hola mundo 2 </p>}
+        {windows ==="home" &&<p>Aqui ira el inicio</p>}
+        {windows ==="profile" &&<p>Aqui ira el perfil del usuario</p>}
+        {windows ==="requestlocal" &&<p>Aqui podra solicitar local </p>}
+        {windows ==="reviewrequest" &&<p>Aqui podra revisar solicitudes (todas)</p>}
+        {windows ==="local" &&<p>Aqui mostrar los locales</p>}
+        {windows ==="report" &&<p>Y aqui mostrar los reportes </p>}
+        {windows ==="sendemail" &&<p>Aqui mandara emails</p>}
         <Footer/>
       </div>
     </div>

@@ -18,11 +18,13 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import LogoutIcon from '@mui/icons-material/Logout';
-import HomeIcon from '@mui/icons-material/Home';
 
 //Style
 import useStyle from '../../Styled/UsuarioCSS';
 import CustomButtonRoot from '../../Styled/SliderBar';
+
+//Contenido SliderBar
+import {SidebarData} from './SidebarData';
 
 const drawerWidth = 240;
 
@@ -110,13 +112,14 @@ const NavBar=()=> {
         </DrawerHeader>
         <Divider />
         <List>
-          {/*Aqui iria el map*/}
-          <Link to={`/user/${'home'}`} style={{ textDecoration: 'none' }}>
-            <ListItem button  key="Inicio">
-              <ListItemIcon><HomeIcon/></ListItemIcon>
-              <ListItemText primary="Inicio" />
-            </ListItem>
-          </Link>
+          {SidebarData.map((item)=>{
+            return(
+              <Link to={`/user/${item.path}`} style={{ textDecoration: 'none' }}>
+                <ListItem button  key={item.key}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.title} />
+                </ListItem>
+              </Link>)})}
         </List>
         <Divider />
         <List>
