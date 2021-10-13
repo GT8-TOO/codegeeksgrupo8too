@@ -1,7 +1,6 @@
 from django.db import models
 
 # Create your models here.
-
 class Edificio(models.Model):
     cod_edificio = models.CharField(primary_key=True, max_length=10)
     cod_escuela = models.ForeignKey('Escuela', models.DO_NOTHING, db_column='cod_escuela')

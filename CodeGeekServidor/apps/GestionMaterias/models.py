@@ -1,9 +1,7 @@
 from django.db import models
-from GestionUsuarios.models import Docente
-
+from apps.GestionUsuarios.models import Docente
 
 # Create your models here.
-
 class Catedra(models.Model):
     cod_catedra = models.BigIntegerField(primary_key=True)
     cod_materia = models.ForeignKey('Materia', models.DO_NOTHING, db_column='cod_materia')

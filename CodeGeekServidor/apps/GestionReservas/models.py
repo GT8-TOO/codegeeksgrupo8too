@@ -1,12 +1,11 @@
 from django.db import models
-from GestionUsuarios.models import Administrador
-from GestionUsuarios.models import Docente
-from GestionMaterias.models import Materia
-from GestionLocales.models import Local
+from apps.GestionUsuarios.models import Administrador
+from apps.GestionUsuarios.models import Docente
+from apps.GestionMaterias.models import Materia
+from apps.GestionLocales.models import Local
 
 
 # Create your models here.
-
 class Reserva(models.Model):
     cod_reserva = models.BigIntegerField(primary_key=True)
     cod_horario = models.BigIntegerField()

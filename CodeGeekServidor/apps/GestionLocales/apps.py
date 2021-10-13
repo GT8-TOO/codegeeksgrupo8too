@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class GestionusuariosConfig(AppConfig):
+class GestionlocalesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'GestionUsuarios'
+    name = 'apps.GestionLocales'

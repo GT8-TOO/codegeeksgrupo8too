@@ -1,9 +1,8 @@
 from django.db import models
-from GestionLocales.models import Escuela
-from GestionLocales.models import Edificio
+from apps.GestionLocales.models import Escuela
+from apps.GestionLocales.models import Edificio
 
 # Create your models here.
-
 class Administrador(models.Model):
     dui = models.BigIntegerField(primary_key=True)
     emp_dui = models.BigIntegerField()
