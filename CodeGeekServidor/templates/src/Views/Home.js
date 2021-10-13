@@ -85,7 +85,7 @@ const Index =()=>{
         <Button 
           className={classes.button} 
           variant="outlined" 
-          href="/Register"
+          href="/register"
           color="inherit">Registrarse</Button>
           </Box>
        <p 

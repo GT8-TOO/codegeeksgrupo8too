@@ -16,8 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
+from GestionUsuarios.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('apps.VistasGenerales.urls')), #Cambiar despues a metodo
+    path('login/', vista_login),
+    path('register/', vista_register),
+    path('', include('VistasGenerales.urls')), #Cambiar despues a metodo
 ]
