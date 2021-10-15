@@ -7,9 +7,8 @@ import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
-import ButtonUnstyled from '@mui/core/ButtonUnstyled';
 import ListItemText from '@mui/material/ListItemText';
-import {Link, Redirect, useParams} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 //Icons
 import IconButton from '@mui/material/IconButton';
@@ -21,12 +20,11 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 //Style
 import useStyle from '../../Styled/UsuarioCSS';
-import CustomButtonRoot from '../../Styled/SliderBar';
 
 //Contenido SliderBar
 import {SidebarData} from './SidebarData';
 
-const drawerWidth = 240;
+const drawerWidth = 290;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -75,13 +73,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
   }),
 );
-const CustomButton = (props) =>{
-  return <ButtonUnstyled {...props} component={CustomButtonRoot} />;
-}
 
 const NavBar=()=> {
   const theme = useTheme();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState();
+  //eslint-disable-next-line
   const classes = useStyle();
 
   const handleDrawerOpen = () => {

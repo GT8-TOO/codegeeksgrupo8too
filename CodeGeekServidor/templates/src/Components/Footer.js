@@ -5,9 +5,9 @@ import {
   Icon,
   Tooltip
 } from '@mui/material';
+import Logo from '../Media/logo.png';
 
 const Footer =(props)=>{
-
   return(
     <div>
       <hr className="linea_horizontal"/>
@@ -15,7 +15,7 @@ const Footer =(props)=>{
         <div style={{width:'70%', display:'inline-block'}}>
           <img 
             className="img"
-            src={require('../Media/logo.png')} 
+            src={Logo} 
             alt="Logo del grupo de trabajo" 
             height="80" 
             width="85"/>

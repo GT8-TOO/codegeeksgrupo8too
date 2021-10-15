@@ -1,8 +1,7 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 # Create your views here.
-
-def vista_login(request):
-    return render(request, 'index.html')
-def vista_register(request):
-    return render(request, 'index.html')
+def home (request):
+    return render (request, "index.html")

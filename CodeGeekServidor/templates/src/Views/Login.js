@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import{
     TextField,
     FormControl,
@@ -6,10 +6,12 @@ import{
     IconButton,
     Input,
     InputAdornment,
-    FormHelperText,
+    Typography,
     Button
 }from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { ErrorMessage } from "@hookform/error-message";
+import {Link} from 'react-router-dom';
 
 //Icons
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -29,6 +31,11 @@ const Login =()=>{
     showPassword: false,
   });
 
+  //Component di mount
+  useEffect(()=>{
+    document.title="Iniciar sesion";
+  },[])
+
   const iniciarSesion=()=>{
     console.log("Funciono")
   }
@@ -47,16 +54,21 @@ const Login =()=>{
 
 
   return (
-    <div className={classes.root}>
+    <div>
         <form onSubmit={handleSubmit(iniciarSesion)}>
-            <br/><br/><br/>
+          <div className={classes.root}>
             <TextField 
                 className={classes.text} 
                 type="email"
+                name="email"
                 label="Correo electronico"  
-                {...register("email",{required: true})}/>
-            <br/>
-            <br/><br/>
+                {...register("email",{
+              required: {
+                value:true,
+                message:"Campo requerido, ingrese el correo electronico"
+              },
+          })}/>
+            <ErrorMessage className={classes.errors} errors={errors} name="email"/>
             <FormControl>
                 <InputLabel style={{marginLeft: '15px'}} >Contraseña</InputLabel>
                     <Input 
@@ -74,22 +86,29 @@ const Login =()=>{
                               >
                                 {values.showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                               </IconButton>
-                            </InputAdornment>
-                        }
+                            </InputAdornment>}
                         {...register("password",{
                             required:{
                                 value:true,
                                 message:"Campo obligatorio, no se puede dejar vacio"
-                            }
+                            },
+                          minLength:{
+                            value:8,
+                            message:"Debe de tener una longuitud minima de 8 caracteres"
+                          }
                         })}/>
+            <ErrorMessage className={classes.errors} errors={errors} name="password"/>
             </FormControl>
+            <Link href="/register">
+              <Typography variant="p">Crear una cuenta</Typography>
+            </Link>
             <Button 
                 className={classes.button} 
                 type ='submit' 
                 color='primary' 
                 variant="contained" 
                 onClick={iniciarSesion}>Ingresar</Button> 
-            <br/><br/><br/>
+          </div>
         </form>
     </div>
   );

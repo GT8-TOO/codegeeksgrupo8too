@@ -20,7 +20,6 @@ from GestionUsuarios.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', vista_login),
-    path('register/', vista_register),
+    path('user/', include('GestionUsuarios.urls')),
     path('', include('VistasGenerales.urls')), #Cambiar despues a metodo
 ]

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createStyles, makeStyles } from "@mui/styles";
 import {
   Button,
@@ -45,7 +45,7 @@ const Index =()=>{
       id:'1',
       title:'Academica Frontal',
       description:'Academica de frente',
-      image:require('../Media/Index/AcademicaFrontal.jpg')
+      image:'../Media/Index/AcademicaFrontal.jpg'
       },{
       id:'2',
       title:'Academica Lateral',
@@ -63,6 +63,9 @@ const Index =()=>{
       image:require('../Media/Index/AcademicaAtardecer.jpeg')
     }
     ]
+  useEffect (()=>{
+    document.title="Gestion de laboratorios";
+  },[])
 
   return (
     <div>
