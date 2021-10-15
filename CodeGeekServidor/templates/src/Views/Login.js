@@ -3,6 +3,7 @@ import{
     TextField,
     FormControl,
     InputLabel,
+    Avatar,
     IconButton,
     Input,
     InputAdornment,
@@ -12,6 +13,8 @@ import{
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from "@hookform/error-message";
 import {Link} from 'react-router-dom';
+import WarningIcon from '@mui/icons-material/Warning';
+import axios from 'axios';
 
 //Icons
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -20,9 +23,10 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 //Style
 import useStyles from '../Styled/LoginCSS';
 
-const Login =()=>{
+const Login =(props)=>{
   const classes =useStyles();
   const {register, formState:{errors}, handleSubmit} = useForm();
+  const [logeado, setLogeado]=useState(false);
   const [values, setValues] = useState({
     amount: '',
     password: '',
@@ -31,13 +35,29 @@ const Login =()=>{
     showPassword: false,
   });
 
+  const sendDatos =async(data, direccion)=>{
+    axios.post(props.url+ direccion, data).then(res=>{
+      console.log(res.data);
+      setLogeado(true);
+      console.log(logeado);
+    }).catch(error=>{
+      console.log(error)
+      console.log(logeado);
+    })
+  }
+
   //Component di mount
   useEffect(()=>{
     document.title="Iniciar sesion";
   },[])
 
-  const iniciarSesion=()=>{
-    console.log("Funciono")
+  const iniciarSesion=(data)=>{
+    let formData = new FormData();
+    console.log(data);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("estado", "Activo");
+    sendDatos(formData, "user/login/")
   }
   
   const handleChange = (prop) => (event) => {
@@ -57,6 +77,9 @@ const Login =()=>{
     <div>
         <form onSubmit={handleSubmit(iniciarSesion)}>
           <div className={classes.root}>
+            <Avatar className={classes.avatar} sx={{height:90, width:90 }} src="../Media/logo-avatar.jpg" />
+            <Typography className={classes.mensaje} variant="h4">Bienvenido</Typography>
+            <Typography className={classes.mensaje} variant="h7">Ingrese sus datos para poder acceder a su cuenta</Typography>
             <TextField 
                 className={classes.text} 
                 type="email"
@@ -68,7 +91,10 @@ const Login =()=>{
                 message:"Campo requerido, ingrese el correo electronico"
               },
           })}/>
-            <ErrorMessage className={classes.errors} errors={errors} name="email"/>
+            <ErrorMessage 
+              errors={errors} 
+              name="email"
+              render={({message})=><p className={classes.errors}><WarningIcon/> {message}</p>}/>
             <FormControl>
                 <InputLabel style={{marginLeft: '15px'}} >Contraseña</InputLabel>
                     <Input 
@@ -97,17 +123,24 @@ const Login =()=>{
                             message:"Debe de tener una longuitud minima de 8 caracteres"
                           }
                         })}/>
-            <ErrorMessage className={classes.errors} errors={errors} name="password"/>
+             <ErrorMessage 
+              errors={errors} 
+              name="password"
+              render={({message})=><p className={classes.errors}><WarningIcon/> {message}</p>}/>
             </FormControl>
             <Link href="/register">
               <Typography variant="p">Crear una cuenta</Typography>
             </Link>
             <Button 
-                className={classes.button} 
                 type ='submit' 
-                color='primary' 
+                style={{backgroundColor:'#01818A'}}
                 variant="contained" 
                 onClick={iniciarSesion}>Ingresar</Button> 
+            <Button 
+                href ='/' 
+                style={{backgroundColor:'#01818A'}}
+                variant="contained" 
+                onClick={iniciarSesion}>Volver al inicio</Button> 
           </div>
         </form>
     </div>

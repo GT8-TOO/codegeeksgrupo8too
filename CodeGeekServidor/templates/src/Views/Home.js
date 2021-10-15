@@ -45,7 +45,7 @@ const Index =()=>{
       id:'1',
       title:'Academica Frontal',
       description:'Academica de frente',
-      image:'../Media/Index/AcademicaFrontal.jpg'
+      image:require('../Media/Index/AcademicaFrontal.jpg')
       },{
       id:'2',
       title:'Academica Lateral',

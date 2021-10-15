@@ -11,14 +11,13 @@ import User from './Views/User';
 import Login from './Views/Login';
 import Register from './Views/Register';
 
-// eslint-disable-next-line 
-const baseURL = "http://localhost:8000";
+const baseURL = "http://localhost:8000/";
 
 const App=() =>{
  return (
     <Router>
       <Switch>
-        <Route path ="/login"><Login/></Route>
+        <Route path ="/login"><Login url ={baseURL}/></Route>
         <Route path ="/register"><Register/></Route>
         <Route path="/user/:windows"><User/></Route>
         <Route exact path="/"><Home/></Route>
