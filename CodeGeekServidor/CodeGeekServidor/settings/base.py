@@ -92,7 +92,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+AUTH_USER_MODEL = 'GestionUsuarios.Empleado'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
