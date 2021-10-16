@@ -20,7 +20,7 @@ const Appbar = (props) =>{
   return(
     <div>
       <Box>
-        <AppBar style={{background: "#2A314b",height:'120px'}} position="static">
+        <AppBar style={{background: "linear-gradient(45deg, #2a314b 3%, #01818a 123%)",height:'120px'}} position="static">
           <Toolbar>
             {logeado ? 
               <IconButton 

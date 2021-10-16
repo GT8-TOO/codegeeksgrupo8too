@@ -17,6 +17,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import LogoutIcon from '@mui/icons-material/Logout';
+import SchoolIcon from '@mui/icons-material/School';
 
 //Style
 import useStyle from '../../Styled/UsuarioCSS';
@@ -74,7 +75,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const NavBar=()=> {
+const NavBar=(props)=> {
   const theme = useTheme();
   const [open, setOpen] = useState();
   //eslint-disable-next-line
@@ -117,6 +118,17 @@ const NavBar=()=> {
                 </ListItem>
               </Link>)})}
         </List>
+        {props.admin===true &&<div>
+          <Divider />
+            <List>
+            <Link to={`/user/${'registercareers'}`} style={{ textDecoration: 'none' }}>
+              <ListItem button  key="logout">
+                <ListItemIcon><SchoolIcon/></ListItemIcon>
+                <ListItemText primary="Registrar carrera" />
+              </ListItem>
+            </Link>
+          </List>
+        </div>}
         <Divider />
         <List>
            <Link to={``} style={{ textDecoration: 'none' }}>

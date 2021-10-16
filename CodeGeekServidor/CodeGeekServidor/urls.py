@@ -16,10 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-from GestionUsuarios.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('GestionUsuarios.urls')),
+    path('locales/', include('GestionLocales.urls')),
     path('', include('VistasGenerales.urls')), #Cambiar despues a metodo
 ]

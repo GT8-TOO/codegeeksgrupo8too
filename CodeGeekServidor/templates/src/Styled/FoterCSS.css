@@ -1,7 +1,6 @@
 .root{
       display:flex;
       background-color: #ffffff ;
-      width:100%;
 }
 .footer_content{
       position:fixed;
@@ -17,7 +16,7 @@
       z-index:1 ;
       background-color:#7363f7;
       height: 2px;
-      width: 100%;
+      width: 95%;
 }
 .img{
       margin-left:25px;

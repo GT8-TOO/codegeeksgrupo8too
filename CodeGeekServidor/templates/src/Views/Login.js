@@ -15,6 +15,8 @@ import { ErrorMessage } from "@hookform/error-message";
 import {Link} from 'react-router-dom';
 import WarningIcon from '@mui/icons-material/Warning';
 import axios from 'axios';
+import LogoAvatar from '../Media/logo-avatar.jpg';
+import WindowAlert from '../Components/WindowAlert';
 
 //Icons
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -26,7 +28,9 @@ import useStyles from '../Styled/LoginCSS';
 const Login =(props)=>{
   const classes =useStyles();
   const {register, formState:{errors}, handleSubmit} = useForm();
+  //eslint-disable-next-line
   const [logeado, setLogeado]=useState(false);
+  const [errorsLogear, setError] =useState(false);
   const [values, setValues] = useState({
     amount: '',
     password: '',
@@ -37,12 +41,9 @@ const Login =(props)=>{
 
   const sendDatos =async(data, direccion)=>{
     axios.post(props.url+ direccion, data).then(res=>{
-      console.log(res.data);
-      setLogeado(true);
-      console.log(logeado);
+      setLogeado(res.data.logeado)
     }).catch(error=>{
-      console.log(error)
-      console.log(logeado);
+      setError(true);
     })
   }
 
@@ -52,12 +53,13 @@ const Login =(props)=>{
   },[])
 
   const iniciarSesion=(data)=>{
-    let formData = new FormData();
-    console.log(data);
-    formData.append("email", data.email);
-    formData.append("password", data.password);
-    formData.append("estado", "Activo");
-    sendDatos(formData, "user/login/")
+    if(data.email!== undefined && data.password!==true){
+      let formData = new FormData();
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      formData.append("estado", "Activo");
+      sendDatos(formData, "user/login/")
+    }
   }
   
   const handleChange = (prop) => (event) => {
@@ -77,7 +79,12 @@ const Login =(props)=>{
     <div>
         <form onSubmit={handleSubmit(iniciarSesion)}>
           <div className={classes.root}>
-            <Avatar className={classes.avatar} sx={{height:90, width:90 }} src="../Media/logo-avatar.jpg" />
+            <WindowAlert 
+              state={errorsLogear} 
+              type="error" 
+              title="¡Algo salio mal!"
+              message="Por favor vuelva a ingresar sus datos, y si en dado caso no tiene cuenta puede crear una"/>
+            <Avatar className={classes.avatar} sx={{height:120, width:90 }} src={LogoAvatar} />
             <Typography className={classes.mensaje} variant="h4">Bienvenido</Typography>
             <Typography className={classes.mensaje} variant="h7">Ingrese sus datos para poder acceder a su cuenta</Typography>
             <TextField 
