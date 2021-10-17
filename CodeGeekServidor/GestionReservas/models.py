@@ -11,9 +11,6 @@ class Reserva(models.Model):
     cod_local = models.ForeignKey('GestionLocales.Local', models.DO_NOTHING, db_column='cod_local', blank=True, null=True)
     cod_materia = models.ForeignKey('GestionMaterias.Materia', models.DO_NOTHING, db_column='cod_materia', blank=True, null=True)
     doc_dui = models.ForeignKey('GestionUsuarios.Docente', models.DO_NOTHING, db_column='doc_dui', related_name='doc_dui_Reserva', null=True) #Fields.E304
-    emp_dui = models.ForeignKey('GestionUsuarios.Docente', models.DO_NOTHING, db_column='emp_dui', null=True)
-    dui = models.ForeignKey('GestionUsuarios.Administrador', models.DO_NOTHING, db_column='dui', null=True)
-    adm_dui = models.BigIntegerField()
     adm_emp_dui = models.ForeignKey('GestionUsuarios.Administrador', models.DO_NOTHING, db_column='adm_emp_dui', related_name='adm_emp_dui_Reserva', null=True) #Fields.E304
     estado_solicitud = models.CharField(max_length=20)
     fecha_envio = models.DateField()
