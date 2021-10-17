@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from GestionUsuarios.models import Empleado
+from GestionUsuarios.models import Empleado, Docente
 
 # Create your views here.
 def home (request):
@@ -28,17 +28,28 @@ def iniciar_sesion (request):
 def registrar_usuario(request):
     #Metodo que permite registrarse
 
-    dui = request.POST['dui']
-    nombre =request.POST['nombre']
-    email=request.POST['email']
-    #dui = request.POST['nit']
-    password =request.POST['password']
+    dui = request.POST.get('dui')
+    nombre =request.POST.get('nombre')
+    apellidos =request.POST.get('apellidos')
+    email=request.POST.get('email')
+    nit = request.POST.get('nit')
+    password =request.POST.get('password')
 
     
     try:
         Empleado.objects.create_user(email,dui,nombre,password)
+       #docente=Docente()
+        #docente.dui=dui
+        #docente.nit=5433333
+        #docente.nombre = nombre
+        #docente.apellidos = 'apellidos'
+        #docente.cod_empleado = dui
+        #docente.cod_escuela='E01'
+        #docente.fechaNacimiento='11/03/00'
+        #docente.save()
+
     except:
-        return JsonResponse({"Creado":False}, safe=False)
+        return JsonResponse({"Creado":dui}, safe=False)
 
     return JsonResponse({"Creado":True}, safe=False)
 

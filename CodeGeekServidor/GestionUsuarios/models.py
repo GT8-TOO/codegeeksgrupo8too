@@ -36,21 +36,18 @@ class EmpleadoManager(BaseUserManager):
 
 
 class Empleado(AbstractBaseUser):
-    email = models.EmailField(max_length=100, blank=True, null=True, unique=True)
     dui = models.BigIntegerField(primary_key=True, unique=True)
-    nit = models.BigIntegerField(blank=True, null=True)
+    email = models.EmailField(max_length=100, blank=True, null=True, unique=True)
     nombres = models.CharField(max_length=100, blank=True, null=True)
-    apellidos = models.CharField(max_length=100, blank=True, null=True)
-    fechaNacimiento = models.DateField(null=True)
     estado = models.BooleanField(default=True)
     usuario_administrador = models.BooleanField(default=False)
     objects=EmpleadoManager()
 
     USERNAME_FIELD="email"
-    REQUIRED_FIELDS=['nombres', 'dui']
+    REQUIRED_FIELDS=['dui','nombres']
 
     def __str__(self):
-        return f'{self.nombres}.{self.apellidos}'
+        return f'{self.nombres}'
     
     def has_perm(self,perm,obj = None):
         return True
@@ -65,40 +62,35 @@ class Empleado(AbstractBaseUser):
 
 class Administrador(models.Model):
     dui = models.BigIntegerField(primary_key=True)
-    emp_dui = models.BigIntegerField()
+    cod_empleado = models.ForeignKey('GestionUsuarios.Empleado', models.DO_NOTHING, db_column='cod_empleado', null=True)
     cod_escuela = models.ForeignKey('GestionLocales.Escuela', models.DO_NOTHING, db_column='cod_escuela')
     nit = models.BigIntegerField(blank=True, null=True)
-    email = models.CharField(max_length=50, blank=True, null=True)
-    password = models.CharField(max_length=256, blank=True, null=True)
     nombre = models.CharField(max_length=100, blank=True, null=True)
     apellidos = models.CharField(max_length=100, blank=True, null=True)
-    codigo_administrador = models.CharField(max_length=20)
+    fechaNacimiento = models.DateField(null=True)
 
     class Meta:
         managed = True
         db_table = 'administrador'
-        unique_together = (('dui', 'emp_dui'),)
+        unique_together = (('dui', 'cod_empleado'),)
 
 class Docente(models.Model):
     dui = models.BigIntegerField(primary_key=True)
+    cod_empleado = models.ForeignKey('GestionUsuarios.Empleado', models.DO_NOTHING, db_column='cod_empleado', null=True)
     cod_escuela = models.ForeignKey('GestionLocales.Escuela', models.DO_NOTHING, db_column='cod_escuela', null=True)
     nit = models.BigIntegerField(blank=True, null=True)
-    email = models.CharField(max_length=50, blank=True, null=True)
-    password = models.CharField(max_length=256, blank=True, null=True)
     nombre = models.CharField(max_length=100, blank=True, null=True)
     apellidos = models.CharField(max_length=100, blank=True, null=True)
-    emp_dui = models.BigIntegerField()
-    estado = models.CharField(max_length=20)
-    codigo_docente = models.CharField(max_length=20)
+    fechaNacimiento = models.DateField(null=True)
 
     class Meta:
         managed = True
         db_table = 'docente'
-        unique_together = (('dui', 'emp_dui'),)
+        unique_together = (('dui', 'cod_empleado'),)
 
 class Notificacion(models.Model):
     cod_notificacion = models.BigIntegerField(primary_key=True)
-    dui = models.BigIntegerField(blank=True, null=True)
+    cod_empleado = models.ForeignKey('GestionUsuarios.Empleado', models.DO_NOTHING, db_column='cod_empleado',null=True)
     cod_reserva = models.ForeignKey('GestionReservas.Reserva', models.DO_NOTHING, db_column='cod_reserva', blank=True, null=True)
     visto = models.BigIntegerField(blank=True, null=True)
     fecha = models.DateField(blank=True, null=True)
