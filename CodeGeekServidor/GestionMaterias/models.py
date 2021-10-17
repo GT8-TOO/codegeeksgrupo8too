@@ -1,9 +1,6 @@
 from django.db import models
-from GestionUsuarios.models import Docente
-
 
 # Create your models here.
-
 class Catedra(models.Model):
     cod_catedra = models.BigIntegerField(primary_key=True)
     cod_materia = models.ForeignKey('Materia', models.DO_NOTHING, db_column='cod_materia', null=True)
@@ -26,15 +23,14 @@ class Ciclo(models.Model):
         db_table = 'ciclo'
 
 class EsParteDe(models.Model):
-    dui = models.OneToOneField(Docente, models.DO_NOTHING, db_column='dui', primary_key=True)
-    emp_dui = models.ForeignKey(Docente, models.DO_NOTHING, db_column='emp_dui', related_name='emp_duis', null=True) #Field.E303
+    dui = models.ForeignKey('GestionUsuarios.Docente', models.DO_NOTHING, db_column='dui', related_name='esta_en', null=True) #Field.E303
     cod_catedra = models.ForeignKey(Catedra, models.DO_NOTHING, db_column='cod_catedra', null=True)
     coordinador = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
         managed = True
         db_table = 'es_parte_de'
-        unique_together = (('dui', 'emp_dui', 'cod_catedra'),)
+        unique_together = (('dui', 'cod_catedra'),)
 
 
 class Dia(models.Model):
@@ -102,4 +98,3 @@ class RequisitoDe(models.Model):
         managed = True
         db_table = 'requisito_de'
         unique_together = (('mat_cod_materia', 'cod_materia'),)
-

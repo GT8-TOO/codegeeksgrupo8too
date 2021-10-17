@@ -1,10 +1,6 @@
-from typing import Tuple
 from django.db import models
 
-
-
 # Create your models here.
-
 class Reserva(models.Model):
     cod_reserva = models.BigIntegerField(primary_key=True)
     cod_horario = models.BigIntegerField()
