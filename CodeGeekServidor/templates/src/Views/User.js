@@ -7,6 +7,7 @@ import {Slide, Zoom} from '@mui/material';
 import CatalogoLocales from '../Components/User/CatalogoLocales';
 
 const User =(props)=>{
+  //eslint-disable-next-line
   const [admin, setAdmin]= useState(true);
   let { windows } =useParams();
 
@@ -26,7 +27,7 @@ const User =(props)=>{
           {windows ==="local" &&<CatalogoLocales url={props.url}/>}
           {windows ==="report" &&<p>Y aqui mostrar los reportes </p>}
           {windows ==="sendemail" &&<p>Aqui mandara emails</p>}
-          {(windows==="registercareers" && admin ==true)&&<p>Registrar carrera</p>}
+          {(windows==="registercareers" && admin ===true)&&<p>Registrar carrera</p>}
         </div>
         <Footer/>
       </div>

@@ -133,7 +133,7 @@ const Register = (props) =>{
           state={!passwordIguales}
           type="warning"
           title="Verifique las contraseñas"
-          message="Las contraseñas que ha proporcionado no son iguales, reviselas y vuelva a intentar"
+          message="Las contraseñas que ha proporcionado no coinciden. Vuelva a intentar."
         />}
       <Container component="main" maxWidth="xs">
         <Box

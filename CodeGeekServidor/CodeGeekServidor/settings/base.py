@@ -74,7 +74,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'CodeGeekServidor.wsgi.application'
 
 CORS_ALLOWED_ORIGINS=[
-    "http://localhosti:3000",
+    "http://localhost:3000",
     "http://localhosti:8000",
 ]
 
