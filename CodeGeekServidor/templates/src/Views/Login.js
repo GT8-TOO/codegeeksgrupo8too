@@ -11,7 +11,7 @@ import{
     Button
 }from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { ErrorMessage } from "@hookform/error-message";
+import { ErrorMessage } from '@hookform/error-message';
 import {Link} from 'react-router-dom';
 import WarningIcon from '@mui/icons-material/Warning';
 import axios from 'axios';
@@ -53,7 +53,7 @@ const Login =(props)=>{
   },[])
 
   const iniciarSesion=(data)=>{
-    if(data.email!== undefined && data.password!==true){
+    if(data.email!== undefined && data.password!==undefined){
       let formData = new FormData();
       formData.append("email", data.email);
       formData.append("password", data.password);
@@ -135,7 +135,7 @@ const Login =(props)=>{
               name="password"
               render={({message})=><p className={classes.errors}><WarningIcon/> {message}</p>}/>
             </FormControl>
-            <Link href="/register">
+            <Link to="/register">
               <Typography variant="p">Crear una cuenta</Typography>
             </Link>
             <Button 
@@ -146,8 +146,7 @@ const Login =(props)=>{
             <Button 
                 href ='/' 
                 style={{backgroundColor:'#01818A'}}
-                variant="contained" 
-                onClick={iniciarSesion}>Volver al inicio</Button> 
+                variant="contained" >Volver al inicio</Button> 
           </div>
         </form>
     </div>
