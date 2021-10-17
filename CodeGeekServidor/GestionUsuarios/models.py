@@ -47,7 +47,7 @@ class Empleado(AbstractBaseUser):
     REQUIRED_FIELDS=['dui','nombres']
 
     def __str__(self):
-        return f'{self.nombres}.{self.apellidos}'
+        return f'{self.nombres}'
     
     def has_perm(self,perm,obj = None):
         return True
