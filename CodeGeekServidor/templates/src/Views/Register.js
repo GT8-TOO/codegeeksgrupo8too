@@ -75,7 +75,7 @@ const Register = (props) =>{
       if(data.password === data.cpassword){
         //Mandar solicitud de metodos
         let formData= new FormData();
-        formData.append("nombre", data.name);
+        formData.append("nombre", data.nombre);
         formData.append("dui", data.dui);
         formData.append("nit", data.nit);
         formData.append("fechaNacimiento", calendarvalue);
