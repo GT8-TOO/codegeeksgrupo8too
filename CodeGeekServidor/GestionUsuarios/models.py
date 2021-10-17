@@ -44,7 +44,7 @@ class Empleado(AbstractBaseUser):
     objects=EmpleadoManager()
 
     USERNAME_FIELD="email"
-    REQUIRED_FIELDS=['nombres']
+    REQUIRED_FIELDS=['dui','nombres']
 
     def __str__(self):
         return f'{self.nombres}.{self.apellidos}'
