@@ -4,7 +4,10 @@ import Footer from '../Components/Footer';
 import { useParams } from 'react-router-dom';
 import Fade from '@mui/material/Fade';
 import {Slide, Zoom} from '@mui/material';
+
+//Vistas pequeñas
 import CatalogoLocales from '../Components/User/CatalogoLocales';
+import RegistrarCarrera from '../Components/User/RegistrarCarrera';
 
 const User =(props)=>{
   //eslint-disable-next-line
@@ -27,7 +30,9 @@ const User =(props)=>{
           {windows ==="local" &&<CatalogoLocales url={props.url}/>}
           {windows ==="report" &&<p>Y aqui mostrar los reportes </p>}
           {windows ==="sendemail" &&<p>Aqui mandara emails</p>}
-          {(windows==="registercareers" && admin ===true)&&<p>Registrar carrera</p>}
+          {(windows==="registercarrer" && admin ===true)&&<RegistrarCarrera url={props.url}/>}
+          {(windows ==="start" && admin ===true)&&<p>Aqui comenzara ciclo</p>}
+          {(windows ==="authorize" && admin===true)&&<p>Aqui autorizara a docentes</p>}
         </div>
         <Footer/>
       </div>

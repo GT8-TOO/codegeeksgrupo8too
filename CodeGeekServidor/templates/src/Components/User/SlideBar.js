@@ -1,13 +1,16 @@
 import React, {useState} from 'react';
 
 //Material UI
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+import { 
+  styled, 
+  useTheme,
+  Box, 
+  List,
+  Divider,
+  ListItem,
+  ListItemText
+} from '@mui/material';
 import MuiDrawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import {Link} from 'react-router-dom';
 
 //Icons
@@ -17,15 +20,15 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import LogoutIcon from '@mui/icons-material/Logout';
-import SchoolIcon from '@mui/icons-material/School';
 
 //Style
 import useStyle from '../../Styled/UsuarioCSS';
 
 //Contenido SliderBar
-import {SidebarData} from './SidebarData';
+import {SidebarData} from './DataBar/SidebarData';
+import {SliderAdminData} from './DataBar/SliderAdminData';
 
-const drawerWidth = 290;
+const drawerWidth = 300;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -120,14 +123,16 @@ const NavBar=(props)=> {
         </List>
         {props.admin===true &&<div>
           <Divider />
+          {SliderAdminData.map((item)=>{
+            return(
             <List>
-            <Link to={`/user/${'registercareers'}`} style={{ textDecoration: 'none' }}>
-              <ListItem button  key="logout">
-                <ListItemIcon><SchoolIcon/></ListItemIcon>
-                <ListItemText primary="Registrar carrera" />
+            <Link to={`/user/${item.path}`} style={{ textDecoration: 'none' }}>
+              <ListItem button  key={item.key}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.title} />
               </ListItem>
             </Link>
-          </List>
+          </List>)})}
         </div>}
         <Divider />
         <List>

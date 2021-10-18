@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { 
   Typography,
-  Menu,
-  MenuItem,
+  Autocomplete,
+  TextField,
   Button
 } from '@mui/material';
 import axios from 'axios';
@@ -63,27 +63,12 @@ const CatalogoLocales =(props)=>{
       <RegistrarLocal open={openDialog} setOpen={setOpenDialogo}/>
       <Typography variant="h4">Catálogo de locales de la Facultad de Ingeniería y Arquietectura</Typography>
       <div style={{display:'flex', gap:'20px', margin:'1px auto'}}>
-        <Button  
-          aria-controls="simple-menu" 
-          sx={{marginTop:'40px'}}
-          aria-haspopup="true" 
-          variant="outlined" 
-          onClick={handleClick}>Seleccionar escuela </Button>
-        <Menu
-          id="simple-menu"
-          anchorEl={width}
-          keepMounted
-          open={Boolean(width)}
-          onClose={handleClose}>
-          {escuelas !== undefined && escuelas.map((escuela, index)=>(
-            <MenuItem 
-              key={index}
-              selected={index===selectIndex}
-              onClick={(event)=>{
-                selectItem(index);
-                handleClose(event, index);
-              }}>{escuela.nombre_escuela}</MenuItem>
-          ))}</Menu>
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={escuelas}
+          sx={{marginTop:5, width: 300 }}
+          renderInput={(params) => <TextField {...params} label="Escuelas diponibles" />}/>
         <Button 
           variant="outlined" 
           onClick={openDialogClick}

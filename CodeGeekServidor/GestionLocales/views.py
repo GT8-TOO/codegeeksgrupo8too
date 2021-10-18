@@ -7,4 +7,15 @@ from GestionLocales.models import *
 @csrf_exempt
 def get_escuelas (request):
     escuelas =list(Escuela.objects.values())
-    return JsonResponse(escuelas, safe=False)
+    lista =[]
+    for i in range(len(escuelas)):
+        diccionario={
+            "code":"",
+            "label":""
+        }
+        diccionario["code"]= escuelas[i]["cod_escuela"]
+        diccionario["label"]=escuelas[i]["nombre_escuela"]
+        lista.append(diccionario);
+        del diccionario
+    return JsonResponse(lista, safe=False)
+

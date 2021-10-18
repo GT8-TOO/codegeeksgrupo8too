@@ -18,7 +18,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import DateAdapter from '@mui/lab/AdapterDateFns';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useForm} from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import axios from 'axios';
@@ -54,25 +54,30 @@ const Register = (props) =>{
   const [calendarvalue, setCalendarValue] = useState(new Date(''));
   const [fechaError, setFechaError]= useState(false);
   const [passwordIguales, setPasswordI]= useState(true);
+  const [correoInstituciona, setCorreo]= useState(false);
+  const [creado, setCreado] = useState(false);
 
   useEffect(()=>{
     document.title="Registrarse"
   },[])
 
   const sendData=async(data, direccion)=>{
-    axios.post(props.url+direccion, data).then(res=>{
-      console.log("Funciono");
-    }).catch(error=>{
-      console.log("Algo salio mal")
+    axios.post(props.url+direccion, data).then((res)=>{
+      setCreado(res.data);
+    }).catch((error)=>{
+      console.log("Algo salio mal");
+      console.log(error);
     })
   }
 
   const registrarse =(data)=>{
     setFechaError(false)
     setPasswordI(true)
+    setCorreo(false)
+    var cadena = data.email;
     //if(calendarvalue instanceof Date && isFinite(calendarvalue)){
     if(calendarvalue instanceof Date && isFinite(calendarvalue)){
-      if(data.password === data.cpassword){
+      if(data.password === data.cpassword && cadena.includes("@ues.edu.sv")){
         //Mandar solicitud de metodos
         let formData= new FormData();
         formData.append("nombre", data.name);
@@ -82,6 +87,8 @@ const Register = (props) =>{
         formData.append("email", data.email)
         formData.append("password", data.password);
         sendData(formData, "user/register/")
+      }else if(!cadena.includes("@ues.edu.sv")){
+        setCorreo(true);
       }else{
         setPasswordI(false)
       }
@@ -124,6 +131,16 @@ const Register = (props) =>{
  return (
     <div>
       <form onSubmit={handleSubmit(registrarse)}>
+        {creado.Creado &&<div> 
+          <WindowAlert
+            state={creado.Creado}
+            type="success"
+            title="Todo correcto"
+            redirect="/login"
+            message="El usuario ha sido creado correctamente"
+          />
+          {!creado.Creado && <Redirect to="/login"/>}
+        </div>}
         {fechaError &&<WindowAlert 
           state={fechaError}
           type="info"
@@ -134,6 +151,12 @@ const Register = (props) =>{
           type="warning"
           title="Verifique las contraseñas"
           message="Las contraseñas que ha proporcionado no coinciden. Vuelva a intentar."
+        />}
+        {correoInstituciona &&<WindowAlert
+          state={correoInstituciona}
+          type="warning"
+          title="Datos erroneos"
+          message="El correo que ha proporcionado no pertenece a la Universidad de El Salvador"
         />}
       <Container component="main" maxWidth="xs">
         <Box

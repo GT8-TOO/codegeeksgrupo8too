@@ -7,11 +7,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Alert from  '@mui/material/Alert';
 import Slide from '@mui/material/Slide';
+import {Redirect} from 'react-router-dom';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
 
 const WindowAlert =(props)=> {
   const [open, setOpen] = useState(props.state);
@@ -19,6 +19,10 @@ const WindowAlert =(props)=> {
   const handleClose = () => {
     setOpen(false)
   };
+
+  const handleRedirect = ()=>{
+    setOpen(false);
+  }
 
   return (
     <div>
@@ -35,7 +39,11 @@ const WindowAlert =(props)=> {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Aceptar</Button>
+          {props.redirect ===undefined &&<Button onClick={handleClose}>Aceptar</Button>}
+          {props.redirect !==undefined &&<div>
+            <Button onClick={handleRedirect}>Aceptar</Button>
+            {!open && <Redirect to ={props.redirect}/>}
+          </div>}
         </DialogActions>
       </Dialog>
     </div>
