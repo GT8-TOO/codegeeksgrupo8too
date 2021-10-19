@@ -28,6 +28,7 @@ import WindowAlert from '../Components/WindowAlert';
 
 //Style
 import useStyles from '../Styled/RegisterCSS';
+import errorStyles from '../Styled/ErorCSS';
 
 //Icons
 import WarningIcon from '@mui/icons-material/Warning';
@@ -36,6 +37,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Register = (props) =>{
   const classes =useStyles();
+  const classError = errorStyles();
   const {register, formState:{errors}, handleSubmit} = useForm();
   const [values, setValues] = useState({
     amount: '',
@@ -185,7 +187,7 @@ const Register = (props) =>{
                 <ErrorMessage
                   errors={errors}
                   name="nombre"
-                  render={({message})=><p className={classes.errors}><WarningIcon/> {message}</p>}/>
+                  render={({message})=><p className={classError.errors}><WarningIcon/> {message}</p>}/>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -213,7 +215,7 @@ const Register = (props) =>{
                 <ErrorMessage
                   errors={errors}
                   name="dui"
-                  render={({message})=><p className={classes.errors2}><WarningIcon/> {message}</p>}/>
+                  render={({message})=><p className={classError.errors2}><WarningIcon/> {message}</p>}/>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -240,7 +242,7 @@ const Register = (props) =>{
                 <ErrorMessage
                   errors={errors}
                   name="nit"
-                  render={({message})=><p className={classes.errors2}><WarningIcon/> {message}</p>}/>
+                  render={({message})=><p className={classError.errors2}><WarningIcon/> {message}</p>}/>
               </Grid>
               <Grid item xs={12}>
                 <Stack spacin={3}>
@@ -263,7 +265,7 @@ const Register = (props) =>{
                   <ErrorMessage
                   errors={errors}
                   name="calendar"
-                  render={({message})=><p className={classes.errors2}><WarningIcon/> {message}</p>}/>
+                  render={({message})=><p className={classError.errors2}><WarningIcon/> {message}</p>}/>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -280,7 +282,7 @@ const Register = (props) =>{
                 <ErrorMessage
                   errors={errors}
                   name="email"
-                  render={({message})=><p className={classes.errors}><WarningIcon/> {message}</p>}/>
+                  render={({message})=><p className={classError.errors}><WarningIcon/> {message}</p>}/>
               </Grid>
               <Grid item xs={12}>
               <FormControl>
@@ -314,7 +316,7 @@ const Register = (props) =>{
              <ErrorMessage 
               errors={errors} 
               name="password"
-               render={({message})=><p className={classes.errors}><WarningIcon/>{message}</p>}/>
+               render={({message})=><p className={classError.errors}><WarningIcon/>{message}</p>}/>
             </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -349,7 +351,7 @@ const Register = (props) =>{
             <ErrorMessage 
               errors={errors} 
               name="cpassword"
-              render={({message})=><p className={classes.errors}><WarningIcon/>{message}</p>}/>
+              render={({message})=><p className={classError.errors}><WarningIcon/>{message}</p>}/>
             </FormControl>
               </Grid>
             </Grid>

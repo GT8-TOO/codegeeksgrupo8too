@@ -14,9 +14,7 @@ const CatalogoLocales =(props)=>{
   const [escuelas, setEscuelas]=useState();
   const [localActual, setLocal]=useState("No se encuentra viendo ningún local");
   const [error, setError]=useState(false)
-  const [width, setWidth]=useState(null);
   const [openDialog, setOpenDialogo]= useState(false);
-  var selectIndex;
 
   //Component di mount
   useEffect(async()=>{
@@ -37,17 +35,14 @@ const CatalogoLocales =(props)=>{
     return promise;
   }
   
-  const selectItem=(index)=>{
-    setLocal("Esta viendo los locales de la "+escuelas[index].nombre_escuela );
+  //eslint-disable-next-line
+  const selectItem=(e)=>{
+    if(e.target.value !== undefined){
+      setLocal("Esta viendo los locales de la "+escuelas[e.target.value].label );
+    }else{
+      setLocal("No se encuentra viendo ningun local")
+    }
   }
-
-  const handleClick = (event) => {
-    setWidth(event.currentTarget);
-  };    
-
-  const handleClose =async (event, index) => {
-    setWidth(null);
-  };
 
   const openDialogClick = () => {
     setOpenDialogo(true);
@@ -68,6 +63,7 @@ const CatalogoLocales =(props)=>{
           id="combo-box-demo"
           options={escuelas}
           sx={{marginTop:5, width: 300 }}
+          onChange={selectItem}
           renderInput={(params) => <TextField {...params} label="Escuelas diponibles" />}/>
         <Button 
           variant="outlined" 

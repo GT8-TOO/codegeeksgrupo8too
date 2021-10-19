@@ -2,8 +2,9 @@ import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles =makeStyles((theme)=>
   createStyles({
-    text:{
-      width:'100%'
+    div:{
+      borderRadius: '30px',
+      boxShadow: '0px 0px 9px 0px #000 ',
     }
   }),
 );

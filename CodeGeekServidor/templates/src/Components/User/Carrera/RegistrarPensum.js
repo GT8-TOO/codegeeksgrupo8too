@@ -1,32 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Typography,
   Grid,
   Autocomplete,
+  Button,
   TextField
 } from '@mui/material';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import axios from 'axios';
+import { ErrorMessage } from '@hookform/error-message';
+import {useForm} from 'react-hook-form';
+import WarningIcon from '@mui/icons-material/Warning';
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+//CSS Error
+import useStyles from '../../../Styled/ErorCSS'; 
+
+//Context
+import UserContext from '../../../Context/UserContext';
 
 const RegistrarPensum =(props)=>{
+  const classes = useStyles();
+  const {register, formState:{errors}, handleSubmit}= useForm();
   const [escuelas, setEscuelas]=useState();
-  const [width, setWidth]=useState(null);
-  const [openDialog, setOpenDialogo]= useState(false);
-  const [error, setError]=useState(false)
-  var selectIndex;
+  const [error, setError]=useState(false);
+  const [escuelaV, setVacio]=useState({label:"", error:undefined});
+  const userContext = useContext(UserContext);
 
   //Component di mount
   useEffect(async()=>{
     var prueba = await getDatos("locales/solicitarescuelas-json/");
+    userContext.setButton({enabled:false})
     if(error===false){
       setEscuelas(prueba)
     }
@@ -42,48 +44,93 @@ const RegistrarPensum =(props)=>{
     return promise;
   }
 
-  const handleClick = (event) => {
-    setWidth(event.currentTarget);
-  };    
+  const ingresarPensum =(data)=>{
+    if(escuelaV.error !==undefined){
+      userContext.setButton({enabled:true})
+      userContext.setCarrera({data, ...escuelaV})
+    }else{
+      setVacio({
+        label:"",
+        error:true 
+      })
+    }
+  }
 
-  const handleClose =async (event, index) => {
-    setWidth(null);
-  };
+  const seleccionEscuela = (event) =>{
+    if (event.target.value !== undefined){
+      setVacio({
+        escuela:escuelas[event.target.value],
+        error:false
+      })
+    }
+  }
 
-  const openDialogClick = () => {
-    setOpenDialogo(true);
-  };
- 
   return(
     <div>
+      <form onSubmit={handleSubmit(ingresarPensum)}>
       <Typography variant="h5">Registrar pensum</Typography>
       <Grid style={{marginTop:'10px'}} container rowSpacing={4} columnSpacing={1}>
         <Grid item xs={4}>
           <Typography variant="p">Nombre de la carrera</Typography>
         </Grid>
         <Grid item xs={6}>
-          <TextField id="outlined-basic" sx={{width:300}} label="Carrera" variant="outlined" />
+          <TextField 
+            sx={{width:300}} 
+            label="Carrera" 
+            name="carrera"
+            variant="outlined" 
+            {...register("carrera",{
+              required:{
+                value:true,
+                message:"Campo obligatorio ingrese una carrera"
+              }
+            })}
+          />
+           <ErrorMessage 
+              errors={errors} 
+              name="carrera"
+             render={({message})=><p className={classes.errors} ><WarningIcon/> {message}</p>}/>
         </Grid>
         <Grid item xs={4}>
-          <Typography variant="p">Año de creación del pensúm</Typography>
+          <Typography variant="p">Año de creación de la carrera</Typography>
         </Grid>
         <Grid item xs={6}>
-          <TextField id="outlined-basic" sx={{width:300}} type="number" label="Año" variant="outlined" />
+          <TextField 
+            sx={{width:300}} 
+            type="number" 
+            label="Año" 
+            name="yearcarrer"
+            variant="outlined" 
+            {...register("yearcarrer", {
+              required:{
+                value:true,
+                message:"Es necesario ingresar el año de creación"
+              }
+            })}/>
+          <ErrorMessage
+            errors={errors}
+            name="year"
+            render={({message})=><p className={classes.errors} ><WarningIcon/> {message}</p>}/>
         </Grid>
          <Grid item xs={4}>
           <Typography variant="p">Escuela que pertecenera</Typography>
         </Grid>
-        <Grid style={{display:'flex'}} item xs={6}>
+        <Grid item xs={6}>
           <Autocomplete
             disablePortal
-            id="combo-box-demo"
+            name="escuelas"
             options={escuelas}
             sx={{ width: 300 }}
+            onChange={seleccionEscuela}
             renderInput={(params) => <TextField {...params} label="Escuelas diponibles" />}/>
+          <br/>
+          {escuelaV.error && <p className={classes.errors} ><WarningIcon/>Tiene que ingresar a que escuela pertenecera</p>}
         </Grid>
      </Grid>
+        <Button sx={{marginTop:'-10px'}} type="submit">Registrar</Button>
+      </form>
     </div>
   );
-
 }
+
 export default RegistrarPensum;

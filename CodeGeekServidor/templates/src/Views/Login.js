@@ -24,9 +24,11 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 //Style
 import useStyles from '../Styled/LoginCSS';
+import errorStyle from '../Styled/ErorCSS';
 
 const Login =(props)=>{
   const classes =useStyles();
+  const errorClass =errorStyle();
   const {register, formState:{errors}, handleSubmit} = useForm();
   //eslint-disable-next-line
   const [logeado, setLogeado]=useState(false);
@@ -101,7 +103,7 @@ const Login =(props)=>{
             <ErrorMessage 
               errors={errors} 
               name="email"
-              render={({message})=><p className={classes.errors}><WarningIcon/> {message}</p>}/>
+              render={({message})=><p className={errorClass.errors}><WarningIcon/> {message}</p>}/>
             <FormControl>
                 <InputLabel style={{marginLeft: '15px'}} >Contraseña</InputLabel>
                     <Input 
@@ -133,7 +135,7 @@ const Login =(props)=>{
              <ErrorMessage 
               errors={errors} 
               name="password"
-              render={({message})=><p className={classes.errors}><WarningIcon/> {message}</p>}/>
+              render={({message})=><p className={errorClass.errors}><WarningIcon/> {message}</p>}/>
             </FormControl>
             <Link to="/register">
               <Typography variant="p">Crear una cuenta</Typography>
