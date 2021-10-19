@@ -73,6 +73,9 @@ class Administrador(models.Model):
         managed = True
         db_table = 'administrador'
         unique_together = (('dui', 'cod_empleado'),)
+        
+    def __str__(self):
+        return f'{self.nombre}'
 
 class Docente(models.Model):
     dui = models.BigIntegerField(primary_key=True)
@@ -81,12 +84,15 @@ class Docente(models.Model):
     nit = models.BigIntegerField(blank=True, null=True)
     nombre = models.CharField(max_length=100, blank=True, null=True)
     apellidos = models.CharField(max_length=100, blank=True, null=True)
-    fechaNacimiento = models.DateField(null=True)
+    fecha_nacimiento = models.DateField(db_column='fecha_nacimiento', null=True)
 
     class Meta:
         managed = True
         db_table = 'docente'
         unique_together = (('dui', 'cod_empleado'),)
+    
+    def __str__(self):
+        return f'{self.nombre}'
 
 class Notificacion(models.Model):
     cod_notificacion = models.BigIntegerField(primary_key=True)

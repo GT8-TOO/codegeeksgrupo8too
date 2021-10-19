@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from GestionUsuarios.models import Empleado, Docente
+from GestionLocales.models import Escuela
+import re
 
 # Create your views here.
 def home (request):
@@ -29,29 +31,37 @@ def registrar_usuario(request):
     #Metodo que permite registrarse
 
     dui = request.POST.get('dui')
-    nombre =request.POST.get('nombre')
+    nombres =request.POST.get('nombre')
     apellidos =request.POST.get('apellidos')
     email=request.POST.get('email')
     nit = request.POST.get('nit')
     password =request.POST.get('password')
+    fecha = request.POST.get('fechaNacimiento')
+    escu="EISI"
 
-    
-    try:
-        Empleado.objects.create_user(email,dui,nombre,password)
-       #docente=Docente()
-        #docente.dui=dui
-        #docente.nit=5433333
-        #docente.nombre = nombre
-        #docente.apellidos = 'apellidos'
-        #docente.cod_empleado = dui
-        #docente.cod_escuela='E01'
-        #docente.fechaNacimiento='11/03/00'
-        #docente.save()
+    base="base@ues.edu.sv"
+    base=re.findall('@+ues.edu.sv',base)
+    email2 = re.findall('@+ues.edu.sv',email)
 
-    except:
-        return JsonResponse({"Creado":dui}, safe=False)
-
-    return JsonResponse({"Creado":True}, safe=False)
+    if base == email2:
+        try:
+            Empleado.objects.create_user(email,dui,nombres,password)
+            cod_escuelas = Escuela(cod_escuela=escu)
+            cod_empleado = Empleado(dui=dui)
+            docente=Docente.objects.create(
+            dui=dui,
+            nit=nit,
+            nombre=nombres,
+            apellidos=fecha,
+            cod_escuela=cod_escuelas,
+            cod_empleado = cod_empleado
+            )
+            docente.save()
+        except:
+            return JsonResponse({"Creado":False}, safe=False)
+        return JsonResponse({"Creado":True}, safe=False)
+    else:
+        return JsonResponse({"mensajeerror":"El correo debe ser institucional", "errorDatos":True}, safe=False)
 
 def vista_registrarse (request):
     return render (request, "index.html")
