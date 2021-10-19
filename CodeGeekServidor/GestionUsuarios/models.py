@@ -70,6 +70,9 @@ class Administrador(models.Model):
     class Meta:
         managed = True
         db_table = 'administrador'
+    
+    def __str__(self):
+        return f'{self.nombre}'
 
 class Docente(models.Model):
     dui = models.BigIntegerField(primary_key=True)
@@ -83,6 +86,9 @@ class Docente(models.Model):
     class Meta:
         managed = True
         db_table = 'docente'
+
+    def __str__(self):
+        return f'{self.nombre}'
 
 class Notificacion(models.Model):
     cod_notificacion = models.BigIntegerField(primary_key=True)
