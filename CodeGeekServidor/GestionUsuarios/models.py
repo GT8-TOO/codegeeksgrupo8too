@@ -6,14 +6,12 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
 # Create your models here.
 
 class EmpleadoManager(BaseUserManager):
-    def create_user(self, email, dui, nombres, password = None):
+    def create_user(self, email, password = None):
         if not email:
             raise ValueError('El Usuario debe tener un correo')
         
         empleado=self.model(
             email=self.normalize_email(email),
-            dui=dui,
-            nombres=nombres,
             password=password
         )
 
@@ -21,12 +19,11 @@ class EmpleadoManager(BaseUserManager):
         empleado.save()
         return empleado
     
-    def create_superuser(self, email, dui, nombres, password = None):
+    def create_superuser(self, email, password = None):
 
         empleado=self.create_user(
             email,
-            dui=dui,
-            nombres=nombres,
+            
             password=password
         )
 
@@ -36,18 +33,17 @@ class EmpleadoManager(BaseUserManager):
 
 
 class Empleado(AbstractBaseUser):
-    dui = models.BigIntegerField(primary_key=True, unique=True)
+    dui = models.AutoField(primary_key=True, unique=True)
     email = models.EmailField(max_length=100, blank=True, null=True, unique=True)
-    nombres = models.CharField(max_length=100, blank=True, null=True)
+    
     estado = models.BooleanField(default=True)
     usuario_administrador = models.BooleanField(default=False)
     objects=EmpleadoManager()
 
     USERNAME_FIELD="email"
-    REQUIRED_FIELDS=['dui','nombres']
 
     def __str__(self):
-        return f'{self.nombres}'
+        return f'{self.email}'
     
     def has_perm(self,perm,obj = None):
         return True
@@ -62,17 +58,16 @@ class Empleado(AbstractBaseUser):
 
 class Administrador(models.Model):
     dui = models.BigIntegerField(primary_key=True)
-    cod_empleado = models.ForeignKey('GestionUsuarios.Empleado', models.DO_NOTHING, db_column='cod_empleado', null=True)
-    cod_escuela = models.ForeignKey('GestionLocales.Escuela', models.DO_NOTHING, db_column='cod_escuela')
+    cod_empleado = models.ForeignKey('GestionUsuarios.Empleado', models.CASCADE, db_column='cod_empleado', null=True)
+    cod_escuela = models.ForeignKey('GestionLocales.Escuela', models.DO_NOTHING, db_column='cod_escuela',null=True)
     nit = models.BigIntegerField(blank=True, null=True)
     nombre = models.CharField(max_length=100, blank=True, null=True)
     apellidos = models.CharField(max_length=100, blank=True, null=True)
-    fechaNacimiento = models.DateField(null=True)
+    # fechaNacimiento = models.DateField(null=True,db_column='FECHA_NACIMIENTO')
 
     class Meta:
         managed = True
         db_table = 'administrador'
-        unique_together = (('dui', 'cod_empleado'),)
 
 class Docente(models.Model):
     dui = models.BigIntegerField(primary_key=True)
@@ -81,12 +76,11 @@ class Docente(models.Model):
     nit = models.BigIntegerField(blank=True, null=True)
     nombre = models.CharField(max_length=100, blank=True, null=True)
     apellidos = models.CharField(max_length=100, blank=True, null=True)
-    fechaNacimiento = models.DateField(null=True)
+    # fechaNacimiento = models.DateField(null=True,db_column='FECHA_NACIMIENTO')
 
     class Meta:
         managed = True
         db_table = 'docente'
-        unique_together = (('dui', 'cod_empleado'),)
 
 class Notificacion(models.Model):
     cod_notificacion = models.BigIntegerField(primary_key=True)

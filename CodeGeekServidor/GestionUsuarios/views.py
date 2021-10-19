@@ -37,16 +37,14 @@ def registrar_usuario(request):
 
     
     try:
-        Empleado.objects.create_user(email,dui,nombre,password)
-       #docente=Docente()
-        #docente.dui=dui
-        #docente.nit=5433333
-        #docente.nombre = nombre
-        #docente.apellidos = 'apellidos'
-        #docente.cod_empleado = dui
-        #docente.cod_escuela='E01'
-        #docente.fechaNacimiento='11/03/00'
-        #docente.save()
+        empleado=Empleado.objects.create_user(email,password)
+        docente=Docente()
+        docente.dui=dui
+        docente.nit=nit
+        docente.nombre = nombre
+        docente.apellidos = apellidos
+        docente.cod_empleado=empleado
+        docente.save()
 
     except:
         return JsonResponse({"Creado":dui}, safe=False)
