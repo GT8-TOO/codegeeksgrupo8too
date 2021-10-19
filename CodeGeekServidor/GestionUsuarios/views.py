@@ -41,17 +41,17 @@ def registrar_usuario(request):
 
     
     try:
-        empleado=Empleado.objects.create_user(email,password)
+        empleado=Empleado.objects.create_user(dui,email,password)
         docente=Docente()
         docente.dui=dui
         docente.nit=nit
-        docente.nombre = nombre
+        docente.nombre = nombres
         docente.apellidos = apellidos
         docente.cod_empleado=empleado
         docente.save()
 
     except:
-        return JsonResponse({"Creado":dui}, safe=False)
+        return JsonResponse({"Creado":False}, safe=False)
 
     return JsonResponse({"Creado":True}, safe=False)
 

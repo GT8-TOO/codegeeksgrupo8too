@@ -6,11 +6,12 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
 # Create your models here.
 
 class EmpleadoManager(BaseUserManager):
-    def create_user(self, email, password = None):
+    def create_user(self,dui, email, password = None):
         if not email:
             raise ValueError('El Usuario debe tener un correo')
         
         empleado=self.model(
+            dui=dui,
             email=self.normalize_email(email),
             password=password
         )
@@ -41,6 +42,7 @@ class Empleado(AbstractBaseUser):
     objects=EmpleadoManager()
 
     USERNAME_FIELD="email"
+    REQUIRED_FIELDS=['dui']
 
     def __str__(self):
         return f'{self.email}'
