@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from GestionUsuarios.models import Empleado, Docente
+from GestionLocales.models import Escuela
+import re
 
 # Create your views here.
 def home (request):
@@ -29,11 +31,13 @@ def registrar_usuario(request):
     #Metodo que permite registrarse
 
     dui = request.POST.get('dui')
-    nombre =request.POST.get('nombre')
+    nombres =request.POST.get('nombre')
     apellidos =request.POST.get('apellidos')
     email=request.POST.get('email')
     nit = request.POST.get('nit')
     password =request.POST.get('password')
+    fecha = request.POST.get('fechaNacimiento')
+    escu="EISI"
 
     
     try:

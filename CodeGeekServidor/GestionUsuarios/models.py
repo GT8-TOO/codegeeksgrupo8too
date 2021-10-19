@@ -76,7 +76,7 @@ class Docente(models.Model):
     nit = models.BigIntegerField(blank=True, null=True)
     nombre = models.CharField(max_length=100, blank=True, null=True)
     apellidos = models.CharField(max_length=100, blank=True, null=True)
-    # fechaNacimiento = models.DateField(null=True,db_column='FECHA_NACIMIENTO')
+    fecha_nacimiento = models.DateField(db_column='fecha_nacimiento', null=True)
 
     class Meta:
         managed = True
