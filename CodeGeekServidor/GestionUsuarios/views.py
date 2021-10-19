@@ -39,29 +39,21 @@ def registrar_usuario(request):
     fecha = request.POST.get('fechaNacimiento')
     escu="EISI"
 
-    base="base@ues.edu.sv"
-    base=re.findall('@+ues.edu.sv',base)
-    email2 = re.findall('@+ues.edu.sv',email)
+    
+    try:
+        empleado=Empleado.objects.create_user(dui,email,password)
+        docente=Docente()
+        docente.dui=dui
+        docente.nit=nit
+        docente.nombre = nombres
+        docente.apellidos = apellidos
+        docente.cod_empleado=empleado
+        docente.save()
 
-    if base == email2:
-        try:
-            Empleado.objects.create_user(email,dui,nombres,password)
-            cod_escuelas = Escuela(cod_escuela=escu)
-            cod_empleado = Empleado(dui=dui)
-            docente=Docente.objects.create(
-            dui=dui,
-            nit=nit,
-            nombre=nombres,
-            apellidos=fecha,
-            cod_escuela=cod_escuelas,
-            cod_empleado = cod_empleado
-            )
-            docente.save()
-        except:
-            return JsonResponse({"Creado":False}, safe=False)
-        return JsonResponse({"Creado":True}, safe=False)
-    else:
-        return JsonResponse({"mensajeerror":"El correo debe ser institucional", "errorDatos":True}, safe=False)
+    except:
+        return JsonResponse({"Creado":False}, safe=False)
+
+    return JsonResponse({"Creado":True}, safe=False)
 
 def vista_registrarse (request):
     return render (request, "index.html")

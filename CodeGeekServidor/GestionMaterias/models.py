@@ -41,27 +41,36 @@ class Dia(models.Model):
     cod_dia = models.BigIntegerField(primary_key=True)
     nombre_dia = models.CharField(max_length=15)
 
+    def __str__(self):
+        return self.nombre_dia
     class Meta:
         managed = True
         db_table = 'dia'
 
 class Hora(models.Model):
-    cod_hora = models.BigIntegerField(primary_key=True)
-    hora_inicio = models.DateField()
-    hora_fin = models.DateField()
+    cod_hora = models.AutoField(primary_key=True)
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
 
+    def __str__(self):
+              return str(self.hora_inicio)+" - "+str(self.hora_fin)
     class Meta:
         managed = True
         db_table = 'hora'
+        unique_together = (('hora_inicio', 'hora_fin'),)
+
 
 class Horario(models.Model):
     cod_hora = models.ForeignKey(Hora, models.DO_NOTHING, db_column='cod_hora', null=True)
     cod_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='cod_dia', null=True)
-    cod_horario = models.BigIntegerField(primary_key=True)
+    cod_horario = models.AutoField(primary_key=True)
 
+    def __str__(self):
+              return str(self.cod_hora)+" - "+str(self.cod_dia)
     class Meta:
         managed = True
         db_table = 'horario'
+        unique_together=(('cod_hora','cod_dia'),)
 
 class Imparte(models.Model):
     numero_de_ciclo = models.BigIntegerField(primary_key=True)

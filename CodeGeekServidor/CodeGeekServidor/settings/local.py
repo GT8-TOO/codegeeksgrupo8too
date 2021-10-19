@@ -15,7 +15,8 @@ DATABASES = {
         'PORT': '1521',
     }
 }
-
+# sqlplus /nolog
+# CONNECT test3/admin@//geek3.czoy1vdwgmhj.us-east-1.rds.amazonaws.com:1521/geek
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
