@@ -4,6 +4,7 @@ import UserContext from './UserContext'
 const UserContextProvider = ({children}) => {
 	const [ user, setUser ] = useState({
 		id: 4,
+		logeado:true,
 		admin:true
 	});
 	const [button, setButton] = useState({
@@ -16,6 +17,7 @@ const UserContextProvider = ({children}) => {
 		},
 		escuela:{}
 	});
+	const [openMateria, setCrearMateria] =useState(false)
 
 	return (
 		<UserContext.Provider value={{
@@ -24,7 +26,9 @@ const UserContextProvider = ({children}) => {
 			button, 
 			setButton,
 			inputCarrerra,
-			setCarrera
+			setCarrera,
+			openMateria,
+			setCrearMateria
 		}}>
 			{children}
 		</UserContext.Provider>

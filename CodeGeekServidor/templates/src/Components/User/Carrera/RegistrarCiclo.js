@@ -12,6 +12,7 @@ import {
 
 //Components
 import RegistrarMateria from './RegistrarMateria';
+import Notificacion from '../../Notifiacion';
 
 //Context
 import UserContext from '../../../Context/UserContext';
@@ -29,14 +30,14 @@ const RegistrarCiclo =()=>{
     console.log(userContext);
   },[]);
 
-  const openCrearMateria = (event)=>{
-    setCrearMateria(true)
-    console.log(crearMateria);
+  const openCrearMateria = ()=>{
+    userContext.setCrearMateria(true)
   }
 
   return(
     <div>
       <Typography variant="h5">Registrar Ciclo</Typography>
+      <Notificacion open={true} type={"success"} message="Materia guardada"/>
       <form>
         <Grid style={{marginTop:'10px'}} container rowSpacing={4} columnSpacing={1}>
           <Grid item xs={4}>
@@ -61,9 +62,10 @@ const RegistrarCiclo =()=>{
               variant="outlined"/> 
           </Grid>
         </Grid>
+        <br/>
         <div className={classes.div}>
           <form>
-            <RegistrarMateria state={crearMateria}/>
+            {userContext.openMateria && <RegistrarMateria state={userContext.openMateria}/>}
             <Grid style={{marginLeft:'50px', marginTop:'25px'}} container rowSpacing={4} columnSpacing={1}>
             <Grid item xs={6}>
               <TextField

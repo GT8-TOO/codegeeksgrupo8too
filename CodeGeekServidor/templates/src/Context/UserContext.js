@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 import React, { createContext } from 'react';
 
 const UserContext = createContext({
@@ -7,6 +8,8 @@ const UserContext = createContext({
   setButton: (id)=>{},
   inputCarrerra: {},
   setCarrera:(data)=>{},
+  openMateria:{},
+  setOpenMateria :(id)=>{},
 });
 
 export default UserContext;

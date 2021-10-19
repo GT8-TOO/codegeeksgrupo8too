@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { forwardRef, useContext } from 'react';
 import {
   Button,
   Dialog,
@@ -9,7 +9,6 @@ import {
   TextField,
   DialogTitle,
   FormControl,
-  FormLabel,
   RadioGroup,
   Radio,
   FormControlLabel,
@@ -20,26 +19,24 @@ import Slide from '@mui/material/Slide';
 //Components
 import Notificacion from '../../Notifiacion';
 
+//Context
+import UserContext  from '../../../Context/UserContext';
+
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const RegistrarMateria =(props)=> {
-  const [open, setOpen] = useState(props.state);
+  const userContext = useContext(UserContext);
 
   const handleClose = () => {
-    setOpen(false)
+    userContext.setCrearMateria(false)
   };
-
-  const confirmarGuardado = ()=>{
-    setOpen(false);
-  }
 
   return (
     <div>
-      <Notificacion open={true} type={"success"} message="Materia guardada"/>
       <Dialog
-        open={open}
+        open={userContext.openMateria}
         onClose={handleClose}
         TransitionComponent={Transition}
         aria-labelledby="alert-dialog-title"
@@ -47,7 +44,7 @@ const RegistrarMateria =(props)=> {
         <DialogTitle id="alert-dialog-title">Registrar Materia</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            <Grid container rowSpacing={4} columnSpacing={1}>
+            <Grid sx={{marginTop:'20px'}} container rowSpacing={4} columnSpacing={1}>
               <Grid item xs={5}>
                 <Typography variant="p">Codigo de la materia</Typography>
               </Grid>

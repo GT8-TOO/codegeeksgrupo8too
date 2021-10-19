@@ -80,12 +80,13 @@ const Register = (props) =>{
     //if(calendarvalue instanceof Date && isFinite(calendarvalue)){
     if(calendarvalue instanceof Date && isFinite(calendarvalue)){
       if(data.password === data.cpassword && cadena.includes("@ues.edu.sv")){
+        let fecha = calendarvalue.getDay() + "/" + calendarvalue.getMonth()+"/"+calendarvalue.getFullYear();
         //Mandar solicitud de metodos
         let formData= new FormData();
         formData.append("nombre", data.nombre);
         formData.append("dui", data.dui);
         formData.append("nit", data.nit);
-        formData.append("fechaNacimiento", calendarvalue);
+        formData.append("fechaNacimiento", fecha);
         formData.append("email", data.email)
         formData.append("password", data.password);
         sendData(formData, "user/register/")
@@ -133,7 +134,7 @@ const Register = (props) =>{
  return (
     <div>
       <form onSubmit={handleSubmit(registrarse)}>
-        {creado.Creado &&<div> 
+        {creado.Creado ?<div> 
           <WindowAlert
             state={creado.Creado}
             type="success"
@@ -142,7 +143,14 @@ const Register = (props) =>{
             message="El usuario ha sido creado correctamente"
           />
           {!creado.Creado && <Redirect to="/login"/>}
-        </div>}
+        </div>:
+          <WindowAlert
+            state={creado.Creado}
+            type={creado.type}
+            title={creado.title}
+            message={creado.message}
+          />
+        }
         {fechaError &&<WindowAlert 
           state={fechaError}
           type="info"
@@ -204,12 +212,12 @@ const Register = (props) =>{
                       message: "Solo tienen que ser números"
                     },
                     maxLength: {
-                      value: 13,
-                      message: "Debe de tener 13 números"
+                      value: 9,
+                      message: "Debe de tener 9 números maximos"
                     },
                     minLength: {
                       value: 9,
-                      message: "Debe de tener 9 números"
+                      message: "Debe de tener 9 números mínimos"
                     }
                   })}/>
                 <ErrorMessage

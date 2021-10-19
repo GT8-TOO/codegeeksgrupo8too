@@ -59,7 +59,6 @@ const Login =(props)=>{
       let formData = new FormData();
       formData.append("email", data.email);
       formData.append("password", data.password);
-      formData.append("estado", "Activo");
       sendDatos(formData, "user/login/")
     }
   }
