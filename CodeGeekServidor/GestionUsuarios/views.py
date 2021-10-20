@@ -1,9 +1,12 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from GestionUsuarios.models import Administrador, Empleado, Docente
 from GestionLocales.models import Escuela
 from django.contrib.auth import authenticate, login
+from django.db.models.query_utils import Q
+from datetime import datetime	
 import re
 
 # Create your views here.
@@ -38,33 +41,39 @@ def iniciar_sesion (request):
 @csrf_exempt
 def registrar_usuario(request):
     #Metodo que permite registrarse
+    validar_dui = list(Docente.objects.filter(Q(dui=request.POST.get('dui'))).values('dui'))
+    validar_empleado = list(Empleado.objects.filter(Q(email=request.POST.get('email'))).values('email'))
+    if len(validar_dui)==0:
+        if len(validar_empleado)==0:
+            if request.method =="POST":
+                dui = request.POST.get('dui')
+                nombres =request.POST.get('nombre')
+                apellidos =request.POST.get('apellidos')
+                email=request.POST.get('email')
+                nit = request.POST.get('nit')
+                password =request.POST.get('password')
+                fecha = request.POST.get('fechaNacimiento')
+                try:
+                    empleado=Empleado.objects.create_user(email,password)
+                    docente=Docente()
+                    docente.dui=dui
+                    docente.nit=nit
+                    docente.nombre = nombres
+                    docente.apellidos = apellidos
+                    docente.cod_empleado=empleado
+                    docente.fecha_nacimiento=datetime.strptime(fecha, '%m/%d/%Y')
+                    docente.save()
 
-    dui = request.POST.get('dui')
-    nombres =request.POST.get('nombre')
-    apellidos =request.POST.get('apellidos')
-    email=request.POST.get('email')
-    nit = request.POST.get('nit')
-    password =request.POST.get('password')
-    fecha = request.POST.get('fechaNacimiento')
-    escu="EISI"
-
+                except:
+                    return JsonResponse({"Creado":False, "state": True,"type":"error" ,"title":"Error al crear usuario", "message":"F"}, safe=False)
+                return JsonResponse({"Creado":True}, safe=False)
+            else:
+                return JsonResponse({"Creado":False, "state": True,"type":"error" ,"title":"Error al crear usuario", "message":"Los datos no se enviarion de forma segura"}, safe=False)
+        else:
+            return JsonResponse({"Creado":False, "state": True,"type":"error" ,"title":"Error al registrar docente", "message":"El correo ya fue registrado"}, safe=False)
+    else:
+        return JsonResponse({"Creado":False, "state": True,"type":"error" ,"title":"Error al registrar docente", "message":"El docente ya fue registrado"}, safe=False)
     
-    try:
-        empleado=Empleado.objects.create_user(email,password)
-        docente=Docente()
-        docente.dui=dui
-        docente.nit=nit
-        docente.nombre = nombres
-        docente.apellidos = apellidos
-        docente.cod_empleado=empleado
-        # docente.fecha_nacimiento=fecha
-        docente.save()
-
-    except:
-        return JsonResponse({"Creado":False}, safe=False)
-
-    return JsonResponse({"Creado":True}, safe=False)
-
 def vista_registrarse (request):
     return render (request, "index.html")
 
