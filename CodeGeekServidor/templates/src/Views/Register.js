@@ -28,6 +28,7 @@ import WindowAlert from '../Components/WindowAlert';
 
 //Style
 import useStyles from '../Styled/RegisterCSS';
+import errorStyles from '../Styled/ErorCSS';
 
 //Icons
 import WarningIcon from '@mui/icons-material/Warning';
@@ -36,6 +37,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Register = (props) =>{
   const classes =useStyles();
+  const classError = errorStyles();
   const {register, formState:{errors}, handleSubmit} = useForm();
   const [values, setValues] = useState({
     amount: '',
@@ -78,12 +80,13 @@ const Register = (props) =>{
     //if(calendarvalue instanceof Date && isFinite(calendarvalue)){
     if(calendarvalue instanceof Date && isFinite(calendarvalue)){
       if(data.password === data.cpassword && cadena.includes("@ues.edu.sv")){
+        let fecha = calendarvalue.getDay() + "/" + calendarvalue.getMonth()+"/"+calendarvalue.getFullYear();
         //Mandar solicitud de metodos
         let formData= new FormData();
         formData.append("nombre", data.nombre);
         formData.append("dui", data.dui);
         formData.append("nit", data.nit);
-        formData.append("fechaNacimiento", calendarvalue);
+        formData.append("fechaNacimiento", fecha);
         formData.append("email", data.email)
         formData.append("password", data.password);
         sendData(formData, "user/register/")
@@ -131,7 +134,7 @@ const Register = (props) =>{
  return (
     <div>
       <form onSubmit={handleSubmit(registrarse)}>
-        {creado.Creado &&<div> 
+        {creado.Creado ?<div> 
           <WindowAlert
             state={creado.Creado}
             type="success"
@@ -140,7 +143,14 @@ const Register = (props) =>{
             message="El usuario ha sido creado correctamente"
           />
           {!creado.Creado && <Redirect to="/login"/>}
-        </div>}
+        </div>:
+          <WindowAlert
+            state={creado.Creado}
+            type={creado.type}
+            title={creado.title}
+            message={creado.message}
+          />
+        }
         {fechaError &&<WindowAlert 
           state={fechaError}
           type="info"
@@ -185,7 +195,7 @@ const Register = (props) =>{
                 <ErrorMessage
                   errors={errors}
                   name="nombre"
-                  render={({message})=><p className={classes.errors}><WarningIcon/> {message}</p>}/>
+                  render={({message})=><p className={classError.errors}><WarningIcon/> {message}</p>}/>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -202,18 +212,18 @@ const Register = (props) =>{
                       message: "Solo tienen que ser números"
                     },
                     maxLength: {
-                      value: 13,
-                      message: "Debe de tener 13 números"
+                      value: 9,
+                      message: "Debe de tener 9 números maximos"
                     },
                     minLength: {
                       value: 9,
-                      message: "Debe de tener 9 números"
+                      message: "Debe de tener 9 números mínimos"
                     }
                   })}/>
                 <ErrorMessage
                   errors={errors}
                   name="dui"
-                  render={({message})=><p className={classes.errors2}><WarningIcon/> {message}</p>}/>
+                  render={({message})=><p className={classError.errors2}><WarningIcon/> {message}</p>}/>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -240,7 +250,7 @@ const Register = (props) =>{
                 <ErrorMessage
                   errors={errors}
                   name="nit"
-                  render={({message})=><p className={classes.errors2}><WarningIcon/> {message}</p>}/>
+                  render={({message})=><p className={classError.errors2}><WarningIcon/> {message}</p>}/>
               </Grid>
               <Grid item xs={12}>
                 <Stack spacin={3}>
@@ -263,7 +273,7 @@ const Register = (props) =>{
                   <ErrorMessage
                   errors={errors}
                   name="calendar"
-                  render={({message})=><p className={classes.errors2}><WarningIcon/> {message}</p>}/>
+                  render={({message})=><p className={classError.errors2}><WarningIcon/> {message}</p>}/>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -280,7 +290,7 @@ const Register = (props) =>{
                 <ErrorMessage
                   errors={errors}
                   name="email"
-                  render={({message})=><p className={classes.errors}><WarningIcon/> {message}</p>}/>
+                  render={({message})=><p className={classError.errors}><WarningIcon/> {message}</p>}/>
               </Grid>
               <Grid item xs={12}>
               <FormControl>
@@ -314,7 +324,7 @@ const Register = (props) =>{
              <ErrorMessage 
               errors={errors} 
               name="password"
-               render={({message})=><p className={classes.errors}><WarningIcon/>{message}</p>}/>
+               render={({message})=><p className={classError.errors}><WarningIcon/>{message}</p>}/>
             </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -349,7 +359,7 @@ const Register = (props) =>{
             <ErrorMessage 
               errors={errors} 
               name="cpassword"
-              render={({message})=><p className={classes.errors}><WarningIcon/>{message}</p>}/>
+              render={({message})=><p className={classError.errors}><WarningIcon/>{message}</p>}/>
             </FormControl>
               </Grid>
             </Grid>

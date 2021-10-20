@@ -12,13 +12,6 @@ const useStyles =makeStyles((theme)=>
     text:{
       width:'100%',
     },
-    errors:{
-      display:'flex',
-      position:'relative',
-      fontSize:'12px',
-      textIndent:'18px',
-      color: '#ff0000',
-    },
     avatar:{
       height:'12px',
       margin:'-10px auto',
