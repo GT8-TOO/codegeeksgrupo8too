@@ -105,7 +105,7 @@ class Pensum(models.Model):
 
 class RequisitoDe(models.Model):
     mat_cod_materia = models.OneToOneField(Materia, models.DO_NOTHING, db_column='mat_cod_materia', primary_key=True)
-    cod_materia = models.ForeignKey(Materia, models.DO_NOTHING, db_column='cod_materia', related_name='cod_materia_RquisitoDe', null=True) #field.E305
+    cod_materia = models.ForeignKey(Materia, models.DO_NOTHING, db_column='cod_materia', related_name='requisitos', null=True) #field.E305
 
     class Meta:
         managed = True

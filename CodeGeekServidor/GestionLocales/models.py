@@ -35,8 +35,8 @@ class Local(models.Model):
         db_table = 'local'
 
 class Puntuacion(models.Model):
-    dui = models.BigIntegerField(primary_key=True)
-    cod_local = models.ForeignKey(Local, models.DO_NOTHING, db_column='cod_local', related_name='cod_local_Puntuacion', null=True) #Field E303 ralated_name
+    dui = models.ForeignKey('GestionUsuarios.Docente', models.DO_NOTHING, db_column='doc_dui', related_name='puntuaciones', null=True)
+    cod_local = models.ForeignKey(Local, models.DO_NOTHING, db_column='cod_local', related_name='puntuaciones_docentes', null=True) #Field E303 ralated_name
 
     class Meta:
         managed = True

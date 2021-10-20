@@ -9,7 +9,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
         'NAME': 'geek',
-        'USER': 'test3',
+        'USER': 'andrea2',
         'PASSWORD': 'admin',
         'HOST': 'geek3.czoy1vdwgmhj.us-east-1.rds.amazonaws.com',
         'PORT': '1521',
