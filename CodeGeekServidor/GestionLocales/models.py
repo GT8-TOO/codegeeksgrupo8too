@@ -12,6 +12,8 @@ class Edificio(models.Model):
     class Meta:
         managed = True
         db_table = 'edificio'
+    def __str__(self):
+        return f'{self.cod_edificio ,self.nombre_edificio}'
 
 class Escuela(models.Model):
     cod_escuela = models.CharField(primary_key=True, max_length=10)
@@ -20,6 +22,9 @@ class Escuela(models.Model):
     class Meta:
         managed = True
         db_table = 'escuela'
+    
+    def __str__(self):
+        return f'{self.nombre_escuela}'
 
 class Local(models.Model):
     cod_local = models.CharField(primary_key=True, max_length=10)
@@ -33,6 +38,9 @@ class Local(models.Model):
     class Meta:
         managed = True
         db_table = 'local'
+
+    def __str__(self):
+        return f'{self.cod_local ,self.nombre_local}'
 
 class Puntuacion(models.Model):
     dui = models.ForeignKey('GestionUsuarios.Docente', models.DO_NOTHING, db_column='doc_dui', related_name='puntuaciones', null=True)
