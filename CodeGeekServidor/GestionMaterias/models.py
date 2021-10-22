@@ -5,7 +5,7 @@ from GestionUsuarios.models import Docente
 # Create your models here.
 
 class Catedra(models.Model):
-    cod_catedra = models.BigIntegerField(primary_key=True)
+    cod_catedra = models.AutoField(primary_key=True)
     cod_materia = models.ForeignKey('Materia', models.DO_NOTHING, db_column='cod_materia', null=True)
     anio = models.BigIntegerField(blank=True, null=True)
     ciclo_par = models.BigIntegerField(blank=True, null=True)
@@ -92,6 +92,9 @@ class Materia(models.Model):
     class Meta:
         managed = True
         db_table = 'materia'
+    
+    def __str__(self):
+        return str(self.cod_materia)+" - "+str(self.nombre_materia)
 
 class Pensum(models.Model):
     cod_pensum = models.CharField(primary_key=True, max_length=10)
