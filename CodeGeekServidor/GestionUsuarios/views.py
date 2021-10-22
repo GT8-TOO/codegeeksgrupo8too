@@ -53,6 +53,7 @@ def registrar_usuario(request):
                 nit = request.POST.get('nit')
                 password =request.POST.get('password')
                 fecha = request.POST.get('fechaNacimiento')
+                escuela = request.POST.get('escuela')
                 try:
                     empleado=Empleado.objects.create_user(email,password)
                     docente=Docente()
@@ -61,7 +62,8 @@ def registrar_usuario(request):
                     docente.nombre = nombres
                     docente.apellidos = apellidos
                     docente.cod_empleado=empleado
-                    docente.fecha_nacimiento=datetime.strptime(fecha, '%m/%d/%Y')
+                    docente.cod_escuela=Escuela.objects.get(cod_escuela=escuela)
+                    docente.fecha_nacimiento=datetime.strptime(fecha, '%m/%d/%Y')#Comentar si se hace la solicitud desde Thunder client
                     docente.save()
 
                 except:
