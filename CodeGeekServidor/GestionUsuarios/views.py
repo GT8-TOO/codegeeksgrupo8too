@@ -41,6 +41,13 @@ def iniciar_sesion (request):
 @csrf_exempt
 def registrar_usuario(request):
     #Metodo que permite registrarse
+    respuesta ={
+        "type":"",
+        "state":True,
+        "title":"",
+        "Creado":False,
+        "message":""
+    }
     validar_dui = list(Docente.objects.filter(Q(dui=request.POST.get('dui'))).values('dui'))
     validar_empleado = list(Empleado.objects.filter(Q(email=request.POST.get('email'))).values('email'))
     if len(validar_dui)==0:
@@ -62,19 +69,31 @@ def registrar_usuario(request):
                     docente.nombre = nombres
                     docente.apellidos = apellidos
                     docente.cod_empleado=empleado
-                    docente.cod_escuela=Escuela.objects.get(cod_escuela=escuela)
+                    #docente.cod_escuela=Escuela.objects.get(cod_escuela=escuela)#Comentar si no se esta enviando el codigo de la escuela
                     docente.fecha_nacimiento=datetime.strptime(fecha, '%m/%d/%Y')#Comentar si se hace la solicitud desde Thunder client
                     docente.save()
 
                 except:
-                    return JsonResponse({"Creado":False, "state": True,"type":"error" ,"title":"Error al crear usuario", "message":"F"}, safe=False)
+                    respuesta["type"]="error"
+                    respuesta["title"]="Error al registrar docente"
+                    respuesta["message"]="Existe un error en los datos proporcionados."
+                    return JsonResponse(respuesta, safe=False)
                 return JsonResponse({"Creado":True}, safe=False)
             else:
-                return JsonResponse({"Creado":False, "state": True,"type":"error" ,"title":"Error al crear usuario", "message":"Los datos no se enviarion de forma segura"}, safe=False)
+                respuesta["type"]="error"
+                respuesta["title"]="Error al registrar docente"
+                respuesta["message"]="Los datos no se enviarion de forma segura."
+                return JsonResponse(respuesta, safe=False)
         else:
-            return JsonResponse({"Creado":False, "state": True,"type":"error" ,"title":"Error al registrar docente", "message":"El correo ya fue registrado"}, safe=False)
+            respuesta["type"]="error"
+            respuesta["title"]="Error al registrar docente"
+            respuesta["message"]="El correo ya fue registrado"
+            return JsonResponse(respuesta, safe=False)
     else:
-        return JsonResponse({"Creado":False, "state": True,"type":"error" ,"title":"Error al registrar docente", "message":"El docente ya fue registrado"}, safe=False)
+        respuesta["type"]="error"
+        respuesta["title"]="Error al registrar docente"
+        respuesta["message"]="El docente ya fue registrado"
+        return JsonResponse(respuesta, safe=False)
     
 def vista_registrarse (request):
     return render (request, "index.html")
