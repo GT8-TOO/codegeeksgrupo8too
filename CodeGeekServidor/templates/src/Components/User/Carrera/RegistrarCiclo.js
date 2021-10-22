@@ -19,7 +19,7 @@ import UserContext from '../../../Context/UserContext';
 
 //Estilo
 import useStyles from '../../../Styled/RegistrarCicloCSS';
-const RegistrarCiclo =()=>{
+const RegistrarCiclo =(props)=>{
   const userContext = useContext(UserContext);
   const classes =useStyles();
   const [crearMateria, setCrearMateria]=useState(false);
@@ -37,7 +37,12 @@ const RegistrarCiclo =()=>{
   return(
     <div>
       <Typography variant="h5">Registrar Ciclo</Typography>
-      <Notificacion open={true} type={"success"} message="Materia guardada"/>
+      {userContext.respuesta.materiaGuardada && 
+        <Notificacion 
+          state={userContext.respuesta.materiaGuardada}
+          type={userContext.respuesta.type}
+          message={userContext.respuesta.message}
+        />}
       <form>
         <Grid style={{marginTop:'10px'}} container rowSpacing={4} columnSpacing={1}>
           <Grid item xs={4}>
@@ -65,7 +70,7 @@ const RegistrarCiclo =()=>{
         <br/>
         <div className={classes.div}>
           <form>
-            {userContext.openMateria && <RegistrarMateria state={userContext.openMateria}/>}
+            {userContext.openMateria && <RegistrarMateria state={userContext.openMateria} url={props.url}/>}
             <Grid style={{marginLeft:'50px', marginTop:'25px'}} container rowSpacing={4} columnSpacing={1}>
             <Grid item xs={6}>
               <TextField

@@ -23,6 +23,7 @@ urlpatterns = [
     path('user/', include('GestionUsuarios.urls')),
     path('locales/', include('GestionLocales.urls')),
     path('reservas/', include('GestionReservas.urls')),
+    path('materias/', include('GestionMaterias.urls')),
     path('register/', vista_registrarse),
     path('login/', vista_registrarse),
     path('', include('VistasGenerales.urls')), #Cambiar despues a metodo

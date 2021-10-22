@@ -18,6 +18,14 @@ const UserContextProvider = ({children}) => {
 		escuela:{}
 	});
 	const [openMateria, setCrearMateria] =useState(false)
+	
+	const [respuesta, setRespuesta]= useState({
+		type:"",
+		message:"",
+		materiaGuardada:false
+  });
+
+
 
 	return (
 		<UserContext.Provider value={{
@@ -28,7 +36,9 @@ const UserContextProvider = ({children}) => {
 			inputCarrerra,
 			setCarrera,
 			openMateria,
-			setCrearMateria
+			setCrearMateria,
+			respuesta,
+			setRespuesta
 		}}>
 			{children}
 		</UserContext.Provider>

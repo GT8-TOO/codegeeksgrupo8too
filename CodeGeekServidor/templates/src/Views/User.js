@@ -39,6 +39,7 @@ const User =(props)=>{
           {(windows ==="authorize" && userContext.user.admin===true)&&<p>Aqui autorizara a docentes</p>}
         </div>
         {/*<Footer/>*/}
+        <Footer/>
       </div>
     </div>
   );

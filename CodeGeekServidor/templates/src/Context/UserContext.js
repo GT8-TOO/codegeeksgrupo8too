@@ -10,6 +10,8 @@ const UserContext = createContext({
   setCarrera:(data)=>{},
   openMateria:{},
   setOpenMateria :(id)=>{},
+  respuesta:{},
+  setRespuesta:(id)=>{},
 });
 
 export default UserContext;

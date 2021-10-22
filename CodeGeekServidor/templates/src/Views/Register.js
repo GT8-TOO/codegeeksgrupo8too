@@ -67,8 +67,6 @@ const Register = (props) =>{
     axios.post(props.url+direccion, data).then((res)=>{
       setCreado(res.data);
     }).catch((error)=>{
-      console.log("Algo salio mal");
-      console.log(error);
     })
   }
 
