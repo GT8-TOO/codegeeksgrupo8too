@@ -5,7 +5,7 @@ from django.db import models
 class Edificio(models.Model):
     cod_edificio = models.CharField(primary_key=True, max_length=10)
     cod_escuela = models.ForeignKey('Escuela', models.DO_NOTHING, db_column='cod_escuela', null=True)
-    nombre_edificio = models.CharField(max_length=50)
+    nombre_edificio = models.CharField(max_length=256)
     longitud = models.FloatField(blank=True, null=True)
     latitud = models.FloatField(blank=True, null=True)
 
@@ -17,7 +17,7 @@ class Edificio(models.Model):
 
 class Escuela(models.Model):
     cod_escuela = models.CharField(primary_key=True, max_length=10)
-    nombre_escuela = models.CharField(max_length=20)
+    nombre_escuela = models.CharField(max_length=256)
 
     class Meta:
         managed = True
@@ -29,8 +29,8 @@ class Escuela(models.Model):
 class Local(models.Model):
     cod_local = models.CharField(primary_key=True, max_length=10)
     cod_edificio = models.ForeignKey(Edificio, models.DO_NOTHING, db_column='cod_edificio', null=True)
-    nombre_local = models.CharField(max_length=50)
-    descripcion = models.CharField(max_length=50)
+    nombre_local = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=256)
     nivel = models.BigIntegerField()
     altitud = models.FloatField(blank=True, null=True)
     puntuacion = models.FloatField(blank=True, null=True)

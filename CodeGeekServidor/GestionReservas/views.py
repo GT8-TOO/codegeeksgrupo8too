@@ -41,41 +41,44 @@ def nueva_reserva(request):
         return JsonResponse({"Creado":False}, safe=False)
 
 # el siguiente metodo requiere del cod_local para proporcionar los datos del local y el horario (dias y horas)
-# @csrf_exempt
+@csrf_exempt
 def horario_headers(request):
-        cod_local = request.GET.get("cod_local")
-        local=Local.objects.get(pk=cod_local)
-        dias=Dia.objects.all().order_by('cod_dia')         
-        horas=Hora.objects.all()         
-        horasSerializer = HoraSerializer(horas, many = True)
-        diasSerializer = DiaSerializer(dias, many = True)
-        localSerializer=LocalSerializer(local)
-        data={'local':localSerializer.data,'dias':diasSerializer.data,'horas':horasSerializer.data}
-        
-        return JsonResponse(data,safe=True)
+        if request.method == "POST":
+            cod_local = request.POST.get("cod_local")
+            local=Local.objects.get(pk=cod_local)
+            dias=Dia.objects.all().order_by('cod_dia')         
+            horas=Hora.objects.all()         
+            horasSerializer = HoraSerializer(horas, many = True)
+            diasSerializer = DiaSerializer(dias, many = True)
+            localSerializer=LocalSerializer(local)
+            data={'local':localSerializer.data,'dias':diasSerializer.data,'horas':horasSerializer.data}
+            
+            return JsonResponse(data,safe=True)
+        else:
+            return JsonResponse({"Error":'Debe utilizar Metodo POST para consultar los Horarios'}, safe=False)  
        
 # El siguiente metodo requiere del cod_local y solo retorna 
 # las reservas de solicitudes aceptadas     
-# @csrf_exempt
+@csrf_exempt
 def horario_body(request):
-    # if request.method == "POST":
-        cod_local = request.GET.get("cod_local")
+    if request.method == "POST":
+        cod_local = request.POST.get("cod_local")
         reservas=Reserva.objects.filter(cod_local__cod_local=cod_local,estado_solicitud='Aceptada')
         serializer = ReservaSerializer(reservas, many = True)
         
         return JsonResponse(serializer.data, safe=False)
-    # else:
-    #     return JsonResponse({"Error":'Debe utilizar Metodo POST para consultar Reservas'}, safe=False)      
+    else:
+        return JsonResponse({"Error":'Debe utilizar Metodo POST para consultar Reservas'}, safe=False)      
      
 # El siguiente metodo requiere del cod_local y solo retorna 
 # las reservas de solicitudes en Proceso     
-# @csrf_exempt
+@csrf_exempt
 def solicitud_body(request):
-    # if request.method == "POST":
-        cod_local = request.GET.get("cod_local")
+    if request.method == "POST":
+        cod_local = request.POST.get("cod_local")
         reservas=Reserva.objects.filter(cod_local__cod_local=cod_local,estado_solicitud='En Proceso').order_by('cod_horario__cod_dia')          
         serializer = ReservaSerializer(reservas, many = True)
         
         return JsonResponse(serializer.data, safe=False)
-    # else:
-    #     return JsonResponse({"Error":'Debe utilizar Metodo POST para consultar Reservas'}, safe=False)       
+    else:
+        return JsonResponse({"Error":'Debe utilizar Metodo POST para consultar Solicitudes'}, safe=False)       
