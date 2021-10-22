@@ -2,7 +2,7 @@ from typing import Tuple
 from django.db import models
 
 
-
+ESTADO_CHOICES=[('EN_PROCESO', 'En Proceso'),('EN_PROCESO', 'En Proceso'),('ACEPTADA', 'Aceptada'),('DENEGADA', 'Denegada'),('PENDIENTE', 'Pendiente'),]
 # Create your models here.
 
 class Reserva(models.Model):
@@ -12,7 +12,7 @@ class Reserva(models.Model):
     cod_materia = models.ForeignKey('GestionMaterias.Materia', models.DO_NOTHING, db_column='cod_materia', blank=False, null=True)
     doc_dui = models.ForeignKey('GestionUsuarios.Docente', models.DO_NOTHING, db_column='doc_dui', related_name='reservas_realizadas', null=True) #Fields.E304
     adm_emp_dui = models.ForeignKey('GestionUsuarios.Administrador', models.DO_NOTHING, db_column='adm_emp_dui', related_name='adm_emp_dui_Reserva', null=True) #Fields.E304
-    estado_solicitud = models.CharField(max_length=20)
+    estado_solicitud = models.CharField(max_length=20,choices=ESTADO_CHOICES)
     fecha_envio = models.DateField(auto_now=True, null=True)
     fecha_aprobacion = models.DateField(null=True,blank=True)
 
