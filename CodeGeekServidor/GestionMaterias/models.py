@@ -8,9 +8,12 @@ class Catedra(models.Model):
     cod_catedra = models.AutoField(primary_key=True)
     cod_materia = models.ForeignKey('Materia', models.DO_NOTHING, db_column='cod_materia', null=True)
     anio = models.BigIntegerField(blank=True, null=True)
-    ciclo_par = models.BigIntegerField(blank=True, null=True)
+    ciclo_par = models.BooleanField(default=False, null=True)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
+
+    def __str__(self):
+        return str(self.cod_catedra)+" - "+str(self.cod_materia)
 
     class Meta:
         managed = True

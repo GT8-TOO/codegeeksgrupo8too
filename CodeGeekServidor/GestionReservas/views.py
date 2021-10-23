@@ -11,34 +11,54 @@ from .models import Reserva
 from .serializers import DiaSerializer, HoraSerializer, ReservaSerializer
 from rest_framework.renderers import JSONRenderer
 from GestionUsuarios.models import Docente, Empleado
-from GestionMaterias.models import Horario,Dia,Hora
+from GestionMaterias.models import Horario,Dia,Hora, Materia, Catedra, EsParteDe
 from GestionLocales.models import Local
 
 # Create your views here.
 @csrf_exempt
 def nueva_reserva(request):
+    respuesta ={
+        "type":"error",
+        "creado":False,
+        "message":""
+    }
     if request.user.is_authenticated:
         if request.method == "POST":
             cod_empleado= request.user.cod_empleado
             cod_horario = request.POST.get("cod_horario")
             cod_local = request.POST.get("cod_local")
-            #Creo que deberiamos agregar el atributo coordinador en catedra y borrarlo de Es_parte_de
-            #cod_materia = request.POST.get("cod_materia")
-            try:    
-                reserva =Reserva()
-                reserva.cod_horario = Horario.objects.get(cod_horario=cod_horario)
-                reserva.cod_local = Local.objects.get(cod_local=cod_local)
-                reserva.doc_dui = Docente.objects.get(cod_empleado=cod_empleado)
-                reserva.estado_solicitud = "En Proceso"
-                reserva.save()
-                return JsonResponse({"Creado":True}, safe=False)
 
+            docente=Docente.objects.get(cod_empleado=cod_empleado)
+            try:
+                esparte= EsParteDe.objects.get(dui=docente.dui)
+                try:
+                    if esparte.coordinador==True:    
+                        reserva =Reserva()
+                        reserva.cod_horario = Horario.objects.get(cod_horario=cod_horario)
+                        reserva.cod_local = Local.objects.get(cod_local=cod_local)
+                        reserva.doc_dui = esparte.dui
+                        reserva.cod_materia=esparte.cod_catedra.cod_materia
+                        reserva.estado_solicitud = "EN_PROCESO"
+                        reserva.save()
+                        respuesta["type"]="success"
+                        respuesta["message"]="La reservación se ha registrado correctamente"
+                        respuesta["creado"]=True
+                        return JsonResponse(respuesta, safe=False)
+                    else:
+                        respuesta["message"]="Solo los coordinadores pueden solicitar reservas"
+                        return JsonResponse(respuesta, safe=False)
+                except:
+                    respuesta["message"]="El horario o el local proporcionado no estan registrados"
+                    return JsonResponse(respuesta, safe=False)
             except:
-                return JsonResponse({"Creado":False, "message": "Los datos proporcionados tienen un error"}, safe=False)
+                respuesta["message"]="El docente actual no esta registrado en ninguna catedra"
+                return JsonResponse(respuesta, safe=False)
         else:
-            return JsonResponse({"Creado":False, "message": "Solo se almacenan datos por POST"}, safe=False)
+            respuesta["message"]="Los datos no fueron enviados de forma segura"
+            return JsonResponse(respuesta, safe=False)
     else:
-        return JsonResponse({"Creado":False}, safe=False)
+        respuesta["message"]="El usuario no esta logeado"
+        return JsonResponse(respuesta, safe=False)
 
 # el siguiente metodo requiere del cod_local para proporcionar los datos del local y el horario (dias y horas)
 @csrf_exempt
