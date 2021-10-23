@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from GestionUsuarios.models import Administrador, Empleado, Docente
 from GestionLocales.models import Escuela
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.db.models.query_utils import Q
 from datetime import datetime	
 import re
@@ -94,7 +94,12 @@ def registrar_usuario(request):
         respuesta["title"]="Error al registrar docente"
         respuesta["message"]="El docente ya fue registrado"
         return JsonResponse(respuesta, safe=False)
+
+def logout_usuario(request):
+    logout(request)
+    return JsonResponse({"message":"El usuario a cerrado sesión."}, safe=False)
     
+
 def vista_registrarse (request):
     return render (request, "index.html")
 

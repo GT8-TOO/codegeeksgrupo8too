@@ -1,16 +1,16 @@
+from django.db.models.expressions import F
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-from django.contrib.auth import logout
 from django.db.models.query_utils import Q
-
+from datetime import datetime
 from GestionLocales.serializers import LocalSerializer
 from .models import Reserva
 from .serializers import DiaSerializer, HoraSerializer, ReservaSerializer
 from rest_framework.renderers import JSONRenderer
-from GestionUsuarios.models import Docente, Empleado
+from GestionUsuarios.models import Administrador, Docente, Empleado, Notificacion
 from GestionMaterias.models import Horario,Dia,Hora, Materia, Catedra, EsParteDe
 from GestionLocales.models import Local
 
@@ -62,6 +62,66 @@ def nueva_reserva(request):
             return JsonResponse(respuesta, safe=False)
     else:
         respuesta["message"]="El usuario no esta logeado"
+        return JsonResponse(respuesta, safe=False)
+
+def crear_notificación(reserva):
+    notificacion = Notificacion()
+    notificacion.cod_empleado=reserva.doc_dui.cod_empleado
+    notificacion.cod_reserva=reserva
+    notificacion.visto=False
+    notificacion.fecha=datetime.now()
+    #notificacion.hora=datetime.now().time()
+    notificacion.titulo= "Reserva: "+reserva.estado_solicitud
+    notificacion.save()
+
+#El siguiente metodo recibe el codigo de solicitud y el nuevo estado (Aprobado/Denegado) 
+#Es necesario ocupar un usuario registrado como administrador.
+#email: patoso77@ues.edu.sv     password: 3enero1999
+@csrf_exempt
+def cambiar_estado(request):
+    respuesta ={
+        "type":"error",
+        "aprobado":False,
+        "message":"Hay un error en los datos enviados."
+    }
+    if request.user.is_authenticated:
+        if request.user.usuario_administrador==True:
+            if request.method == "POST":
+                
+                cod_reserva = request.POST.get("cod_reserva")
+                estado = request.POST.get("estado")
+                administrador =Administrador.objects.get(cod_empleado=request.user.cod_empleado)
+                reserva=Reserva.objects.get(cod_reserva=cod_reserva)
+               
+                if estado == "Denegado":
+                    Reserva.objects.filter(cod_reserva=cod_reserva).update(estado_solicitud=estado, adm_emp_dui=administrador.dui, fecha_aprobacion=timezone.now())
+                    crear_notificación(reserva)
+                    respuesta["message"]="El estado de la solicitud fue actualizado exitosamente."
+                
+                elif estado == "Aprobado":
+                    Reserva.objects.filter(cod_horario=reserva.cod_horario, cod_local= reserva.cod_local
+                            ).update(estado_solicitud="Denegado", adm_emp_dui=administrador.dui, fecha_aprobacion=timezone.now())           
+                    Reserva.objects.filter(cod_reserva=cod_reserva).update(estado_solicitud=estado, adm_emp_dui=administrador.dui)
+                    
+                    #Notificaciones              
+                    reservas=list(Reserva.objects.filter(cod_horario=reserva.cod_horario, cod_local= reserva.cod_local))
+                    for i in reservas:
+                        crear_notificación(i)
+
+                    respuesta["message"]="La solicitud fue aprobada, las otras solicitudes realiazadas para el mismo local en la misma hora fueron denegadas."
+                
+                respuesta["type"]="success"
+                respuesta["aprobado"]=True
+                return JsonResponse(respuesta,safe=False)
+            
+            else:
+                respuesta["message"]="Los datos no se enviaron de forma segura"
+                return JsonResponse(respuesta, safe=False)
+        else:
+            respuesta["message"]="Solo los administradores pueden aprobar solicitudes."
+            return JsonResponse(respuesta, safe=False)
+    else:
+        respuesta["message"]="Es necesario logearse para llevara acabo esta operación."
         return JsonResponse(respuesta, safe=False)
 
 # el siguiente metodo requiere del cod_local para proporcionar los datos del local y el horario (dias y horas)

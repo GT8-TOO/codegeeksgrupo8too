@@ -87,10 +87,10 @@ class Docente(models.Model):
         db_table = 'docente'
 
     def __str__(self):
-        return f'{self.nombre}'
+        return f'{self.dui}'
 
 class Notificacion(models.Model):
-    cod_notificacion = models.BigIntegerField(primary_key=True)
+    cod_notificacion = models.AutoField(primary_key=True)
     cod_empleado = models.ForeignKey('GestionUsuarios.Empleado', models.DO_NOTHING, db_column='cod_empleado',related_name='notificaciones',null=True)
     cod_reserva = models.ForeignKey('GestionReservas.Reserva', models.DO_NOTHING, db_column='cod_reserva', blank=True, null=True)
     visto = models.BooleanField(null=False,default=False)
