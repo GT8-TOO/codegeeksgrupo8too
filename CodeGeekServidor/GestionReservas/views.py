@@ -15,6 +15,10 @@ from GestionMaterias.models import Horario,Dia,Hora, Materia, Catedra, EsParteDe
 from GestionLocales.models import Local
 
 # Create your views here.
+#El siguiente metodo requiere el codigo del horario, el codigo del local y un usuario logeado
+#El usuario tiene que estar registrado como coordinador de una catedra
+#El siguiente usuario cumple con las caracteristicas listadas
+#email: docente1@ues.edu.sv     password: 12345678
 @csrf_exempt
 def nueva_reserva(request):
     respuesta ={
@@ -38,7 +42,7 @@ def nueva_reserva(request):
                         reserva.cod_local = Local.objects.get(cod_local=cod_local)
                         reserva.doc_dui = esparte.dui
                         reserva.cod_materia=esparte.cod_catedra.cod_materia
-                        reserva.estado_solicitud = "EN_PROCESO"
+                        reserva.estado_solicitud = "En Proceso"
                         reserva.save()
                         respuesta["type"]="success"
                         respuesta["message"]="La reservación se ha registrado correctamente"
