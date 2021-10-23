@@ -70,7 +70,7 @@ def crear_notificación(reserva):
     notificacion.cod_reserva=reserva
     notificacion.visto=False
     notificacion.fecha=datetime.now()
-    #notificacion.hora=datetime.now().time()
+    notificacion.hora=timezone.now().astimezone()
     notificacion.titulo= "Reserva: "+reserva.estado_solicitud
     notificacion.save()
 
@@ -84,44 +84,43 @@ def cambiar_estado(request):
         "aprobado":False,
         "message":"Hay un error en los datos enviados."
     }
-    if request.user.is_authenticated:
-        if request.user.usuario_administrador==True:
-            if request.method == "POST":
-                
-                cod_reserva = request.POST.get("cod_reserva")
-                estado = request.POST.get("estado")
-                administrador =Administrador.objects.get(cod_empleado=request.user.cod_empleado)
-                reserva=Reserva.objects.get(cod_reserva=cod_reserva)
-               
-                if estado == "Denegado":
-                    Reserva.objects.filter(cod_reserva=cod_reserva).update(estado_solicitud=estado, adm_emp_dui=administrador.dui, fecha_aprobacion=timezone.now())
-                    crear_notificación(reserva)
-                    respuesta["message"]="El estado de la solicitud fue actualizado exitosamente."
-                
-                elif estado == "Aprobado":
-                    Reserva.objects.filter(cod_horario=reserva.cod_horario, cod_local= reserva.cod_local
-                            ).update(estado_solicitud="Denegado", adm_emp_dui=administrador.dui, fecha_aprobacion=timezone.now())           
-                    Reserva.objects.filter(cod_reserva=cod_reserva).update(estado_solicitud=estado, adm_emp_dui=administrador.dui)
-                    
-                    #Notificaciones              
-                    reservas=list(Reserva.objects.filter(cod_horario=reserva.cod_horario, cod_local= reserva.cod_local))
-                    for i in reservas:
-                        crear_notificación(i)
-
-                    respuesta["message"]="La solicitud fue aprobada, las otras solicitudes realiazadas para el mismo local en la misma hora fueron denegadas."
-                
-                respuesta["type"]="success"
-                respuesta["aprobado"]=True
-                return JsonResponse(respuesta,safe=False)
+    try:
+        administrador = Administrador.objects.get(cod_empleado=request.user.cod_empleado)  
+        try:
+            cod_reserva = request.POST.get("cod_reserva")
+            estado = request.POST.get("estado")
             
-            else:
-                respuesta["message"]="Los datos no se enviaron de forma segura"
-                return JsonResponse(respuesta, safe=False)
-        else:
-            respuesta["message"]="Solo los administradores pueden aprobar solicitudes."
+            reserva=Reserva.objects.get(cod_reserva=cod_reserva)
+            reserva.estado_solicitud=estado
+            reserva.adm_emp_dui=administrador
+            reserva.fecha_aprobacion=timezone.now()
+
+            if estado == "Denegado":
+                reserva.save()
+                crear_notificación(reserva)
+                respuesta["message"]="El estado de la solicitud fue actualizado exitosamente."
+            
+            elif estado == "Aprobado":
+                Reserva.objects.filter(cod_horario=reserva.cod_horario, cod_local= reserva.cod_local
+                        ).update(estado_solicitud="Denegado", adm_emp_dui=administrador.dui, fecha_aprobacion=timezone.now())           
+                reserva.save()
+                
+                #Notificaciones              
+                reservas=list(Reserva.objects.filter(cod_horario=reserva.cod_horario, cod_local= reserva.cod_local))
+                for i in reservas:
+                    crear_notificación(i)
+
+                respuesta["message"]="La solicitud fue aprobada, las otras solicitudes realiazadas para el mismo local en la misma hora fueron denegadas."
+            
+            respuesta["type"]="success"
+            respuesta["aprobado"]=True
+            return JsonResponse(respuesta,safe=False)       
+        except:
+            respuesta["message"]="Los datos no fueron enviados de forma segura o hay un error en el codigo de reservay."
             return JsonResponse(respuesta, safe=False)
-    else:
-        respuesta["message"]="Es necesario logearse para llevara acabo esta operación."
+
+    except:
+        respuesta["message"]="Solo los administradores pueden cambiar el estado de las solicitudes."
         return JsonResponse(respuesta, safe=False)
 
 # el siguiente metodo requiere del cod_local para proporcionar los datos del local y el horario (dias y horas)

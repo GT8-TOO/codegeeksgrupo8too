@@ -95,10 +95,13 @@ class Notificacion(models.Model):
     cod_reserva = models.ForeignKey('GestionReservas.Reserva', models.DO_NOTHING, db_column='cod_reserva', blank=True, null=True)
     visto = models.BooleanField(null=False,default=False)
     fecha = models.DateField(blank=True, null=True)
-    hora = models.DateField(blank=True, null=True)
+    hora = models.TimeField(blank=True, null=True)
     titulo = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
         managed = True
         db_table = 'notificacion'
+    
+    def __str__(self):
+        return f'{self.cod_empleado}'
 
