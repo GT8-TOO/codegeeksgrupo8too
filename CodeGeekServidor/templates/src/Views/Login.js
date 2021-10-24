@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect, useContext} from 'react';
 import{
     TextField,
     FormControl,
@@ -9,10 +9,10 @@ import{
     InputAdornment,
     Typography,
     Button
-}from '@mui/material';
+} from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import WarningIcon from '@mui/icons-material/Warning';
 import axios from 'axios';
 import LogoAvatar from '../Media/logo-avatar.jpg';
@@ -26,13 +26,15 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useStyles from '../Styled/LoginCSS';
 import errorStyle from '../Styled/ErorCSS';
 
+//Context
+import UserContext  from '../Context/UserContext';
+
 const Login =(props)=>{
   const classes =useStyles();
+  const userContext = useContext(UserContext);
   const errorClass =errorStyle();
   const {register, formState:{errors}, handleSubmit} = useForm();
-  //eslint-disable-next-line
-  const [logeado, setLogeado]=useState(false);
-  const [errorsLogear, setError] =useState(false);
+  const [errorsLogear, setError] =useState([]);
   const [values, setValues] = useState({
     amount: '',
     password: '',
@@ -41,11 +43,27 @@ const Login =(props)=>{
     showPassword: false,
   });
 
-  const sendDatos =async(data, direccion)=>{
-    axios.post(props.url+ direccion, data).then(res=>{
-      setLogeado(res.data.logeado)
+  const sendDatos =async(formData, direccion, event)=>{
+    setError([])
+    var data = await axios.post(props.url+ direccion, formData).then(res=>{
+      return res.data;
     }).catch(error=>{
       setError(true);
+    })
+    if(data.logeado===true){
+      cambiarUsuario("dui",data.dui)
+      cambiarUsuario("admin", data.admin)
+      cambiarUsuario("logeado", data.logeado)
+    }else{
+      cambiarUsuario("logeado", data.logeado)
+      setError(data)
+    }
+  }
+  
+  //Cambia el estado de userContext
+  const cambiarUsuario=(clave, valor)=>{
+    userContext.setUser(prevState=>{
+      return {...prevState, [clave]:valor}
     })
   }
 
@@ -75,16 +93,18 @@ const Login =(props)=>{
     event.preventDefault();
   };
 
-
   return (
     <div>
+      {userContext.user.logeado && <Redirect to ='user/home'/>}
+      {errorsLogear.logeado === false &&
+        <WindowAlert 
+          state={!errorsLogear.logeado} 
+          type={errorsLogear.type} 
+          title={errorsLogear.title}
+          message={errorsLogear.message}/>
+      }
         <form onSubmit={handleSubmit(iniciarSesion)}>
           <div className={classes.root}>
-            <WindowAlert 
-              state={errorsLogear} 
-              type="error" 
-              title="¡Algo salio mal!"
-              message="Por favor vuelva a ingresar sus datos, y si en dado caso no tiene cuenta puede crear una"/>
             <Avatar className={classes.avatar} sx={{height:120, width:90 }} src={LogoAvatar} />
             <Typography className={classes.mensaje} variant="h4">Bienvenido</Typography>
             <Typography className={classes.mensaje} variant="h7">Ingrese sus datos para poder acceder a su cuenta</Typography>
@@ -104,7 +124,7 @@ const Login =(props)=>{
               name="email"
               render={({message})=><p className={errorClass.errors}><WarningIcon/> {message}</p>}/>
             <FormControl>
-                <InputLabel style={{marginLeft: '15px'}} >Contraseña</InputLabel>
+              <InputLabel >Contraseña</InputLabel>
                     <Input 
                         className={classes.textf}
                         name="password"

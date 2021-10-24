@@ -18,7 +18,7 @@ export const SliderAdminData = [
   },
   {
     key:'adminAs',
-    title:'Conceder permisos a docente',
+    title:'Crear administrador',
     path:'authorize',
     icon:<AdminPanelSettingsIcon/>
   },

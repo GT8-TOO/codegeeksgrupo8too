@@ -12,7 +12,7 @@ import RegistrarLocal from './Locales/RegistrarLocal';
 
 const CatalogoLocales =(props)=>{
   const [escuelas, setEscuelas]=useState();
-  const [localActual, setLocal]=useState("No se encuentra viendo ningún local");
+  const [localActual, setLocal]=useState(null);
   const [error, setError]=useState(false)
   const [openDialog, setOpenDialogo]= useState(false);
 
@@ -34,15 +34,6 @@ const CatalogoLocales =(props)=>{
     });
     return promise;
   }
-  
-  //eslint-disable-next-line
-  const selectItem=(e)=>{
-    if(e.target.value !== undefined){
-      setLocal("Esta viendo los locales de la "+escuelas[e.target.value].label );
-    }else{
-      setLocal("No se encuentra viendo ningun local")
-    }
-  }
 
   const openDialogClick = () => {
     setOpenDialogo(true);
@@ -63,15 +54,18 @@ const CatalogoLocales =(props)=>{
           id="combo-box-demo"
           options={escuelas}
           sx={{marginTop:5, width: 300 }}
-          onChange={selectItem}
-          renderInput={(params) => <TextField {...params} label="Escuelas diponibles" />}/>
+         renderInput={(params) => <TextField {...params} label="Escuelas diponibles" />}
+         onChange={(_event, newLocal) => {
+            setLocal(newLocal);
+          }}
+        />
         <Button 
           variant="outlined" 
           onClick={openDialogClick}
           sx={{marginTop:'40px'}}>Registrar nuevo Local</Button>
       </div>
       <br/>
-      <Typography variant="p">{localActual}</Typography>
+      {localActual!==null && <Typography variant="p">Se encuentra viendo {localActual.label}</Typography>}
       <div>
         <CardLocal/>
       </div>

@@ -33,6 +33,7 @@ def registrar_materia (request):
             respuesta["type"]="error"
             respuesta["materiaGuardada"]=True
             respuesta["message"]="La materia no se ha podido guardar, puede ser que ya exista esa materia"
+            del verificacion
         except:
             materia.save()
             respuesta["type"]="success"
@@ -40,3 +41,20 @@ def registrar_materia (request):
             respuesta["materiaGuardada"]=True
 
     return JsonResponse(respuesta, safe=False)
+
+
+@csrf_exempt
+def mandar_materias (request):
+    materias = list(Materia.objects.values())
+    lista =[]
+    for i in range(len(materias)):
+        diccionario={
+            "id":0,
+            "code":"",
+            "label":""
+        }
+        diccionario["id"]=i
+        diccionario["code"]=materias[i]["cod_materia"]
+        diccionario["label"]=materias[i]["nombre_materia"]
+        lista.append(diccionario)
+    return JsonResponse(lista, safe=False)

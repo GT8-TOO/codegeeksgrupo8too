@@ -8,7 +8,12 @@ import {
 //Components
 import RegistrarPensum from './Carrera/RegistrarPensum';
 import RegistrarCiclo from './Carrera/RegistrarCiclo';
-import RegistrarMateria from './Carrera/RegistrarMateria';
+import ConfirmacionEnvio from './Carrera/ConfirmacionEnvio';
+
+//Icons
+import SendIcon from '@mui/icons-material/Send';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
 //Context
 import UserContext from '../../Context/UserContext';
@@ -27,7 +32,6 @@ const RegistrarCarrera = (props)=>{
 
   const previousSlide = ()=>{
     setSlide(slideChange-1);
-    console.log(userContext);
   }
 
   return (
@@ -48,15 +52,32 @@ const RegistrarCarrera = (props)=>{
           direction="left" 
           in={slideChange===2} 
           mountOnEnter 
-          unmountOnExit><div><RegistrarMateria url={props.url}/></div></Slide>
+          unmountOnExit><div><ConfirmacionEnvio url={props.url}/></div></Slide>
       </div>
       <div style={{display:'flex', gap:'20px', marginTop:'40px'}}>
-        {slideChange !==0 && <Button variant="contained" onClick={previousSlide}>Anterior</Button>}
-        {slideChange !==2 && !userContext.button.enabled ?
-          <Button variant="contained"  onClick={nextSlide}>Siguiente</Button>:
-          <Button variant="contained" disabled onClick={nextSlide}>Siguiente</Button>
+        {slideChange !==0 && 
+          <Button 
+            variant="contained" 
+            startIcon={<NavigateBeforeIcon/>}
+            style={{backgroundColor:'#01818A'}}
+            onClick={previousSlide}>Anterior</Button>}
+        {slideChange !==2 && userContext.button.enabled ?
+          <Button 
+            variant="contained"  
+            endIcon={<NavigateNextIcon />}
+            style={{backgroundColor:'#01818A'}}
+            onClick={nextSlide}>Siguiente</Button>:
+          <Button 
+            variant="contained" 
+            endIcon={<NavigateNextIcon />}
+            disabled onClick={nextSlide}>Siguiente</Button>
         }
-        {slideChange ===2 && <Button variant="contained" onClick={nextSlide}>Guardar</Button>}
+        {slideChange ===2 && 
+          <Button 
+            variant="contained" 
+            style={{backgroundColor:'#01818A'}}
+            endIcon={<SendIcon />}
+            onClick={nextSlide}>Guardar</Button>}
       </div>
     </div>
   ); }

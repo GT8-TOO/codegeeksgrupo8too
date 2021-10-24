@@ -1,22 +1,10 @@
 import React from 'react';
 
-import WindowAlert from '../WindowAlert';
 
 const UserProfile =()=>{
   return(
     <div>
-      <WindowAlert
-        state={true}
-        type="info"
-        /*
-         * warning
-         * error
-         * info
-         * success
-        * */
-        title="Aqui va el titulo"
-        message="Informacion del mensaje"
-      />
+      <p>user profile</p>
     </div>
   );
 }

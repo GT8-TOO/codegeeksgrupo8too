@@ -56,15 +56,6 @@ const RegistrarPensum =(props)=>{
     }
   }
 
-  const seleccionEscuela = (event) =>{
-    if (event.target.value !== undefined){
-      setVacio({
-        escuela:escuelas[event.target.value],
-        error:false
-      })
-    }
-  }
-
   return(
     <div>
       <form onSubmit={handleSubmit(ingresarPensum)}>
@@ -121,13 +112,23 @@ const RegistrarPensum =(props)=>{
             name="escuelas"
             options={escuelas}
             sx={{ width: 300 }}
-            onChange={seleccionEscuela}
+            onChange={(_event, data)=>{
+              if(data !== undefined){
+                setVacio({
+                  escuela:data,
+                  error:false
+                })
+                console.log(escuelaV)
+            }}}
             renderInput={(params) => <TextField {...params} label="Escuelas diponibles" />}/>
           <br/>
           {escuelaV.error && <p className={classes.errors} ><WarningIcon/>Tiene que ingresar a que escuela pertenecera</p>}
         </Grid>
      </Grid>
-        <Button sx={{marginTop:'-10px'}} type="submit">Registrar</Button>
+        <Button
+          sx={{marginTop:'-10px'}} 
+          variant="outlined"
+          type="submit">Registrar</Button>
       </form>
     </div>
   );

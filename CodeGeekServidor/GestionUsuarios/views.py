@@ -138,6 +138,11 @@ def registrar_admin(request):
 
     return JsonResponse({"Creado":True}, safe=False)
 
+@csrf_exempt
+def obtener_usuario(request):
+    pass
+    return JsonResponse(usuario, safe=False)
+
 def vista_registrarse (request):
     return render (request, "index.html")
 

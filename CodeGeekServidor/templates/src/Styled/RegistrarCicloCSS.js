@@ -3,8 +3,8 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles =makeStyles((theme)=>
   createStyles({
     div:{
-      borderRadius: '30px',
-      boxShadow: '0px 0px 9px 0px #000 ',
+      borderRadius: '10px',
+      boxShadow: '0px 0px 3px 0px #000 ',
     }
   }),
 );

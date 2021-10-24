@@ -10,9 +10,11 @@ def get_escuelas (request):
     lista =[]
     for i in range(len(escuelas)):
         diccionario={
+            "id":0,
             "code":"",
             "label":""
         }
+        diccionario["id"]= i
         diccionario["code"]= escuelas[i]["cod_escuela"]
         diccionario["label"]=escuelas[i]["nombre_escuela"]
         lista.append(diccionario);

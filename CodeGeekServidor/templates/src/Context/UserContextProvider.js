@@ -3,9 +3,9 @@ import UserContext from './UserContext'
 
 const UserContextProvider = ({children}) => {
 	const [ user, setUser ] = useState({
-		id: 4,
-		logeado:true,
-		admin:true
+		dui: 0,
+		admin:true,
+		logeado:undefined
 	});
 	const [button, setButton] = useState({
 		enabled:false
@@ -15,7 +15,7 @@ const UserContextProvider = ({children}) => {
 			carrera:"",
 			yearcarrer:""
 		},
-		escuela:{}
+		escuela:{},
 	});
 	const [openMateria, setCrearMateria] =useState(false)
 	

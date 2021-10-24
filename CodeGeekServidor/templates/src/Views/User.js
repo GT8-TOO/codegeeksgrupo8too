@@ -1,8 +1,9 @@
 import React, { useEffect, useContext } from 'react';
 import SlideBar from '../Components/User/SlideBar';
-//eslint-disable-nextline
 import Footer from '../Components/Footer';
 import { useParams } from 'react-router-dom';
+
+//eslint-disable-nextline
 import Fade from '@mui/material/Fade';
 import {Slide, Zoom} from '@mui/material';
 
@@ -39,7 +40,6 @@ const User =(props)=>{
           {(windows ==="authorize" && userContext.user.admin===true)&&<p>Aqui autorizara a docentes</p>}
         </div>
         {/*<Footer/>*/}
-        <Footer/>
       </div>
     </div>
   );
