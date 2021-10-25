@@ -10,6 +10,8 @@ const UserContext = createContext({
   setCarrera:(data)=>{},
   openMateria:{},
   setOpenMateria :(id)=>{},
+  openLoca:{},
+  setCrearLocal:(id)=>{},
   respuesta:{},
   setRespuesta:(id)=>{},
 });

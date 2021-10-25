@@ -1,17 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
   TextField,
   Dialog,
   Rating,
+  FormControl,
+  FormLabel,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
   Typography,
   DialogActions,
   DialogContent,
   Grid,
   DialogTitle
 } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import WarningIcon from '@mui/icons-material/Warning';
+import { ErrorMessage } from '@hookform/error-message';
 
+//Style
+import errorStyle from '../../../Styled/ErorCSS';
 
 //Icons
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
@@ -20,6 +30,8 @@ import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 
+//Context
+import UserContext from '../../../Context/UserContext';
 
 const customIcons = {
   1: {
@@ -55,86 +67,226 @@ IconContainer.propTypes = {
 
 
 const RegistrarLocal = (props)=>{
-  const [califiacion,setCalificacion]=useState(2);
+  const errorClass =errorStyle();
+  const userContext = useContext(UserContext);
+  const {register, formState:{errors}, handleSubmit} = useForm();
+  const [calificacion,setCalificacion]=useState(2);
+  const [numeroImagenes, setNumero] = useState(3);
+  const [imagenes, setImagenes]=useState([]);
 
   //Component dimount
   useEffect(()=>{
     setCalificacion(2)
+    setNumero(3)
   },[])
 
+  //Cierra la ventana flotante
   const handleClose = () => {
-    props.setOpen(false);
+    userContext.setCrearLocal(false);
   };
 
+  //Validara el form y mandara a llamar el metodo de envio
+  const registrarLocal =(data)=>{
+    handleClose()
+  }
+
+  //Renderizado de HTML
   return(
     <div>
-      <Dialog open={props.open} maxWidth="xl" onClose={handleClose}>
+      <Dialog open={userContext.openLocal} maxWidth="md" onClose={handleClose}>
         <DialogTitle>Registrar un nuevo local</DialogTitle>
-        <form>
+        <form onSubmit={handleSubmit(registrarLocal)}>
           <Grid  container spacing={1} >
             <DialogContent style={{marginLeft:'15px'}}>
               <Grid item xs={12}>
                 <TextField
                   autoFocus
+                  name="codigoCarrera"
                   label="Codigo de carrera"
-                  fullWidth/>
+                  fullWidth
+                  {...register("codigoCarrera", {
+                    required:{
+                      value:true,
+                      message:"Debe de ingresar el codigo de la carrera"
+                    }
+                  })}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="codigoCarrera"
+                  render={({message})=><p className={errorClass.errors}><WarningIcon/> {message}</p>}
+                />
               </Grid>
               <Grid item xs={12} style={{marginTop:'15px'}}>
                 <TextField
+                  name="nombreLocal"
                   label="Nombre del local"
-                  fullWidth/>
+                  fullWidth
+                  {...register("nombreLocal",{
+                    required:{
+                      value:true,
+                      message:"Ingrese el nombre del local"
+                    }
+                  })}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="nombreLocal"
+                  render={({message})=><p className={errorClass.errors}><WarningIcon/> {message}</p>}
+                />
               </Grid>
               <Grid item xs={12} style={{marginTop:'15px'}}>
                 <TextField
+                  name="nombreEdificio"
                   label="Nombre del edificio"
-                  fullWidth/>
+                  fullWidth
+                  {...register("nombreEdifico",{
+                    required:{
+                      value:true,
+                      message:"Debe de dar ingresar el nombre del edificio que pertecenera"
+                    }
+                  })}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="nombreEdifico"
+                  render={({message})=><p className={errorClass.errors}><WarningIcon/> {message}</p>}
+                />
               </Grid>
               <Grid xs={12} columnSpacing={3} style={{display:'flex', marginTop:'15px'}}>
                 <Grid item xs={6}>
                   <TextField
+                    name="nivel"
                     fullWidth
-                    label="Nivel"/>
-                </Grid>
+                    label="Nivel"
+                    {...register("nivel",{
+                      required:{
+                        value:true,
+                        message:"Ingrese el nivel donde se encuentra"
+                      },
+                      pattern:{
+                        value: /^\d*[1-9]\d*$/,
+                        message:"Solo deben de ser números positivos, sin contar el cero"
+                      }
+                    })}
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="nivel"
+                    render={({message})=><p className={errorClass.errors}><WarningIcon/> {message}</p>}
+                  />
+               </Grid>
                 <Grid item xs={6} style={{marginLeft:'10px'}}>
                   <TextField
+                    name="altitud"
                     fullWidth
-                    label="Altitud"/>
-                </Grid>
+                    label="Altitud"
+                    {...register("altitud",{
+                      required:{
+                        value:true,
+                        message:"Debe de ingresar la altitud"
+                      },
+                      pattern:{
+                        value: /^\d*[1-9]\d*$/,
+                        message:"Solo deben de ser números positivos, sin contar el cero"
+                      }
+                    })}
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="altitud"
+                    render={({message})=><p className={errorClass.errors}><WarningIcon/> {message}</p>}
+                  />
+               </Grid>
               </Grid>
               <Grid item xs={12} style={{marginTop:'15px'}}>
                 <Typography variant="p">Calificacion del local:</Typography>
                 <Rating
                   style={{marginLeft:'50px'}}
-                  defaultValue={califiacion}
+                  defaultValue={calificacion}
                   onChange={(event, data)=>{
                     if(data!== null){
                       setCalificacion(data);
-                      console.log(data)
                     }
                   }}
                   IconContainerComponent={IconContainer}
                   highlightSelectedOnly/>
-                {customIcons[califiacion].label !== null &&
+                {customIcons[calificacion].label !== null &&
                   <Typography 
                     variant="p" 
                     style={{
                       color:'#686767',
                       marginLeft:'20px',
                       fontSize:'15px'}}
-                  >{customIcons[califiacion].label}</Typography>
+                  >{customIcons[calificacion].label}</Typography>
+                }
+              </Grid>
+              <Grid item xs={12} style={{marginTop:'15px'}}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Cantidad de imagenes</FormLabel>
+                  <RadioGroup 
+                    row aria-label="numeroImagens" 
+                    defaultValue={numeroImagenes} 
+                    onChange={(event, data)=>{
+                      setNumero(parseInt(data))
+                    }}
+                    name="row-radio-buttons-group">
+                    <FormControlLabel value={3} control={<Radio />} label="Tres" />
+                    <FormControlLabel value={4} control={<Radio />} label="Cuatro" />
+                    <FormControlLabel value={5} control={<Radio />} label="Cinco" />
+                  </RadioGroup>
+                </FormControl>
+                {
+                  [...Array(numeroImagenes)].map((x, i)=>{
+                    return(
+                      <TextField
+                        key={i}
+                        style={{marginTop:'10px'}}
+                        fullWidth
+                        onChange={(event,i)=>{
+                          setImagenes([...imagenes,event.target.files[0]]);
+                          console.log(event.target.files[0])
+                          console.log(imagenes)
+                        }}
+                        type="file"
+                      />
+                    );
+                  })
                 }
               </Grid>
               <Grid item xs={12} style={{marginTop:'20px'}}>
                 <TextField
+                  name="descripcion"
                   label="Descripcion"
                   multiline
                   fullWidth
-                  rows={5}/>
-              </Grid>
+                  rows={4}
+                  {...register("descripcion",{
+                    required:{
+                      value:true,
+                      message:"Tiene que ingresar una descripcion del local"
+                    },
+                    maxLength:{
+                      value:255,
+                      message:"No tiene que ser mayor a 256 caracteres"
+                    }
+                  })}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="descripcion"
+                  render={({message})=><p className={errorClass.errors}><WarningIcon/> {message}</p>}
+                />
+             </Grid>
            </DialogContent>
             <Grid item xs={11.5}>
               <DialogActions>
-                <Button variant="outlined" onClick={handleClose}>Guardar local</Button>
+                <Button 
+                  variant="outlined" 
+                  onClick={handleClose}>Cancelar</Button>
+                <Button 
+                  variant="outlined" 
+                  type="submit">Guardar local</Button>
               </DialogActions>
             </Grid>
           </Grid>

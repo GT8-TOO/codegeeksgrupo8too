@@ -15,13 +15,15 @@ import {
   Container
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
-import DateAdapter from '@mui/lab/AdapterDateFns';
 import { Link, Redirect } from 'react-router-dom';
 import { useForm} from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import axios from 'axios';
+
+//Fecha
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import DateAdapter from '@mui/lab/AdapterDateFns';
 
 //ALerta
 import WindowAlert from '../Components/WindowAlert';
@@ -59,10 +61,12 @@ const Register = (props) =>{
   const [correoInstituciona, setCorreo]= useState(false);
   const [creado, setCreado] = useState(false);
 
+  //Component di mount
   useEffect(()=>{
     document.title="Registrarse"
   },[])
 
+  //Envia los datos a servidor
   const sendData=async(data, direccion)=>{
     axios.post(props.url+direccion, data).then((res)=>{
       setCreado(res.data);
@@ -70,6 +74,7 @@ const Register = (props) =>{
     })
   }
 
+  //Metodo que valida si la informacion ingresada es valida
   const registrarse =(data)=>{
     setFechaError(false)
     setPasswordI(true)
@@ -103,7 +108,7 @@ const Register = (props) =>{
     setCalendarValue(newValue);
   }
 
-  //Contraseñe
+  //Contraseña
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };

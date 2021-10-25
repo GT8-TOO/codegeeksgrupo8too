@@ -11,6 +11,7 @@ import {Slide, Zoom} from '@mui/material';
 import CatalogoLocales from '../Components/User/CatalogoLocales';
 import RegistrarCarrera from '../Components/User/RegistrarCarrera';
 import UserProfile from '../Components/User/UserProfile';
+import CrearAdministrador from '../Components/User/CrearAdministrador';
 
 //Context
 import UserContext  from '../Context/UserContext';
@@ -19,10 +20,12 @@ const User =(props)=>{
   const userContext = useContext(UserContext);
   let { windows } =useParams();
 
+  //Efecto de trasfondo
   useEffect(()=>{
     //socket
   })
 
+  //Renderizado de HTML
   return(
     <div style={{display:'flex'}}>
       <SlideBar admin={userContext.user.admin}/>
@@ -37,7 +40,7 @@ const User =(props)=>{
           {windows ==="sendemail" &&<p>Aqui mandara emails</p>}
           {(windows==="registercarrer" && userContext.user.admin ===true)&&<RegistrarCarrera url={props.url}/>}
           {(windows ==="start" && userContext.user.admin ===true)&&<p>Aqui comenzara ciclo</p>}
-          {(windows ==="authorize" && userContext.user.admin===true)&&<p>Aqui autorizara a docentes</p>}
+          {(windows ==="authorize" && userContext.user.admin===true)&&<CrearAdministrador url={props.url} direction="up"/>}
         </div>
         {/*<Footer/>*/}
       </div>
@@ -45,4 +48,4 @@ const User =(props)=>{
   );
 }
 
-export default User
+export default User;

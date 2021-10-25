@@ -18,6 +18,7 @@ const UserContextProvider = ({children}) => {
 		escuela:{},
 	});
 	const [openMateria, setCrearMateria] =useState(false)
+	const [openLocal, setCrearLocal]=useState(false)
 	
 	const [respuesta, setRespuesta]= useState({
 		type:"",
@@ -37,6 +38,8 @@ const UserContextProvider = ({children}) => {
 			setCarrera,
 			openMateria,
 			setCrearMateria,
+			openLocal,
+			setCrearLocal,
 			respuesta,
 			setRespuesta
 		}}>
