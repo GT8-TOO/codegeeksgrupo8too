@@ -107,7 +107,7 @@ def vista_login (request):
     return render (request, "index.html")
 
 
-# @csrf_exempt
+@csrf_exempt
 def registrar_admin(request):
     #Metodo que permite registrarse
 
@@ -118,20 +118,20 @@ def registrar_admin(request):
     nit = request.POST.get('nit')
     password =request.POST.get('password')
     fecha = request.POST.get('fechaNacimiento')
-    escu="EISI"
-
+    escuela= request.POST.get('codigoEscuela')
     
     try:
         empleado=Empleado.objects.create_superuser(email,password)
-   
-        admin=Administrador()
-        admin.dui=dui
-        admin.nit=nit
-        admin.nombre = nombres
-        admin.apellidos = apellidos
-        admin.cod_empleado=empleado
-        # admin.fecha_nacimiento=fecha
-        admin.save()
+
+        Administrador.objects.create(
+            dui=dui,
+            nit=nit,
+            nombre=nombres,
+            apellidos=apellidos,
+            cod_empleado=empleado,
+            cod_escuela=Escuela.objects.get(cod_escuela=escuela),
+            #fecha_nacimiento=datetime.strptime(fecha, '%m/%d/%Y')
+        )
 
     except:
         return JsonResponse({"Creado":False}, safe=False)
@@ -140,8 +140,37 @@ def registrar_admin(request):
 
 @csrf_exempt
 def obtener_usuario(request):
-    pass
-    return JsonResponse(usuario, safe=False)
+    respuesta ={
+            "type":"error",
+            "state":True,
+            "title":"",
+            "encontrado":False,
+            "message":""
+            }
+    if request.method =="POST":
+        dui=request.POST.get('dui')
+        docente = Docente.objects.filter(dui=dui).values('dui','nit', 'nombre','apellidos', 'cod_escuela', 'cod_empleado', 'fecha_nacimiento')
+        administrador = Administrador.objects.filter(dui=dui).values('dui','nit', 'nombre','apellidos', 'cod_escuela', 'cod_empleado', 'fecha_nacimiento')
+        
+        if docente:
+            empleado=Empleado.objects.filter(cod_empleado=docente[0].get("cod_empleado")).values('email')
+            docente = list(docente)
+            docente[0]['email']=empleado[0].get('email')
+            return JsonResponse(docente,safe=False)
+        
+        elif administrador:
+            
+            empleado=Empleado.objects.filter(cod_empleado=administrador[0].get("cod_empleado")).values('email')
+            administrador = list(administrador)
+            administrador[0]['email']=empleado[0].get('email')
+            return JsonResponse(administrador,safe=False)
+        else:
+            respuesta["title"]="Usuario no encontrado"
+            respuesta["message"]="El usuario no existe"   
+            return JsonResponse(respuesta,safe=False)
+    
+    else:
+        return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."},safe=False)
 
 def vista_registrarse (request):
     return render (request, "index.html")
