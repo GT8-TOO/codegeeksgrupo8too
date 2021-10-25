@@ -1,27 +1,27 @@
 self.__precacheManifest = [
   {
-    "revision": "7c108b5fa84b8f768a9f",
-    "url": "/static/css/main.efadbc29.chunk.css"
+    "revision": "bef85cf4f61d66c18546",
+    "url": "/static/css/main.078b5536.chunk.css"
   },
   {
-    "revision": "7c108b5fa84b8f768a9f",
-    "url": "/static/js/main.6e3b9a22.chunk.js"
+    "revision": "bef85cf4f61d66c18546",
+    "url": "/static/js/main.ca2f8e88.chunk.js"
   },
   {
-    "revision": "1278f8d681c1dffd33d1",
-    "url": "/static/js/runtime~main.2a686703.js"
+    "revision": "ee2480935abc0d928f81",
+    "url": "/static/js/runtime~main.e28bbd64.js"
   },
   {
-    "revision": "7a0c7269eef48fb403f2",
+    "revision": "e9402d202d8ee3b2b6fd",
     "url": "/static/css/2.573b0d66.chunk.css"
   },
   {
-    "revision": "7a0c7269eef48fb403f2",
-    "url": "/static/js/2.52edcef1.chunk.js"
+    "revision": "e9402d202d8ee3b2b6fd",
+    "url": "/static/js/2.8f699323.chunk.js"
   },
   {
-    "revision": "30b9a2b8035a06aff1b9",
-    "url": "/static/js/3.92e190a6.chunk.js"
+    "revision": "b6d510e7701adf9ea8f1",
+    "url": "/static/js/3.4d2b47ef.chunk.js"
   },
   {
     "revision": "e356eb481b8cd8f93c07a1d524670ed8",
@@ -48,7 +48,7 @@ self.__precacheManifest = [
     "url": "/static/media/AcademicaAtardecer.38efadb0.jpeg"
   },
   {
-    "revision": "a871f8a0b3dfe9f27026b4e6eff5e1f8",
+    "revision": "f5e230d65271b6b108773d235f43fc0d",
     "url": "/index.html"
   }
 ];

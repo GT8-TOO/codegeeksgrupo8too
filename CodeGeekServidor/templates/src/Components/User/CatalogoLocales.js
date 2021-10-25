@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import { 
   Typography,
   Autocomplete,
@@ -10,7 +10,11 @@ import WindowAlert from '../WindowAlert';
 import CardLocal from './Locales/CardLocal';
 import RegistrarLocal from './Locales/RegistrarLocal';
 
+//Context
+import UserContext from '../../Context/UserContext';
+
 const CatalogoLocales =(props)=>{
+  const userContext = useContext(UserContext);
   const [escuelas, setEscuelas]=useState();
   const [localActual, setLocal]=useState(null);
   const [error, setError]=useState(false)
@@ -59,10 +63,12 @@ const CatalogoLocales =(props)=>{
             setLocal(newLocal);
           }}
         />
+        {userContext.user.admin &&
         <Button 
           variant="outlined" 
           onClick={openDialogClick}
           sx={{marginTop:'40px'}}>Registrar nuevo Local</Button>
+        }
       </div>
       <br/>
       {localActual!==null && <Typography variant="p">Se encuentra viendo {localActual.label}</Typography>}
