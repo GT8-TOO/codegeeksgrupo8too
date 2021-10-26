@@ -19,6 +19,7 @@ import {
 import { useForm } from 'react-hook-form';
 import WarningIcon from '@mui/icons-material/Warning';
 import { ErrorMessage } from '@hookform/error-message';
+import axios from 'axios';
 
 //Style
 import errorStyle from '../../../Styled/ErorCSS';
@@ -85,9 +86,21 @@ const RegistrarLocal = (props)=>{
     userContext.setCrearLocal(false);
   };
 
+  const mandarDatos = async(direccion, data)=>{
+    var promise = await axios.post(props.url+direccion, data).then((res)=>{
+      return res.data
+    }).catch((error)=>{
+      console.log(error)
+    })
+    console.log(promise)
+  }
+
   //Validara el form y mandara a llamar el metodo de envio
   const registrarLocal =(data)=>{
     handleClose()
+    var formData = new FormData();
+    formData.append("imagenes", imagenes[0])
+    mandarDatos("locales/registrarlocal-json/", formData)
   }
 
   //Renderizado de HTML
@@ -125,8 +138,7 @@ const RegistrarLocal = (props)=>{
                   {...register("nombreLocal",{
                     required:{
                       value:true,
-                      message:"Ingrese el nombre del local"
-                    }
+                      message:"Ingrese el nombre del local" }
                   })}
                 />
                 <ErrorMessage
@@ -241,14 +253,20 @@ const RegistrarLocal = (props)=>{
                     return(
                       <TextField
                         key={i}
+                        id={i}
                         style={{marginTop:'10px'}}
                         fullWidth
                         onChange={(event,i)=>{
-                          setImagenes([...imagenes,event.target.files[0]]);
-                          console.log(event.target.files[0])
-                          console.log(imagenes)
+                          if(imagenes.length <numeroImagenes){
+                            setImagenes([...imagenes,event.target.files]);
+                         }else{
+                            const aux = imagenes;
+                            aux[event.target.id] = event.target.files;
+                            setImagenes(aux);
+                          }
                         }}
                         type="file"
+                        accept=".jpg, .jpge, .png"
                       />
                     );
                   })

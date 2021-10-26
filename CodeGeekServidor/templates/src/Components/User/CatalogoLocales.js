@@ -51,7 +51,7 @@ const CatalogoLocales =(props)=>{
           type={"warning"} 
           title="Pasó algo inesperado" 
           message="No se ha podido comunicar con el servidor de manera correcta, puede ser problema de conexion o de el servidor, espere mientras se arregla."/>
-        {userContext.openLocal &&<RegistrarLocal/>}
+        {userContext.openLocal &&<RegistrarLocal url={props.url}/>}
         <Typography variant="h4">Catálogo de locales de la Facultad de Ingeniería y Arquietectura</Typography>
         <div style={{display:'flex', gap:'20px', margin:'1px auto'}}>
           <Autocomplete
