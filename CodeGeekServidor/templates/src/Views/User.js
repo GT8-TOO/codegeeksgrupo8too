@@ -97,6 +97,7 @@ const User =(props)=>{
           }
           {windows ==="requestlocal" &&
             <SolicitarLocal 
+              local={local}
               horarios={horarios} 
               url={props.url}/>
           }

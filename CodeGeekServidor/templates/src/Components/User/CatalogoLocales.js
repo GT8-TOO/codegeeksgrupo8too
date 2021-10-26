@@ -11,6 +11,9 @@ import WindowAlert from '../WindowAlert';
 import CardLocal from './Locales/CardLocal';
 import RegistrarLocal from './Locales/RegistrarLocal';
 
+//Iconos
+import AddIcon from '@mui/icons-material/Add';
+
 //Context
 import UserContext from '../../Context/UserContext';
 
@@ -52,13 +55,16 @@ const CatalogoLocales =(props)=>{
               />
               {(userContext.user.admin && props.edificios !== undefined)&&
                 <Button 
-                  variant="outlined" 
+                  variant="contained" 
                   onClick={openDialogClick}
+                  style={{backgroundColor:'#01818A'}}
+                  startIcon={<AddIcon/>}
                   sx={{marginTop:'40px'}}>Registrar nuevo Local</Button>
               }
-              <br/>
-              {edificioActual!==null && <Typography variant="p">Se encuentra viendo {edificioActual.label}</Typography>}
             </div>
+            <br/>
+            {edificioActual!==null && 
+              <Typography variant="p">Se encuentra viendo {edificioActual.label}</Typography>}
             <div style={{display:'flex',marginTop:'30px'}}>
               {props.local.map((item)=>{
                 return(
