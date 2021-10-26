@@ -23,6 +23,7 @@ from GestionLocales.models import Local
 def nueva_reserva(request):
     respuesta ={
         "type":"error",
+        "state":True,
         "creado":False,
         "message":""
     }
@@ -165,3 +166,22 @@ def solicitud_body(request):
         return JsonResponse(serializer.data, safe=False)
     else:
         return JsonResponse({"Error":'Debe utilizar Metodo POST para consultar Solicitudes'}, safe=False)       
+
+#Retorna todo el horario para poder crear la reservaa
+@csrf_exempt
+def get_horario (request):
+    horario = list(Horario.objects.select_related())
+    codigo = list(Horario.objects.values('cod_horario'))
+    lista= []
+    for i in range(len(horario)):
+        diccionario={
+            "code":0,
+            "cod_horario":"",
+            "label":""
+        }
+        diccionario["code"]=i
+        diccionario["cod_horario"] = codigo[i]["cod_horario"]
+        diccionario["label"] = str(horario[i])
+        lista.append(diccionario)
+        del diccionario
+    return JsonResponse(lista, safe=False)

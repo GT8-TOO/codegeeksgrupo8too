@@ -37,10 +37,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 const CrearAdministrador =(props)=>{
   const classError = errorStyles();
   const {register, formState:{errors}, handleSubmit} = useForm();
-  const [escuelas, setEscuelas]=useState();
   const [escuelaElegida, setEscuelaElegida]=useState();
   const [calendarvalue, setCalendarValue] = useState(new Date(''));
-  const [error, setError]=useState(false);
   const [escuelaVacia, setVacio]=useState(false);
   const [creado, setCreado]=useState();
   const [values, setValues] = useState({
@@ -67,21 +65,7 @@ const CrearAdministrador =(props)=>{
   //Component Di mount
   useEffect(async()=>{
     document.title="Crear administrador";
-    var prueba = await getDatos("locales/solicitarescuelas-json/");
-    if(error===false){
-      setEscuelas(prueba)
-    }
   },[]);
-
-  //Solicitar datos a servidor
-  const getDatos = async(direccion) => {
-    var promise = await axios.get(props.url+direccion).then((res)=>{
-      return res.data;
-    }).catch((erro)=>{
-      setError(true);
-    });
-    return promise;
-  }
 
   //Madnar informacion del admin a servidor
   const senDataAdmin =async(direccion, data)=>{
@@ -97,7 +81,6 @@ const CrearAdministrador =(props)=>{
   const handleChangeCalendar = (newValue) => {
     setCalendarValue(newValue);
   }
-
 
   //Metodo que valida a administrador
   const registrarAdministrador =(data)=>{
@@ -204,7 +187,7 @@ const CrearAdministrador =(props)=>{
             message={creado.message}
           />
         }
-        <Typography variant="h5">Crear administrador</Typography>
+        <Typography variant="h4">Crear administrador</Typography>
         <Grid container rowSpacing={2} style={{marginTop:'20px'}} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={6}>
             <Typography variant="p">Nombre del adminsitrador</Typography>
@@ -328,7 +311,7 @@ const CrearAdministrador =(props)=>{
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={escuelas}
+              options={props.escuelas}
               renderInput={(params) => <TextField {...params} fullWidth label="Escuelas diponibles" />}
               onChange={(_event, newLocal) => {
                 setVacio(false)

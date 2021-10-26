@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Typography,
   Slide,
@@ -22,6 +22,13 @@ const RegistrarCarrera = (props)=>{
   const [slideChange, setSlide] = useState(0);
   const userContext = useContext(UserContext);
 
+  //Component di mount
+  useEffect(()=>{
+    document.title="Registrar carrera";
+    console.log(props.escuelas)
+  })
+
+  //Siguiente componente
   const nextSlide =()=>{
     setSlide(slideChange+1);
     if(slideChange===2){
@@ -30,6 +37,7 @@ const RegistrarCarrera = (props)=>{
     }
   }
 
+  //Componente anterior
   const previousSlide = ()=>{
     setSlide(slideChange-1);
   }
@@ -42,7 +50,7 @@ const RegistrarCarrera = (props)=>{
           direction="left" 
           in={slideChange===0} 
           mountOnEnter 
-          unmountOnExit><div><RegistrarPensum url={props.url}/></div></Slide>
+          unmountOnExit><div><RegistrarPensum escuelas={props.escuelas} url={props.url}/></div></Slide>
         <Slide 
           direction="left" 
           in={slideChange===1} 

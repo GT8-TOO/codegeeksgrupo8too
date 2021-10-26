@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
   Typography,
   Grid,
+  CircularProgress,
   Autocomplete,
   Button,
   TextField
 } from '@mui/material';
-import axios from 'axios';
 import { ErrorMessage } from '@hookform/error-message';
 import {useForm} from 'react-hook-form';
 import WarningIcon from '@mui/icons-material/Warning';
@@ -20,29 +20,12 @@ import UserContext from '../../../Context/UserContext';
 const RegistrarPensum =(props)=>{
   const classes = useStyles();
   const {register, formState:{errors}, handleSubmit}= useForm();
-  const [escuelas, setEscuelas]=useState();
-  const [error, setError]=useState(false);
   const [escuelaV, setVacio]=useState({label:"", error:undefined});
   const userContext = useContext(UserContext);
 
   //Component di mount
   useEffect(async()=>{
-    var prueba = await getDatos("locales/solicitarescuelas-json/");
-    userContext.setButton({enabled:false})
-    if(error===false){
-      setEscuelas(prueba)
-    }
   },[]);
-
-  //Solicitar datos a servidor
-  const getDatos = async(direccion) => {
-    var promise = await axios.get(props.url+direccion).then((res)=>{
-      return res.data;
-    }).catch((erro)=>{
-      setError(true);
-    });
-    return promise;
-  }
 
   const ingresarPensum =(data)=>{
     if(escuelaV.error !==undefined){
@@ -60,6 +43,7 @@ const RegistrarPensum =(props)=>{
     <div>
       <form onSubmit={handleSubmit(ingresarPensum)}>
       <Typography variant="h5">Registrar pensum</Typography>
+        {props.escuelas!== undefined ?
       <Grid style={{marginTop:'10px'}} container rowSpacing={4} columnSpacing={1}>
         <Grid item xs={4}>
           <Typography variant="p">Nombre de la carrera</Typography>
@@ -110,7 +94,7 @@ const RegistrarPensum =(props)=>{
           <Autocomplete
             disablePortal
             name="escuelas"
-            options={escuelas}
+            options={props.escuelas}
             sx={{ width: 300 }}
             onChange={(_event, data)=>{
               if(data !== undefined){
@@ -124,7 +108,11 @@ const RegistrarPensum =(props)=>{
           <br/>
           {escuelaV.error && <p className={classes.errors} ><WarningIcon/>Tiene que ingresar a que escuela pertenecera</p>}
         </Grid>
-     </Grid>
+      </Grid>:
+      <div style={{width: '100%', height: 80,display: 'flex', alignItems: 'center',justifyContent: 'center',}}>
+        <CircularProgress/>
+      </div>
+        }
         <Button
           sx={{marginTop:'-10px'}} 
           variant="outlined"

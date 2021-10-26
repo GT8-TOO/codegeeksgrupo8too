@@ -2,22 +2,28 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableContainer from "@mui/material/TableContainer";
-import TableFooter from "@mui/material/TableFooter";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableContainer,
+  TableFooter,
+  TablePagination,
+  TableRow,
+  Paper,
+} from '@mui/material';
+import { tableCellClasses } from '@mui/material/TableCell';
+
+//Iconos
 import IconButton from "@mui/material/IconButton";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 
+//Estilo de la tabla
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: '#414c6a',
@@ -28,6 +34,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   }
 }));
 
+//Funcion de cambiar las dimensiones de la pagina
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -48,6 +55,7 @@ function TablePaginationActions(props) {
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
+  //Renderizado de la funcion
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
       <IconButton
@@ -101,7 +109,6 @@ const TablaMaterias =(props)=> {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
 
@@ -120,9 +127,15 @@ const TablaMaterias =(props)=> {
         aria-label="customized table"
         sx={{ minWidth: 500 }}>
           <TableHead>
+            <StyledTableCell align="center" colSpan={2}>
+              Materia de requisito
+            </StyledTableCell>
+            <StyledTableCell align="center" colSpan={3}>
+              Materia a añadir
+            </StyledTableCell>
           <TableRow>
-            <StyledTableCell>Codigo de materia requisito</StyledTableCell>
-            <StyledTableCell>Materia requisito</StyledTableCell>
+            <StyledTableCell>Codigo de materia</StyledTableCell>
+            <StyledTableCell>Materia</StyledTableCell>
             <StyledTableCell>Codigo de materia</StyledTableCell>
             <StyledTableCell>Materia</StyledTableCell>
             <StyledTableCell>Ciclo que pertecenera</StyledTableCell>

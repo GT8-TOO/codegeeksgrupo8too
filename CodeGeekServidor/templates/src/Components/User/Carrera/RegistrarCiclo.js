@@ -3,6 +3,7 @@ import {
   Grid,
   TextField,
   Autocomplete,
+  CircularProgress,
   Button,
   FormControl,
   FormLabel,
@@ -188,80 +189,85 @@ const RegistrarCiclo =(props)=>{
           </Grid>
         </Grid>
         <br/>
-        <div className={classes.div}>
-        {userContext.openMateria && <RegistrarMateria state={userContext.openMateria} url={props.url}/>}
-          <Grid style={{marginLeft:'20px', marginTop:'25px', width:'90%'}} container rowSpacing={4} columnSpacing={1}>
-            <Grid item xs={6}>
-              <Autocomplete
-                disablePortal
-                name="materias"
-                options={materias}
-                onChange={(_event, newMateria)=>{
-                  setMateria(newMateria);
-                }}
-                sx={{ width: '100%' }}
-                renderInput={(params) => <TextField {...params} label="Materias a poner en el pensum" />}/>
-            </Grid>
-            <Grid item xs={4}>
-              <Button 
-                onClick={openCrearMateria}
-                variant="outlined"
-                startIcon={<CreateIcon/>}
-                style={{ width:'100%', marginLeft:'40px', marginTop:'5px'}}>Crear una materia</Button>
-             </Grid>
-            <Grid item xs={6}>
-              <Autocomplete
-                disablePortal
-                name="materiaRequisito"
-                options={materias}
-                onChange={(_event, newMateria)=>{
-                  setMateriaR(newMateria);
-                }}
-                sx={{ width: '100%' }}
-                renderInput={(params) => <TextField {...params} label="Materias de requisito" />}/>
-            </Grid>
-            <Grid item xs={4}>
-              <Button 
-                variant="outlined"
-                onClick={agregarLista}
-                startIcon={<PlaylistAddIcon/>}
-                style={{ width:'100%',marginLeft:'40px', marginTop:'5px'}}>Agregar a la lista</Button>
-            </Grid>
-            <Grid item xs={6}>
-              <TextField 
-                label="Ciclo que se impartira"
-                type="number"
-                style={{width:'100%'}}
-                value={numeroCiclo}
-                onChange={(event)=>{
-                  if(event.target.value>0 && event.target.value<11){
-                      setNumero(event.target.value);
-                    }
-                }}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <FormControl component="fieldset" style={{marginLeft:'30px'}}>
-                <FormLabel component="legend">¿Tiene requisitos previos?</FormLabel>
-                <RadioGroup
-                  row
-                  defaultValue="si"
-                  onChange={(event)=>{
-                      setRequisitos(event.target.value);
+        {materias !== undefined ?
+          <div className={classes.div}>
+            {userContext.openMateria && <RegistrarMateria state={userContext.openMateria} url={props.url}/>}
+            <Grid style={{marginLeft:'20px', marginTop:'25px', width:'90%'}} container rowSpacing={4} columnSpacing={1}>
+              <Grid item xs={6}>
+                <Autocomplete
+                  disablePortal
+                  name="materias"
+                  options={materias}
+                  onChange={(_event, newMateria)=>{
+                    setMateria(newMateria);
                   }}
-                  name="radio-buttons-group">
-                  <FormControlLabel value="si" control={<Radio />} label="Si" />
-                  <FormControlLabel value="no" control={<Radio />} label="No" />
-                </RadioGroup>
-              </FormControl>
+                  sx={{ width: '100%' }}
+                  renderInput={(params) => <TextField {...params} label="Materias a poner en el pensum" />}/>
+              </Grid>
+              <Grid item xs={4}>
+                <Button 
+                  onClick={openCrearMateria}
+                  variant="outlined"
+                  startIcon={<CreateIcon/>}
+                  style={{ width:'100%', marginLeft:'40px', marginTop:'5px'}}>Crear una materia</Button>
+              </Grid>
+              <Grid item xs={6}>
+                <Autocomplete
+                  disablePortal
+                  name="materiaRequisito"
+                  options={materias}
+                  onChange={(_event, newMateria)=>{
+                    setMateriaR(newMateria);
+                  }}
+                  sx={{ width: '100%' }}
+                  renderInput={(params) => <TextField {...params} label="Materias de requisito" />}/>
+              </Grid>
+              <Grid item xs={4}>
+                <Button 
+                  variant="outlined"
+                  onClick={agregarLista}
+                  startIcon={<PlaylistAddIcon/>}
+                  style={{ width:'100%',marginLeft:'40px', marginTop:'5px'}}>Agregar a la lista</Button>
+              </Grid>
+              <Grid item xs={6}>
+                <TextField 
+                  label="Ciclo que se impartira"
+                  type="number"
+                  style={{width:'100%'}}
+                  value={numeroCiclo}
+                  onChange={(event)=>{
+                    if(event.target.value>0 && event.target.value<11){
+                        setNumero(event.target.value);
+                      }
+                  }}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <FormControl component="fieldset" style={{marginLeft:'30px'}}>
+                  <FormLabel component="legend">¿Tiene requisitos previos?</FormLabel>
+                  <RadioGroup
+                    row
+                    defaultValue="si"
+                    onChange={(event)=>{
+                        setRequisitos(event.target.value);
+                    }}
+                    name="radio-buttons-group">
+                    <FormControlLabel value="si" control={<Radio />} label="Si" />
+                    <FormControlLabel value="no" control={<Radio />} label="No" />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+              {camposVacios.state && 
+              <p className={errorClass.errors}><WarningIcon /> Tiene un error al ingresar los datos, reviselo y vuelva a intentar
+                  (datos duplicados o campos vacios)
+                </p>}
             </Grid>
-            {camposVacios.state && 
-            <p className={errorClass.errors}><WarningIcon /> Tiene un error al ingresar los datos, reviselo y vuelva a intentar
-                (datos duplicados o campos vacios)
-              </p>}
-          </Grid>
           <br/> 
-        </div>
+          </div>:
+          <div style={{width: 500, height: 80,display: 'flex', alignItems: 'center',justifyContent: 'center',}}>
+            <CircularProgress/>
+          </div>
+        }
           <br/> 
           <br/> 
         <TablaMaterias rows={listaMateria}/>

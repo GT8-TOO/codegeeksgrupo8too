@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 const CardLocal = (props)=>{
-  const [local, setLocal] =useState(props.local) 
   return(
     <div>
       <Card>
@@ -17,9 +16,9 @@ const CardLocal = (props)=>{
           height="140"
           image="/static/images/cards/contemplative-reptile.jpg"/>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">{local.nombre_local}</Typography>
+          <Typography gutterBottom variant="h5" component="div">{props.local.nombre_local}</Typography>
           <Typography variant="body2" color="text.secondary">
-            {local.descripcion} 
+            {props.local.descripcion} 
           </Typography>
         </CardContent>
         <CardActions>

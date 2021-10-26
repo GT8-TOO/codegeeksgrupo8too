@@ -7,4 +7,5 @@ urlpatterns = [
     path('horario/headers/',horario_headers),
     path('horario/reservas/',horario_body),
     path('horario/solicitudes/',solicitud_body),
+    path('solicitarhorarios-json/', get_horario),
 ]
