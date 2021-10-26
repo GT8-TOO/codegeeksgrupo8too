@@ -23,6 +23,7 @@ const User =(props)=>{
   //Efecto de trasfondo
   useEffect(()=>{
     //socket
+    const socketConection = new WebSocket('ws://localhost:8000/ws/socketconnection/');
   })
 
   //Renderizado de HTML

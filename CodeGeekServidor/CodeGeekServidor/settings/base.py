@@ -39,6 +39,7 @@ LOCAL_APPS =[
 THIRD_APPS=[
     'corsheaders',
     'rest_framework',
+    'channels',
 ]
 
 INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
@@ -73,6 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'CodeGeekServidor.wsgi.application'
+ASGI_APPLICATION = 'CodeGeekServidor.asgi.application'
 
 CORS_ALLOWED_ORIGINS=[
     "http://localhost:3000",
