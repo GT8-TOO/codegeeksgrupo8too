@@ -16,26 +16,38 @@ import UserContext from '../../Context/UserContext';
 
 const CatalogoLocales =(props)=>{
   const userContext = useContext(UserContext);
-  const [escuelas, setEscuelas]=useState();
-  const [localActual, setLocal]=useState(null);
+  const [edificios, setEdificios]=useState();
+  const [local, setLocales]=useState()
+  const [edificioActual, setEdificio]=useState(null);
   const [error, setError]=useState(false)
 
   //Component di mount
   useEffect(async()=>{
     document.title="Catalogo de locales";
-    var prueba = await getDatos("locales/solicitarescuelas-json/");
+    var edi = await getDatosEdificios("locales/solicitaredificios-json/");
+    var loc = await getDatosLocales("locales/solicitarlocales-json/");
     if(error===false){
-      setEscuelas(prueba)
+      setEdificios(edi)
+      setLocales(loc)
     }
   },[]);
 
   //Solicitar datos a servidor
-  const getDatos = async(direccion) => {
+  const getDatosEdificios = async(direccion) => {
     var promise = await axios.get(props.url+direccion).then((res)=>{
       return res.data;
     }).catch((erro)=>{
       setError(true);
     });
+    return promise;
+  }
+
+  const getDatosLocales =async(direccion)=>{
+    var promise = await axios.get(props.url+direccion).then((res)=>{
+      return res.data;
+    }).catch((error)=>{
+      setError(true);
+    })
     return promise;
   }
 
@@ -57,11 +69,11 @@ const CatalogoLocales =(props)=>{
           <Autocomplete
             disablePortal
             id="combo-box-demo"
-            options={escuelas}
+            options={edificios}
             sx={{marginTop:5, width: 300 }}
           renderInput={(params) => <TextField {...params} label="Escuelas diponibles" />}
           onChange={(_event, newLocal) => {
-              setLocal(newLocal);
+              setEdificio(newLocal);
             }}
           />
           {userContext.user.admin &&
@@ -72,9 +84,21 @@ const CatalogoLocales =(props)=>{
           }
         </div>
         <br/>
-        {localActual!==null && <Typography variant="p">Se encuentra viendo {localActual.label}</Typography>}
-        <div>
-          <CardLocal/>
+        {edificioActual!==null && <Typography variant="p">Se encuentra viendo {edificioActual.label}</Typography>}
+        <div style={{display:'flex',marginTop:'30px'}}>
+          {(local!== undefined && edificioActual===null) && local.map((item)=>{
+            return(
+              <CardLocal local={item}/>
+            );
+          })
+          }
+          {edificioActual !== null && local.map((item)=>{
+            if(edificioActual.code ===item.cod_edificio_id){
+              return(
+                <CardLocal local={item}/>
+              );
+            }
+          })}
         </div>
       </div>
     </Slide>

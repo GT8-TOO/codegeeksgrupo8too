@@ -4,25 +4,38 @@ from django.http import JsonResponse
 from GestionLocales.models import *
 
 # Create your views here.
+
 @csrf_exempt
-def get_escuelas (request):
-    escuelas =list(Escuela.objects.values())
+def get_edificios (request):
+    #Metodo que envia los edificios mediante json
+    edificio=list(Edificio.objects.values())
     lista =[]
-    for i in range(len(escuelas)):
+    for i in range(len(edificio)):
         diccionario={
             "id":0,
             "code":"",
-            "label":""
+            "label":"",
+            "longuitud":"",
+            "latitud":""
         }
         diccionario["id"]= i
-        diccionario["code"]= escuelas[i]["cod_escuela"]
-        diccionario["label"]=escuelas[i]["nombre_escuela"]
+        diccionario["code"]= edificio[i]["cod_edificio"]
+        diccionario["label"]= edificio[i]["nombre_edificio"]
+        diccionario["longitud"]= edificio[i]["longitud"]
+        diccionario["latitud"]= edificio[i]["latitud"]
         lista.append(diccionario);
         del diccionario
     return JsonResponse(lista, safe=False)
 
 @csrf_exempt
+def get_locales(request):
+    #Metodo que mandara todos los locales que se encuentran
+    locales = list(Local.objects.values())
+    return JsonResponse(locales, safe=False)
+
+@csrf_exempt
 def registrar_local (request):
+    #Metodo que registrara un local para poder mostrarlo
     respuesta ={
         "title":"",
         "state":True,
