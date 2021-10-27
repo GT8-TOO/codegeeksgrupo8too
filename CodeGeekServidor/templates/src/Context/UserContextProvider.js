@@ -5,7 +5,8 @@ const UserContextProvider = ({children}) => {
 	const [ user, setUser ] = useState({
 		dui: 0,
 		admin:true,
-		logeado:undefined
+		logeado:undefined,
+		token:undefined
 	});
 	const [button, setButton] = useState({
 		enabled:false

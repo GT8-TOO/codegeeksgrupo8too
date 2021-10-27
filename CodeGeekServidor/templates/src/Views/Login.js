@@ -45,7 +45,7 @@ const Login =(props)=>{
 
   const sendDatos =async(formData, direccion, event)=>{
     setError([])
-    var data = await axios.post(props.url+ direccion, formData).then(res=>{
+    var data = await axios.post(props.url+ direccion, formData, { withCredentials: true }).then(res=>{
       return res.data;
     }).catch(error=>{
       setError(true);
@@ -54,6 +54,7 @@ const Login =(props)=>{
       cambiarUsuario("dui",data.dui)
       cambiarUsuario("admin", data.admin)
       cambiarUsuario("logeado", data.logeado)
+      cambiarUsuario("token", data.token)
     }else{
       cambiarUsuario("logeado", data.logeado)
       setError(data)

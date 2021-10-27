@@ -76,10 +76,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'CodeGeekServidor.wsgi.application'
 ASGI_APPLICATION = 'CodeGeekServidor.asgi.application'
 
-CORS_ALLOWED_ORIGINS=[
+CORS_URLS_REGEX = r'.*'
+CORS_ORIGIN_WHITELIST=[
     "http://localhost:3000",
     "http://localhosti:8000",
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 AUTH_PASSWORD_VALIDATORS = [
     {

@@ -93,7 +93,7 @@ const User =(props)=>{
           }
           {windows ==="profile" &&
             <UserProfile 
-            url={props.url}/>
+              url={props.url}/>
           }
           {windows ==="requestlocal" &&
             <SolicitarLocal 

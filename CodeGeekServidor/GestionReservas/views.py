@@ -27,7 +27,15 @@ def nueva_reserva(request):
         "creado":False,
         "message":""
     }
-    if request.user.is_authenticated:
+    token = request.POST.get("token")
+    if  not request.session.session_key:
+        print(token)
+        print(request.session.session_key)
+        print("Se puede")
+    else:
+        print("no funciono")
+
+    if token== request.session.session_key:
         if request.method == "POST":
             cod_empleado= request.user.cod_empleado
             cod_horario = request.POST.get("cod_horario")

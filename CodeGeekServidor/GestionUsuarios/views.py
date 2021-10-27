@@ -16,22 +16,21 @@ def home (request):
 @csrf_exempt
 def iniciar_sesion (request):
     if request.method =="POST":
-        print(request.session)
         #Aqui iria la logica del metodo
         email = request.POST.get("email")
         password = request.POST.get("password")
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
+            sesion =request.session.session_key;
             admin=user.usuario_administrador
             if admin==True:
-                print((user.administrador.all())[0].dui)
-                print(user.usuario_administrador)
-                return JsonResponse({"dui":(user.administrador.all())[0].dui,"admin":user.usuario_administrador,"logeado":True}, safe=False)        
-                
+                #print((user.administrador.all())[0].dui)
+                #print(user.usuario_administrador)
+                return JsonResponse({"dui":(user.administrador.all())[0].dui,"admin":user.usuario_administrador,"logeado":True,"token":sesion}, safe=True)        
             else:
-                print((user.docente.all())[0].dui)
-                return JsonResponse({"dui":(user.docente.all())[0].dui,"admin":user.usuario_administrador,"logeado":True}, safe=False)
+                #print((user.docente.all())[0].dui)
+                return JsonResponse({"dui":(user.docente.all())[0].dui,"admin":user.usuario_administrador,"logeado":True, "token":sesion}, safe=True)
     elif request.method =="GET":
         #Aqui ira la logica de este metodo
         pass

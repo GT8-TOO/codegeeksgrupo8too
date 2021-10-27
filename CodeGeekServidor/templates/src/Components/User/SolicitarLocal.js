@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Slide,
   CircularProgress,
@@ -8,6 +8,8 @@ import {
   Typography
 } from '@mui/material';
 import axios from 'axios';
+
+import userContext from '../../Context/UserContext';
 
 //Iconos
 import WarningIcon from '@mui/icons-material/Warning';
@@ -25,6 +27,7 @@ const SolicitarLocal = (props)=>{
     cod_local:undefined
   });
   const classError = styleError();
+  const usercontext = useContext(userContext);
   const [error, setError]= useState({
     state:false,
     type:"",
@@ -60,6 +63,8 @@ const SolicitarLocal = (props)=>{
         let formData = new FormData();
         formData.append("cod_local",dataSelect.cod_local);
         formData.append("cod_horario", dataSelect.cod_horario);
+        formData.append("cod_empleado", usercontext.user.dui);
+        formData.append("token", usercontext.user.token);
         console.log(formData)
         mandarSolicitud("reservas/nueva/",formData);
       }else{
