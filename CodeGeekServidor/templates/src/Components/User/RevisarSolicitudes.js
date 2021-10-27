@@ -19,7 +19,7 @@ const RevisarSolicitudes = (props)=>{
   }, [])
 
   const getDatosSolicitudes = async (direccion)=>{
-    let promise = await axios.get(props.url+direction).then((res)=>{
+    let promise = await axios.get(props.url+direccion).then((res)=>{
       return res.data;
     }).catch((error)=>{
       console.log(error)

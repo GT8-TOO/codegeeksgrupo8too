@@ -43,6 +43,16 @@ const Login =(props)=>{
     showPassword: false,
   });
 
+  //Component di mount
+  useEffect(()=>{
+    document.title="Iniciar sesion";
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("dui");
+    sessionStorage.removeItem("logeado");
+    sessionStorage.removeItem("admin");
+  },[])
+
+  //Envia la informacion a servidor
   const sendDatos =async(formData, direccion, event)=>{
     setError([])
     var data = await axios.post(props.url+ direccion, formData, { withCredentials: true }).then(res=>{
@@ -72,11 +82,7 @@ const Login =(props)=>{
     })
   }
 
-  //Component di mount
-  useEffect(()=>{
-    document.title="Iniciar sesion";
-  },[])
-
+  //Metodo que valida el inicio de sesion
   const iniciarSesion=(data)=>{
     if(data.email!== undefined && data.password!==undefined){
       let formData = new FormData();
@@ -86,6 +92,7 @@ const Login =(props)=>{
     }
   }
   
+  //Metodo para mostrar la contraseña
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
@@ -98,6 +105,7 @@ const Login =(props)=>{
     event.preventDefault();
   };
 
+  //Renderizado que retorna
   return (
     <div>
       {userContext.user.logeado && <Redirect to ='user/home'/>}

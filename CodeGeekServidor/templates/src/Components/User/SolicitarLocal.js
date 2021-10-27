@@ -8,6 +8,7 @@ import {
   Typography
 } from '@mui/material';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 
 import userContext from '../../Context/UserContext';
 
@@ -31,6 +32,7 @@ const SolicitarLocal = (props)=>{
   const [error, setError]= useState({
     state:false,
     type:"",
+    sesionCaducada:false,
     title:"",
     message:""
   })
@@ -96,6 +98,9 @@ const SolicitarLocal = (props)=>{
             title={error.title}
             message={error.message}
           />
+        }
+        {error.sesionCaducada && 
+          <Redirect to="/login"/>
         }
         <Typography variant="h4">Realizar reserva de local</Typography>
         { props.horarios !== undefined ?
