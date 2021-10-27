@@ -28,7 +28,7 @@ def nueva_reserva(request):
         "message":""
     }
     token = request.POST.get("token")
-    if  not request.session.session_key:
+    if request.session.session_key:
         print(token)
         print(request.session.session_key)
         print("Se puede")

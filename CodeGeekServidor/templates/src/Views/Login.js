@@ -51,6 +51,10 @@ const Login =(props)=>{
       setError(true);
     })
     if(data.logeado===true){
+      sessionStorage.setItem("dui",data.dui)
+      sessionStorage.setItem("admin",data.admin)
+      sessionStorage.setItem("logeado",data.logeado)
+      sessionStorage.setItem("token",data.token)
       cambiarUsuario("dui",data.dui)
       cambiarUsuario("admin", data.admin)
       cambiarUsuario("logeado", data.logeado)

@@ -92,6 +92,13 @@ const NavBar=(props)=> {
     setOpen(false);
   };
 
+  const cerrarSesion =()=>{
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("dui");
+    sessionStorage.removeItem("logeado");
+    sessionStorage.removeItem("admin");
+  }
+
   return (
     <Box sx={{display: 'flex' }}>
       <Drawer variant="permanent" open={open} >
@@ -137,7 +144,7 @@ const NavBar=(props)=> {
         <Divider />
         <List>
            <Link to={``} style={{ textDecoration: 'none' }}>
-            <ListItem button  key="logout">
+            <ListItem button  onClick={cerrarSesion} key="logout">
               <ListItemIcon><LogoutIcon/></ListItemIcon>
               <ListItemText primary="Cerrar sesion" />
             </ListItem>

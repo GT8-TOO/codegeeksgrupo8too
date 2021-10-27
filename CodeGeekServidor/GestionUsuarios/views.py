@@ -22,6 +22,7 @@ def iniciar_sesion (request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
+            request.session.create()
             sesion =request.session.session_key;
             admin=user.usuario_administrador
             if admin==True:

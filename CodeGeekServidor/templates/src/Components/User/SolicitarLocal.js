@@ -37,7 +37,7 @@ const SolicitarLocal = (props)=>{
 
   //Manda los datos a servidor
   const mandarSolicitud =async(direccion, data)=>{
-    let promise = await axios.post(props.url+direccion, data).then((res)=>{
+    let promise = await axios.post(props.url+direccion, data,{withCredentials:true}).then((res)=>{
       return res.data;
     }).catch((error)=>{
       console.log(error);

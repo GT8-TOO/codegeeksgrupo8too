@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import SlideBar from '../Components/User/SlideBar';
 //eslint-disable-next-line
 import Footer from '../Components/Footer';
-import { useParams } from 'react-router-dom';
+import { useParams, Redirect } from 'react-router-dom';
 
 import {
   Slide
@@ -27,17 +27,43 @@ const User =(props)=>{
   const [horarios, setHorarios] =useState();
   const [edificios, setEdificios]=useState();
   const [escuelas, setEscuelas]=useState();
+  const [session, setSession]=useState(true);
   let { windows } =useParams();
 
   //Component di mount
   useEffect(()=>{
+    //Valida al usuario si tiene session
+    if(sessionStorage.getItem("dui")!== null && sessionStorage.getItem("token")!== null){
+      setSession(true)
+      cambiarUsuario("dui",sessionStorage.getItem("dui"))
+      if (sessionStorage.getItem("admin")==='true'){
+        cambiarUsuario("admin", true)
+      }else{
+        cambiarUsuario("admin", false)
+      }
+      console.log(sessionStorage.getItem("admin"))
+      cambiarUsuario("logeado", sessionStorage.getItem("logeado"))
+      cambiarUsuario("token", sessionStorage.getItem("token"))
+    }else{
+      setSession(false);
+    }
+
     //Trae los datos
     getDatosLocales("locales/solicitarlocales-json/")
     getDatosHorarios("reservas/solicitarhorarios-json/")
     getDatosEdificios("locales/solicitaredificios-json/");
     getDatosEscuelas("locales/solicitarescuelas-json/");
+
     //const socketConection = new WebSocket('ws://localhost:8000/ws/socketconnection/');
   },[])
+
+  //Cambia el estado de userContext
+  const cambiarUsuario=(clave, valor)=>{
+    userContext.setUser(prevState=>{
+      return {...prevState, [clave]:valor}
+    })
+  }
+
 
   
   //Manda a trare los datos de los locales 
@@ -85,6 +111,7 @@ const User =(props)=>{
     <div style={{display:'flex'}}>
       <SlideBar admin={userContext.user.admin}/>
       <div>
+        {session ?
         <div style={{margin:'55px 40px'}}>
           {windows ==="home" && 
             <Inicio 
@@ -132,7 +159,11 @@ const User =(props)=>{
               url={props.url} 
               direction="up"/>
           }
-        </div>
+        </div>:
+          <div>
+            <Redirect to='/login'/>
+          </div>
+        }
         {/*<Footer/>*/}
       </div>
     </div>
