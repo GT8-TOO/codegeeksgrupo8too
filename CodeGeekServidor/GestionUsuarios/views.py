@@ -10,6 +10,7 @@ from datetime import datetime
 import re
 
 # Create your views here.
+
 def home (request):
     return render (request, "index.html")
 
@@ -172,8 +173,4 @@ def obtener_usuario(request):
     else:
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."},safe=False)
 
-def vista_registrarse (request):
-    return render (request, "index.html")
 
-def vista_login (request):
-    return render (request, "index.html")

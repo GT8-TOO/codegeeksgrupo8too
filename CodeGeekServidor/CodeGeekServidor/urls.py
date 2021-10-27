@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-from GestionUsuarios.views import vista_registrarse, vista_login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,7 +23,5 @@ urlpatterns = [
     path('locales/', include('GestionLocales.urls')),
     path('reservas/', include('GestionReservas.urls')),
     path('materias/', include('GestionMaterias.urls')),
-    path('register/', vista_registrarse),
-    path('login/', vista_registrarse),
     path('', include('VistasGenerales.urls')), #Cambiar despues a metodo
 ]

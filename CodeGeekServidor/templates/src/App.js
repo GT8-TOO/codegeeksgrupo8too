@@ -17,9 +17,9 @@ const App=() =>{
  return (
     <Router>
       <Switch>
-        <Route path ="/login"><Login url ={baseURL}/></Route>
-        <Route path ="/register"><Register url ={baseURL}/></Route>
-        <Route path="/user/:windows"><User url ={baseURL}/></Route>
+        <Route exact path="/user/:windows"><User url ={baseURL}/></Route>
+        <Route exact path ="/login"><Login url ={baseURL}/></Route>
+        <Route exact path ="/register"><Register url ={baseURL}/></Route>
         <Route exact path="/"><Home/></Route>
       </Switch>
     </Router>

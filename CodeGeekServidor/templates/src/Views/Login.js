@@ -108,7 +108,6 @@ const Login =(props)=>{
   //Renderizado que retorna
   return (
     <div>
-      {userContext.user.logeado && <Redirect to ='user/home'/>}
       {errorsLogear.logeado === false &&
         <WindowAlert 
           state={!errorsLogear.logeado} 
@@ -177,6 +176,7 @@ const Login =(props)=>{
                 style={{backgroundColor:'#01818A'}}
                 variant="contained" 
                 onClick={iniciarSesion}>Ingresar</Button> 
+            {userContext.user.logeado && <Redirect to ="user/home"/>}
             <Button 
                 href ='/' 
                 style={{backgroundColor:'#01818A'}}

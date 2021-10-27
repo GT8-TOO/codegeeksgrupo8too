@@ -4,6 +4,7 @@ import {
   Button,
   Box
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 //Components
 import Slider from '../Components/Sliders';
@@ -78,12 +79,13 @@ const Index =()=>{
           Generar un sistema capaz de poder llevar a cabo el mantenimiento de los horarios de laboratorios
         </p>
         <Box textAlign='center'>
-        <Button 
-          className={classes.button} 
-          variant="outlined" 
-          href="/login"
-          color="inherit">Iniciar Sesion</Button>
-        <br/>
+          <Link to="/login">
+          <Button 
+            className={classes.button} 
+            variant="outlined" 
+            color="inherit">Iniciar Sesion</Button>
+          </Link>
+       <br/>
         <br/>
         <Button 
           className={classes.button} 

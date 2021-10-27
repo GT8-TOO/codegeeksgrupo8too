@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 
 //Material UI
 import { 
@@ -20,6 +20,9 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import LogoutIcon from '@mui/icons-material/Logout';
+
+//Context
+import userContext from '../../Context/UserContext';
 
 //Style
 import useStyle from '../../Styled/UsuarioCSS';
@@ -81,6 +84,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const NavBar=(props)=> {
   const theme = useTheme();
   const [open, setOpen] = useState();
+  const usercontext =useContext(userContext)
   //eslint-disable-next-line
   const classes = useStyle();
 
@@ -97,8 +101,19 @@ const NavBar=(props)=> {
     sessionStorage.removeItem("dui");
     sessionStorage.removeItem("logeado");
     sessionStorage.removeItem("admin");
+    cambiarUsuario("dui",0)
+    cambiarUsuario("admin",true)
+    cambiarUsuario("logeado", undefined)
+    cambiarUsuario("token", undefined)
   }
 
+  //Cambia el estado de userContext
+  const cambiarUsuario=(clave, valor)=>{
+    usercontext.setUser(prevState=>{
+      return {...prevState, [clave]:valor}
+    })
+  }
+ 
   return (
     <Box sx={{display: 'flex' }}>
       <Drawer variant="permanent" open={open} >
