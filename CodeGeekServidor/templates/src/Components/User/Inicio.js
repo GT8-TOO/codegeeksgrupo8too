@@ -55,7 +55,6 @@ const Inicio =(props)=>{
             renderInput={(params) => <TextField {...params} label="Seleccione el local" />}
             onChange={(_event, newLocal) => {
               setLocalA(newLocal);
-              console.log(localActual)
             }}
           />:
             <div style={{width: 500, height: 80,display: 'flex', alignItems: 'center',justifyContent: 'center',}}>

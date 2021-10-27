@@ -4,10 +4,6 @@ import SlideBar from '../Components/User/SlideBar';
 import Footer from '../Components/Footer';
 import { useParams, Redirect } from 'react-router-dom';
 
-import {
-  Slide
-} from '@mui/material';
-
 //Vistas pequeñas
 import Inicio from '../Components/User/Inicio';
 import UserProfile from '../Components/User/UserProfile';
@@ -15,6 +11,7 @@ import SolicitarLocal from '../Components/User/SolicitarLocal';
 import CatalogoLocales from '../Components/User/CatalogoLocales';
 import RegistrarCarrera from '../Components/User/RegistrarCarrera';
 import CrearAdministrador from '../Components/User/CrearAdministrador';
+import RevisarSolicitudes from '../Components/User/RevisarSolicitudes';
 
 //Context
 import UserContext  from '../Context/UserContext';
@@ -63,8 +60,6 @@ const User =(props)=>{
       return {...prevState, [clave]:valor}
     })
   }
-
-
   
   //Manda a trare los datos de los locales 
   const getDatosLocales =async(direccion)=>{
@@ -129,9 +124,9 @@ const User =(props)=>{
               url={props.url}/>
           }
           {windows ==="reviewrequest" &&
-            <Slide direction="left" in={true}>
-              <p>Aqui podra revisar solicitudes (todas)</p>
-            </Slide>
+            <RevisarSolicitudes
+              local={local}
+              url={props.url}/>
           }
           {windows ==="local" &&
             <CatalogoLocales 
