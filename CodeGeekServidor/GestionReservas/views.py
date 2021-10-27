@@ -72,7 +72,7 @@ def nueva_reserva(request):
                     return JsonResponse(respuesta, safe=False)
             except:
                 respuesta["sesionCaducada"]=True
-                respuesta["message"]="La sisión a caducado"
+                respuesta["message"]="La sesión a caducado"
                 return JsonResponse(respuesta, safe=False)
         else:
             respuesta["message"]="Los datos no fueron enviados de forma segura"
