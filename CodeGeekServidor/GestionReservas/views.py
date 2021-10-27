@@ -25,7 +25,8 @@ def nueva_reserva(request):
         "type":"error",
         "state":True,
         "creado":False,
-        "message":""
+        "message":"",
+        "sesionCaducada":False
     }
     """
     token = request.POST.get("token")
@@ -39,39 +40,45 @@ def nueva_reserva(request):
 
     if request.session.session_key:
         if request.method == "POST":
-            cod_empleado= request.user.cod_empleado
-            cod_horario = request.POST.get("cod_horario")
-            cod_local = request.POST.get("cod_local")
-
-            docente=Docente.objects.get(cod_empleado=cod_empleado)
             try:
-                esparte= EsParteDe.objects.get(dui=docente.dui)
+                cod_empleado= request.user.cod_empleado
+                cod_horario = request.POST.get("cod_horario")
+                cod_local = request.POST.get("cod_local")
+
+                docente=Docente.objects.get(cod_empleado=cod_empleado)
                 try:
-                    if esparte.coordinador==True:    
-                        reserva =Reserva()
-                        reserva.cod_horario = Horario.objects.get(cod_horario=cod_horario)
-                        reserva.cod_local = Local.objects.get(cod_local=cod_local)
-                        reserva.doc_dui = esparte.dui
-                        reserva.cod_materia=esparte.cod_catedra.cod_materia
-                        reserva.estado_solicitud = "En Proceso"
-                        reserva.save()
-                        respuesta["type"]="success"
-                        respuesta["message"]="La reservación se ha registrado correctamente"
-                        respuesta["creado"]=True
-                        return JsonResponse(respuesta, safe=False)
-                    else:
-                        respuesta["message"]="Solo los coordinadores pueden solicitar reservas"
+                    esparte= EsParteDe.objects.get(dui=docente.dui)
+                    try:
+                        if esparte.coordinador==True:    
+                            reserva =Reserva()
+                            reserva.cod_horario = Horario.objects.get(cod_horario=cod_horario)
+                            reserva.cod_local = Local.objects.get(cod_local=cod_local)
+                            reserva.doc_dui = esparte.dui
+                            reserva.cod_materia=esparte.cod_catedra.cod_materia
+                            reserva.estado_solicitud = "En Proceso"
+                            reserva.save()
+                            respuesta["type"]="success"
+                            respuesta["message"]="La reservación se ha registrado correctamente"
+                            respuesta["creado"]=True
+                            return JsonResponse(respuesta, safe=False)
+                        else:
+                            respuesta["message"]="Solo los coordinadores pueden solicitar reservas"
+                            return JsonResponse(respuesta, safe=False)
+                    except:
+                        respuesta["message"]="El horario o el local proporcionado no estan registrados"
                         return JsonResponse(respuesta, safe=False)
                 except:
-                    respuesta["message"]="El horario o el local proporcionado no estan registrados"
+                    respuesta["message"]="El docente actual no esta registrado en ninguna catedra"
                     return JsonResponse(respuesta, safe=False)
             except:
-                respuesta["message"]="El docente actual no esta registrado en ninguna catedra"
+                respuesta["sesionCaducada"]=True
+                respuesta["message"]="La sisión a caducado"
                 return JsonResponse(respuesta, safe=False)
         else:
             respuesta["message"]="Los datos no fueron enviados de forma segura"
             return JsonResponse(respuesta, safe=False)
     else:
+        respuesta["sesionCaducada"]=True
         respuesta["message"]="El usuario no esta logeado"
         return JsonResponse(respuesta, safe=False)
 
