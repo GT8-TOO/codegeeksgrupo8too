@@ -8,7 +8,6 @@ import {
   Typography
 } from '@mui/material';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
 
 import userContext from '../../Context/UserContext';
 
@@ -22,7 +21,6 @@ import WindowAlert from '../WindowAlert';
 import styleError from '../../Styled/ErorCSS';
 
 const SolicitarLocal = (props)=>{
-  //eslint-disable-next-line
   const [dataSelect, setData]=useState({
     cod_horario:undefined,
     cod_local:undefined
@@ -45,13 +43,29 @@ const SolicitarLocal = (props)=>{
       console.log(error);
     })
     setError(promise);
+    if(promise.sesionCaducada){
+      cambiarUsuario("dui",0)
+      cambiarUsuario("admin", true)
+      cambiarUsuario("logeado", false)
+      cambiarUsuario("token", undefined)
+    }
   }
 
   //Component di mount
   useEffect(()=>{
     document.title="Realizar reserva";
-    console.log(props.local)
+    if (usercontext.codigoLocal !== undefined){   
+      setData({cod_horario:undefined, cod_local:usercontext.codigoLocal});
+    }
+    console.log(usercontext.codigoLocal)
   },[])
+
+  //Cambia el estado de userContext
+  const cambiarUsuario=(clave, valor)=>{
+    usercontext.setUser(prevState=>{
+      return {...prevState, [clave]:valor}
+    })
+  }
 
   const solicitarReserva =()=>{
     setError({
@@ -67,8 +81,8 @@ const SolicitarLocal = (props)=>{
         formData.append("cod_horario", dataSelect.cod_horario);
         formData.append("cod_empleado", usercontext.user.dui);
         formData.append("token", usercontext.user.token);
-        console.log(formData)
         mandarSolicitud("reservas/nueva/",formData);
+        console.log(error.sesionCaducada)
       }else{
         setError({
           state:true,
@@ -84,7 +98,6 @@ const SolicitarLocal = (props)=>{
         title:"Campos vacios",
         message:"No ha ingresado ningun dato asi que no puede realizar la reserva"
       })
-
     }
   }
   
@@ -100,7 +113,13 @@ const SolicitarLocal = (props)=>{
           />
         }
         {error.sesionCaducada && 
-          <Redirect to="/login"/>
+          <WindowAlert
+            type={error.type}
+            state={error.state}
+            title={error.title}
+            message={error.message}
+            redirect="/login"
+          />
         }
         <Typography variant="h4">Realizar reserva de local</Typography>
         { props.horarios !== undefined ?
@@ -109,6 +128,7 @@ const SolicitarLocal = (props)=>{
               disablePortal
               id="combo-box-demo"
               options={props.local}
+              value ={usercontext.codigoLocal !== undefined ? usercontext.codigoLocal: ''}
               fullWidth={true}
               sx={{marginTop:5 }}
               renderInput={(params) => <TextField {...params} label="Local a solicitar" />}

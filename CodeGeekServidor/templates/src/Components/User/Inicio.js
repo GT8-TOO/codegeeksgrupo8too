@@ -34,10 +34,12 @@ const Inicio =(props)=>{
 
   const mostrarHorario = (event)=>{
     let formData =new FormData();
-    console.log(localActual.code)
-    formData.append("cod_local", localActual.code )
-    getDatosHorario("reservas/horario/reservas/", formData)
+    formData.append("cod_local", "LAB2" )
+    getDatosHorario("reservas/horario/solicitudes/", formData)
     console.log(horario)
+    if(horario !== undefined){
+      console.log(horario[0].doc_dui)
+    }
   }
 
   //Renderizado

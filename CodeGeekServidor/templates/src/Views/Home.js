@@ -11,6 +11,7 @@ import Slider from '../Components/Sliders';
 import AppBar from '../Components/AppBar';
 import Footer from '../Components/Footer';
 
+import '../Styled/Link.css';
 // eslint-disable-next-line
 const useStyles = makeStyles((theme)=>
   createStyles({
@@ -79,20 +80,21 @@ const Index =()=>{
           Generar un sistema capaz de poder llevar a cabo el mantenimiento de los horarios de laboratorios
         </p>
         <Box textAlign='center'>
-          <Link to="/login">
-          <Button 
-            className={classes.button} 
-            variant="outlined" 
-            color="inherit">Iniciar Sesion</Button>
+          <Link to="/login" className ="link">
+            <Button 
+              className={classes.button} 
+              variant="outlined" 
+              color="inherit">Iniciar Sesion</Button>
           </Link>
        <br/>
         <br/>
-        <Button 
-          className={classes.button} 
-          variant="outlined" 
-          href="/register"
-          color="inherit">Registrarse</Button>
-          </Box>
+        <Link to="/register" className ="link">
+          <Button 
+            className={classes.button} 
+            variant="outlined" 
+            color="inherit">Registrarse</Button>
+          </Link>
+        </Box>
        <p 
           style={{
             position:'relative',

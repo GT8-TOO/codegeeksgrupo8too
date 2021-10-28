@@ -26,6 +26,7 @@ import userContext from '../../Context/UserContext';
 
 //Style
 import useStyle from '../../Styled/UsuarioCSS';
+import '../../Styled/Link.css';
 
 //Contenido SliderBar
 import {SidebarData} from './DataBar/SidebarData';
@@ -136,7 +137,7 @@ const NavBar=(props)=> {
         <List>
           {SidebarData.map((item)=>{
             return(
-              <Link to={`/user/${item.path}`} style={{ textDecoration: 'none' }}>
+              <Link to={`/user/${item.path}`} className="link2">
                 <ListItem button  key={item.key}>
                   <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.title} />
@@ -148,7 +149,7 @@ const NavBar=(props)=> {
           {SliderAdminData.map((item)=>{
             return(
             <List>
-            <Link to={`/user/${item.path}`} style={{ textDecoration: 'none' }}>
+            <Link to={`/user/${item.path}`} className="link2">
               <ListItem button  key={item.key}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.title} />
@@ -158,7 +159,7 @@ const NavBar=(props)=> {
         </div>}
         <Divider />
         <List>
-           <Link to={``} style={{ textDecoration: 'none' }}>
+           <Link to={``} className="link2">
             <ListItem button  onClick={cerrarSesion} key="logout">
               <ListItemIcon><LogoutIcon/></ListItemIcon>
               <ListItemText primary="Cerrar sesion" />

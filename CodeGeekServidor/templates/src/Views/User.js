@@ -38,7 +38,6 @@ const User =(props)=>{
       }else{
         cambiarUsuario("admin", false)
       }
-      console.log(sessionStorage.getItem("admin"))
       cambiarUsuario("logeado", sessionStorage.getItem("logeado"))
       cambiarUsuario("token", sessionStorage.getItem("token"))
     }else{

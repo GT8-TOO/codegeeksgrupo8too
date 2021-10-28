@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState,forwardRef, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
   TextField,
   Dialog,
   Rating,
+  Slide,
   FormControl,
   FormLabel,
   FormControlLabel,
@@ -66,6 +67,9 @@ IconContainer.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const RegistrarLocal = (props)=>{
   const errorClass =errorStyle();
@@ -106,7 +110,7 @@ const RegistrarLocal = (props)=>{
   //Renderizado de HTML
   return(
     <div>
-      <Dialog open={userContext.openLocal} maxWidth="md" onClose={handleClose}>
+      <Dialog TransitionComponent={Transition} open={userContext.openLocal} maxWidth="md" onClose={handleClose}>
         <DialogTitle>Registrar un nuevo local</DialogTitle>
         <form onSubmit={handleSubmit(registrarLocal)}>
           <Grid  container spacing={1} >

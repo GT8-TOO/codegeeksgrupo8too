@@ -42,7 +42,6 @@ def registrar_materia (request):
 
     return JsonResponse(respuesta, safe=False)
 
-
 @csrf_exempt
 def mandar_materias (request):
     materias = list(Materia.objects.values())

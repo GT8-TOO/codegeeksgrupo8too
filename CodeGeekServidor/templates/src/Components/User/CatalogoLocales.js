@@ -24,6 +24,7 @@ const CatalogoLocales =(props)=>{
   //Component di mount
   useEffect(async()=>{
     document.title="Catalogo de locales";
+    userContext.setCodigoLocal(undefined)
   },[]);
 
   const openDialogClick = () => {
@@ -41,7 +42,7 @@ const CatalogoLocales =(props)=>{
         {userContext.openLocal &&<RegistrarLocal url={props.url}/>}
         <Typography variant="h4">Catálogo de locales de la Facultad de Ingeniería y Arquietectura</Typography>
         { props.edificios !== undefined && props.local !== undefined ?
-          <div>
+          <div style={{width:'100%'}}>
             <div style={{display:'flex', gap:'20px', margin:'1px auto'}}>
               <Autocomplete
                 disablePortal
@@ -65,8 +66,8 @@ const CatalogoLocales =(props)=>{
             <br/>
             {edificioActual!==null && 
               <Typography variant="p">Se encuentra viendo {edificioActual.label}</Typography>}
-            <div style={{display:'flex',marginTop:'30px'}}>
-              {props.local.map((item)=>{
+            <div style={{display:'flex', gap:'30px', width:'100%',flexWrap:'wrap',marginTop:'30px'}}>
+              { edificioActual === null &&props.local.map((item)=>{
                 return(
                   <CardLocal local={item}/>
                 );
@@ -74,7 +75,7 @@ const CatalogoLocales =(props)=>{
               }
               {/*eslint-disable-next-line*/}
               {edificioActual !== null && props.local.map((item)=>{
-                if(edificioActual.code ===item.cod_edificio_id){
+                if(edificioActual.code ===item.codEdificio){
                   return(
                     <CardLocal local={item}/>
                   );

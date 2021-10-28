@@ -13,6 +13,7 @@ from rest_framework.renderers import JSONRenderer
 from GestionUsuarios.models import Administrador, Docente, Empleado, Notificacion
 from GestionMaterias.models import Horario,Dia,Hora, Materia, Catedra, EsParteDe
 from GestionLocales.models import Local
+from django.core import serializers
 
 # Create your views here.
 #El siguiente metodo requiere el codigo del horario, el codigo del local y un usuario logeado
@@ -94,6 +95,7 @@ def crear_notificación(reserva):
 
 #El siguiente metodo recibe el codigo de solicitud y el nuevo estado (Aprobado/Denegado) 
 #Es necesario ocupar un usuario registrado como administrador.
+#codAdmin, cod_reserva, estado
 #email: patoso77@ues.edu.sv     password: 3enero1999
 @csrf_exempt
 def cambiar_estado(request):
@@ -103,7 +105,8 @@ def cambiar_estado(request):
         "message":"Hay un error en los datos enviados."
     }
     try:
-        administrador = Administrador.objects.get(cod_empleado=request.user.cod_empleado)  
+        codigoAdmin = request.POST.get("codAdmin")
+        administrador = Administrador.objects.get(cod_empleado=codigoAdmin)  
         try:
             cod_reserva = request.POST.get("cod_reserva")
             estado = request.POST.get("estado")
@@ -162,9 +165,8 @@ def horario_headers(request):
 # las reservas de solicitudes aceptadas     
 @csrf_exempt
 def horario_body(request):
-    if request.method == "POST":
-        cod_local = request.POST.get("cod_local")
-        reservas=Reserva.objects.filter(cod_local__cod_local=cod_local,estado_solicitud='Aceptada')
+    if request.method == "GET":
+        reservas=Reserva.objects.filter(cod_local__cod_local='LAB2',estado_solicitud='Aprobado')
         serializer = ReservaSerializer(reservas, many = True)
         
         return JsonResponse(serializer.data, safe=False)
@@ -179,10 +181,23 @@ def solicitud_body(request):
         cod_local = request.POST.get("cod_local")
         reservas=Reserva.objects.filter(cod_local__cod_local=cod_local,estado_solicitud='En Proceso').order_by('cod_horario__cod_dia')          
         serializer = ReservaSerializer(reservas, many = True)
-        
+        return JsonResponse(serializer.data, safe=False)
+    elif request.method =="GET":
+        reservas=Reserva.objects.filter(estado_solicitud='En Proceso').order_by('cod_horario__cod_dia')          
+        serializer = ReservaSerializer(reservas, many = True)
         return JsonResponse(serializer.data, safe=False)
     else:
-        return JsonResponse({"Error":'Debe utilizar Metodo POST para consultar Solicitudes'}, safe=False)       
+        return JsonResponse({"Error":'No se puede acceder a esta informacion'}, safe=False)       
+
+@csrf_exempt
+def get_usuario_solicitud(request):
+    if request.method == "POST":
+        codReserva = request.POST.get("codigoReserva")
+        reserva = list(Reserva.objects.filter(Q(cod_reserva=codReserva)).values())
+        docente=list(Docente.objects.filter(Q(dui=reserva[0]["doc_dui_id"])).values()) 
+        return JsonResponse(docente[0],safe=False)
+    else:
+        return JsonResponse({"Error":"No se puede acceder a esta URL"}, safe=False)
 
 #Retorna todo el horario para poder crear la reservaa
 @csrf_exempt

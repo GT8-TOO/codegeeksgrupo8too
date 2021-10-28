@@ -8,4 +8,5 @@ urlpatterns = [
     path('horario/reservas/',horario_body),
     path('horario/solicitudes/',solicitud_body),
     path('solicitarhorarios-json/', get_horario),
+    path('solicitud/usuario-json/', get_usuario_solicitud),
 ]

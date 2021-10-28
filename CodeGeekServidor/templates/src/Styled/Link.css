@@ -1,0 +1,23 @@
+.link{
+      text-decoration:none;
+      background:none;
+      background-color:none;
+      color:black;
+}
+.link:active{
+      background:none;
+      text-decoration:none;
+}
+.link:focus{
+      background:none;
+      background-color:none;
+      text-decoration:none;
+}
+.link2{
+      text-decoration:none;
+      color:black;
+}
+.link2:hover{
+      color:#145d70;
+
+}

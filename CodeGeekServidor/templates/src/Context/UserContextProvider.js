@@ -19,6 +19,7 @@ const UserContextProvider = ({children}) => {
 	});
 	const [openMateria, setCrearMateria] =useState(false)
 	const [openLocal, setCrearLocal]=useState(false)
+	const [openSolicitud, setOpenSolicitud]=useState(false)
 	
 	const [respuesta, setRespuesta]= useState({
 		type:"",
@@ -26,7 +27,8 @@ const UserContextProvider = ({children}) => {
 		materiaGuardada:false
   });
 
-
+	const [codigoLocal, setCodigoLocal]=useState();
+	const [solicitud, setSolicitud] =useState();
 
 	return (
 		<UserContext.Provider value={{
@@ -40,8 +42,14 @@ const UserContextProvider = ({children}) => {
 			setCrearMateria,
 			openLocal,
 			setCrearLocal,
+			openSolicitud,
+			setOpenSolicitud,
 			respuesta,
-			setRespuesta
+			setRespuesta,
+			codigoLocal,
+			setCodigoLocal,
+			solicitud,
+			setSolicitud
 		}}>
 			{children}
 		</UserContext.Provider>

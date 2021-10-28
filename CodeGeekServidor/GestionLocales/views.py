@@ -31,18 +31,27 @@ def get_edificios (request):
 def get_locales(request):
     #Metodo que mandara todos los locales que se encuentran
     locales = list(Local.objects.values())
+    edificio= list(Edificio.objects.values())
     lista =[]
     for i in range(len(locales)):
         diccionario={
             "id":0,
             "code":"",
             "label":"",
-            "descripcion":""
+            "descripcion":"",
+            "codEdificio":"",
+            "nombreEdificio":"",
+            "calificacion":0
         }
         diccionario["id"]= i
         diccionario["code"]= locales[i]["cod_local"]
         diccionario["label"]= locales[i]["nombre_local"]
         diccionario["descripcion"]= locales[i]["descripcion"]
+        diccionario["codEdificio"]= locales[i]["cod_edificio_id"]
+        for j in range(len(edificio)):
+            if edificio[j]["cod_edificio"]== locales[i]["cod_edificio_id"]:
+                diccionario["nombreEdificio"]= edificio[j]["nombre_edificio"]
+        diccionario["calificacion"]= locales[i]["puntuacion"]
         lista.append(diccionario);
         del diccionario
     return JsonResponse(lista, safe=False)

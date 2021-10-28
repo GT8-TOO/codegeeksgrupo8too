@@ -10,10 +10,16 @@ const UserContext = createContext({
   setCarrera:(data)=>{},
   openMateria:{},
   setOpenMateria :(id)=>{},
-  openLoca:{},
+  openLocal:{},
   setCrearLocal:(id)=>{},
+  openSolicitud:{},
+  setOpenSolicitud:(id)=>{},
   respuesta:{},
   setRespuesta:(id)=>{},
+  codigoLocal:{},
+  setCodigoLocal:(id)=>{},
+  solicitud:{},
+  setSolicitud:(id)=>{},
 });
 
 export default UserContext;

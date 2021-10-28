@@ -7,7 +7,8 @@ class ReservaSerializer(serializers.ModelSerializer):
             model = Reserva
             depth = 2
             #   fields='__all__'
-            fields=['cod_horario','cod_materia','estado_solicitud']
+            #fields=['doc_dui','cod_horario','cod_materia','cod_local','estado_solicitud']
+            fields=['cod_reserva','cod_horario','cod_materia','cod_local','estado_solicitud']
         
 class DiaSerializer(serializers.ModelSerializer):
       class Meta:

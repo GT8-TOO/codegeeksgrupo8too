@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Slide,
   Autocomplete,
@@ -8,14 +8,23 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 
+//Componentes
+import Solicitud from './Solicitudes/Solicitud';
+import CambiarEstado from './Solicitudes/CambiarEstado';
+
+//Context
+import UserContext from '../../Context/UserContext';
+
 const RevisarSolicitudes = (props)=>{
-  const [localActual, setLocalA]=useState();
+  const [localActual, setLocalA]=useState(null);
   const [solicitudes, setSolicitudes]=useState();
+  const usercontext = useContext(UserContext);
 
   //Component di mount
   useEffect(()=>{
     document.title="Solicitudes de locales";
-    getDatosSolicitudes("horario/solicitudes/")
+    getDatosSolicitudes("reservas/horario/solicitudes/")
+    usercontext.setSolicitud(undefined);
   }, [])
 
   const getDatosSolicitudes = async (direccion)=>{
@@ -27,14 +36,11 @@ const RevisarSolicitudes = (props)=>{
     setSolicitudes(promise)
   }
   
-  const mostrarLocal=()=>{
-
-  }
-
   return(
     <Slide direction="up" in={true}>
       <div style={{width:'100%'}}>
-        <Typography variant="h4">Solicitudes</Typography>
+        {usercontext.openSolicitud && <CambiarEstado url={props.url}/>}
+        <Typography variant="h4">Solicitudes pendientes </Typography>
         {props.local !== undefined ?
           <div style={{width:'100%'}}>
             <Autocomplete
@@ -46,9 +52,40 @@ const RevisarSolicitudes = (props)=>{
               renderInput={(params) => <TextField {...params} label="Seleccione el local" />}
               onChange={(_event, newLocal) => {
                 setLocalA(newLocal);
-                mostrarLocal();
               }}
             />
+            <br/>
+            {solicitudes !== undefined?
+                localActual ===null?
+                  solicitudes.map((item)=>{
+                    return(
+                      <Solicitud
+                        solicitud={item}
+                        local={item.cod_local}
+                        horario={item.cod_horario}
+                        materia={item.cod_materia}
+                        estado={item.estado_solicitud}
+                      />
+                    )
+                  }):
+                //eslint-disable-next-line
+                  solicitudes.map((item)=>{
+                    if(localActual.code === item.cod_local.cod_local){
+                      return(
+                        <Solicitud
+                          solicitud={item}
+                          local={item.cod_local}
+                          horario={item.cod_horario}
+                          materia={item.cod_materia}
+                          estado={item.estado_solicitud}
+                        />
+                      )
+                    }
+                  }):
+              <div style={{width: 500, height: 80,display: 'flex', alignItems: 'center',justifyContent: 'center',}}>
+                <CircularProgress />
+              </div>
+            }
           </div>:
           <div style={{width: 500, height: 80,display: 'flex', alignItems: 'center',justifyContent: 'center',}}>
             <CircularProgress />
