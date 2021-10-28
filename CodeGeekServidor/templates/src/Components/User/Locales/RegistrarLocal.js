@@ -109,9 +109,11 @@ const RegistrarLocal = (props)=>{
   //Validara el form y mandara a llamar el metodo de envio
   const registrarLocal =(data)=>{
     handleClose()
+    
     var formData = new FormData();
-    formData.append('imagenes', imagenes[0])
-    formData.append('cover', cover, cover.name); //TOQUE
+    formData.append('imagenes', imagenes[0], imagenes[0].name)
+    formData.append('imagenes2', imagenes[1], imagenes[1].name)
+    //formData.append('cover', cover, cover.name); //TOQUE
     mandarDatos("locales/registrarlocal-json/", formData)
   }
 
@@ -271,7 +273,7 @@ const RegistrarLocal = (props)=>{
                         onChange={(event,i)=>{
                           if(imagenes.length <numeroImagenes){
                             let aux = imagenes;
-                            aux[event.target.id] = event.target.files;
+                            aux[event.target.id] = event.target.files[0];
                             setImagenes(aux);
                          }else{
                             let aux = imagenes;
@@ -313,7 +315,6 @@ const RegistrarLocal = (props)=>{
            </DialogContent>
             <Grid item xs={11.5}>
               <DialogActions>
-              <input type="file" onChange={(evt) => setCever(evt.target.files[0])}/>  
                 <Button 
                   variant="outlined" 
                   onClick={handleClose}>Cancelar</Button>

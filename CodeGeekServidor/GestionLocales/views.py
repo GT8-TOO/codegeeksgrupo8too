@@ -87,8 +87,12 @@ def registrar_local (request):
     }
     if request.method == "POST":
         img =request.FILES.get('imagenes')
-        cover= request.FILES.get('cover')
-        print(img)
+        cover= request.FILES.get('imagenes2')
         print(cover)
-        print(str(request.POST.get("imagenes")))
+        img=Imagen.objects.create(imagen=img)
+        ruta=str(img.imagen)
+        ruta=ruta.replace('templates/build/static/img/', 'http://localhost:8000/static/img/')
+        img.url = ruta
+        img.save()
+        print(ruta)
     return JsonResponse(respuesta, safe=False)

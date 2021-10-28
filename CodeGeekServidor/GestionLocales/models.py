@@ -53,10 +53,12 @@ class Puntuacion(models.Model):
 
 
 class Imagen(models.Model):
-    cod_imagen = models.CharField(primary_key=True, max_length=10)
+    cod_imagen = models.AutoField(primary_key=True)
     cod_local = models.ForeignKey('Local', models.DO_NOTHING, db_column='cod_local', null=True)
     titulo = models.CharField(max_length=256, blank=True, null=True)
     descripcion = models.CharField(max_length=50, blank=True, null=True)
+    imagen = models.ImageField(upload_to='templates/build/static/img', null=True)
+    url = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
         managed = True
