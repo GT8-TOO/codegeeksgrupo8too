@@ -91,7 +91,7 @@ const RegistrarLocal = (props)=>{
   };
 
   const mandarDatos = async(direccion, data)=>{
-    var promise = await axios.post(props.url+direccion, data).then((res)=>{
+    var promise = await axios.post(props.url+direccion, data,{headers: {'Content-Type': 'multipart/form-data'}}).then((res)=>{
       return res.data
     }).catch((error)=>{
       console.log(error)
