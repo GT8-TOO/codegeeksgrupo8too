@@ -102,14 +102,19 @@ def cambiar_estado(request):
     respuesta ={
         "type":"error",
         "aprobado":False,
+        "state": True,
         "message":"Hay un error en los datos enviados."
     }
     try:
         codigoAdmin = request.POST.get("codAdmin")
-        administrador = Administrador.objects.get(cod_empleado=codigoAdmin)  
+        print(codigoAdmin)
+        administrador = Administrador.objects.get(dui=codigoAdmin)  
+        print(administrador)
         try:
             cod_reserva = request.POST.get("cod_reserva")
+            print(cod_reserva)
             estado = request.POST.get("estado")
+            print(estado)
             
             reserva=Reserva.objects.get(cod_reserva=cod_reserva)
             reserva.estado_solicitud=estado
@@ -165,10 +170,14 @@ def horario_headers(request):
 # las reservas de solicitudes aceptadas     
 @csrf_exempt
 def horario_body(request):
-    if request.method == "GET":
-        reservas=Reserva.objects.filter(cod_local__cod_local='LAB2',estado_solicitud='Aprobado')
+    if request.method == "POST":
+        cod_local = request.POST.get("cod_local")
+        reservas=Reserva.objects.filter(cod_local__cod_local=cod_local,estado_solicitud='Aprobado')
         serializer = ReservaSerializer(reservas, many = True)
-        
+        return JsonResponse(serializer.data, safe=False)
+    elif request.method =="GET":
+        reservas=Reserva.objects.filter(Q(estado_solicitud='Denegado')|Q(estado_solicitud='Aprobado'))
+        serializer = ReservaSerializer(reservas, many = True)
         return JsonResponse(serializer.data, safe=False)
     else:
         return JsonResponse({"Error":'Debe utilizar Metodo POST para consultar Reservas'}, safe=False)      

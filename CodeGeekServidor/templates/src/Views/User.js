@@ -8,10 +8,14 @@ import { useParams, Redirect } from 'react-router-dom';
 import Inicio from '../Components/User/Inicio';
 import UserProfile from '../Components/User/UserProfile';
 import SolicitarLocal from '../Components/User/SolicitarLocal';
+import RevisarSolicitudes from '../Components/User/RevisarSolicitudes';
 import CatalogoLocales from '../Components/User/CatalogoLocales';
+import ReporteLocales from '../Components/User/ReporteLocales';
+
+//Admin
 import RegistrarCarrera from '../Components/User/RegistrarCarrera';
 import CrearAdministrador from '../Components/User/CrearAdministrador';
-import RevisarSolicitudes from '../Components/User/RevisarSolicitudes';
+
 
 //Context
 import UserContext  from '../Context/UserContext';
@@ -134,7 +138,10 @@ const User =(props)=>{
               url={props.url}/>
           }
           {windows ==="report" &&
-            <p>Y aqui mostrar los reportes </p>
+            <ReporteLocales
+              local={local}
+              url={props.url}
+              />
           }
           {windows ==="sendemail" &&
             <p>Aqui mandara emails</p>

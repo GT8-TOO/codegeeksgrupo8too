@@ -2,6 +2,11 @@ import React, { useState, useEffect, forwardRef, useContext } from 'react';
 import {
   Slide,
   DialogTitle,
+  FormControl,
+  FormLabel,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
   Grid,
   CircularProgress,
   DialogContent,
@@ -11,7 +16,15 @@ import {
   Dialog
 } from '@mui/material';
 import axios from 'axios';
+
+//Contexto
 import UserContext  from '../../../Context/UserContext';
+
+//Iconos
+import WarningIcon from '@mui/icons-material/Warning';
+
+//Estilo
+import styleError from '../../../Styled/ErorCSS';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -19,14 +32,21 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 const CambiarEstado =(props)=>{
   const usercontext = useContext(UserContext);
+  const classError = styleError();
   const [usuario, setUsuario]=useState();
+  const [estado, setEstado]= useState();
+  const [error, setError]= useState(false);
 
   //Component di mount
   useEffect(()=>{
     let formData = new FormData();
-    console.log(usercontext.solicitud)
     formData.append("codigoReserva", usercontext.solicitud.cod_reserva)
     getDatosUsuario("reservas/solicitud/usuario-json/", formData)
+    usercontext.setRespuesta({
+		type:"",
+		message:"",
+		aprobado:false
+    })
   },[])
 
   //Trae los datos del usuario que realizo la consulta
@@ -34,8 +54,19 @@ const CambiarEstado =(props)=>{
     let promise = await axios.post(props.url+direccion, data).then((res)=>{
       return res.data;
     }).catch((error)=>{
+      console.log(error)
     })
     setUsuario(promise)
+  }
+
+  //Manda los datos a servidor
+  const sendEstadoSolicitud = async(direccion,data)=>{
+    let promise = await  axios.post(props.url+direccion, data).then((res)=>{
+      return res.data
+    }).catch((error)=>{
+      console.log(error)
+    })
+    usercontext.setRespuesta(promise)
   }
   
   //Cerrar ventana
@@ -46,8 +77,18 @@ const CambiarEstado =(props)=>{
 
   //Guarda el estado
   const guardarEstado=()=>{
-    console.log("Estado guardado")
-    handleClose();
+    setError(false)
+    if (estado !== undefined){
+      let formData = new FormData()
+      formData.append("codAdmin",usercontext.user.dui)
+      formData.append("cod_reserva", usercontext.solicitud.cod_reserva)
+      formData.append("estado", estado)
+      usercontext.solicitud.estado_solicitud= estado
+      sendEstadoSolicitud("reservas/cambiarestado/", formData)
+      handleClose();
+    }else{
+      setError(true)
+    }
   }
 
   return(
@@ -58,7 +99,7 @@ const CambiarEstado =(props)=>{
         open={usercontext.openSolicitud}
         onClose={handleClose}
         TransitionComponent={Transition}>
-        <DialogTitle>Cambiar estado de solicitud</DialogTitle>
+        <DialogTitle>{props.title}</DialogTitle>
         <DialogContent style={{marginLeft:'15px'}}>
           {usuario !== undefined ?
             <Grid container rowSpacing={3} columnSpacing={{ xs: 3, sm: 4, md: 5 }}>
@@ -93,16 +134,28 @@ const CambiarEstado =(props)=>{
                 <Typography variant="p">{usercontext.solicitud.cod_horario.cod_hora.hora_inicio} a {usercontext.solicitud.cod_horario.cod_hora.hora_fin} </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="p">Para el dia de:</Typography>
+                <Typography variant="p">Para el dia:</Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="p">{usercontext.solicitud.cod_horario.cod_dia.nombre_dia} </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="p">Para el dia de:</Typography>
+                <Typography variant="p">Estado de la solicitud:</Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="p">{usercontext.solicitud.cod_horario.cod_dia.nombre_dia} </Typography>
+                <Typography variant="p">{usercontext.solicitud.estado_solicitud} </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                {!props.solicitudRevisada && usercontext.user.admin &&
+                  <FormControl component="fieldset">
+                    <FormLabel component="legend">Cambiar estado de solicitud</FormLabel>
+                    <RadioGroup row aria-label="estado" name="row-radio-buttons-group" onChange={(e)=>{setEstado(e.target.value)}}>
+                      <FormControlLabel value="Aprobado" control={<Radio />} label="Aprobado" />
+                      <FormControlLabel value="Denegado" control={<Radio />} label="Denegado" />
+                    </RadioGroup>
+                    {error && <p className={classError.errors2}><WarningIcon/> Seleccione un local</p>}
+                  </FormControl>
+                }
               </Grid>
             </Grid>:
             <div style={{width: '100%', height: 80,display: 'flex', alignItems: 'center',justifyContent: 'center',}}>
@@ -114,7 +167,7 @@ const CambiarEstado =(props)=>{
           <Button 
             variant="outlined" 
             onClick={handleClose}>Cancelar</Button>
-          { usercontext.user.admin && 
+          { usercontext.user.admin && !props.solicitudRevisada&& 
           <Button 
             variant="outlined" 
             onClick={guardarEstado}>Actualizar estado</Button>

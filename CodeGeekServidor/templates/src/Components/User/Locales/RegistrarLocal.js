@@ -91,7 +91,13 @@ const RegistrarLocal = (props)=>{
   };
 
   const mandarDatos = async(direccion, data)=>{
-    var promise = await axios.post(props.url+direccion, data,{headers: {'Content-Type': 'multipart/form-data'}}).then((res)=>{
+    var promise = await axios.post(props.url+direccion, data,{
+      headers: {
+        'accept': 'application/json',
+        'Accept-Language': 'en-US,en;q=0.8',
+        'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+      }
+    }).then((res)=>{
       return res.data
     }).catch((error)=>{
       console.log(error)
@@ -103,7 +109,7 @@ const RegistrarLocal = (props)=>{
   const registrarLocal =(data)=>{
     handleClose()
     var formData = new FormData();
-    formData.append("imagenes", imagenes[0])
+    formData.append('imagenes', imagenes[0])
     mandarDatos("locales/registrarlocal-json/", formData)
   }
 
@@ -262,9 +268,11 @@ const RegistrarLocal = (props)=>{
                         fullWidth
                         onChange={(event,i)=>{
                           if(imagenes.length <numeroImagenes){
-                            setImagenes([...imagenes,event.target.files]);
+                            let aux = imagenes;
+                            aux[event.target.id] = event.target.files;
+                            setImagenes(aux);
                          }else{
-                            const aux = imagenes;
+                            let aux = imagenes;
                             aux[event.target.id] = event.target.files;
                             setImagenes(aux);
                           }

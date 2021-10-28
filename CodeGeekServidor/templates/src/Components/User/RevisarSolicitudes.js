@@ -10,7 +10,8 @@ import axios from 'axios';
 
 //Componentes
 import Solicitud from './Solicitudes/Solicitud';
-import CambiarEstado from './Solicitudes/CambiarEstado';
+import MostrarSolicitud from './Solicitudes/MostrarSolicitud';
+import Notificacion from '../Notifiacion';
 
 //Context
 import UserContext from '../../Context/UserContext';
@@ -19,13 +20,33 @@ const RevisarSolicitudes = (props)=>{
   const [localActual, setLocalA]=useState(null);
   const [solicitudes, setSolicitudes]=useState();
   const usercontext = useContext(UserContext);
+  const mensaje= "La solicitud fue aprobada, las otras solicitudes realiazadas para el mismo local en la misma hora fueron denegadas."
 
   //Component di mount
   useEffect(()=>{
     document.title="Solicitudes de locales";
     getDatosSolicitudes("reservas/horario/solicitudes/")
     usercontext.setSolicitud(undefined);
+    usercontext.setRespuesta({
+		type:"",
+		message:"",
+		aprobado:false
+    })
   }, [])
+
+  //Component di update
+  useEffect(()=>{
+    if (usercontext.respuesta.aprobado && usercontext.respuesta.message === mensaje){
+      setSolicitudes(undefined)
+      getDatosSolicitudes("reservas/horario/solicitudes/")
+      usercontext.setRespuesta({
+        state:true,
+        aprobado:false,
+        message:mensaje,
+        type:"success",
+      })
+    }
+  })
 
   const getDatosSolicitudes = async (direccion)=>{
     let promise = await axios.get(props.url+direccion).then((res)=>{
@@ -39,7 +60,13 @@ const RevisarSolicitudes = (props)=>{
   return(
     <Slide direction="up" in={true}>
       <div style={{width:'100%'}}>
-        {usercontext.openSolicitud && <CambiarEstado url={props.url}/>}
+        {usercontext.respuesta.state && 
+          <Notificacion 
+            state={usercontext.respuesta.state}
+            type={usercontext.respuesta.type}
+            message={usercontext.respuesta.message}
+          />}
+        {usercontext.openSolicitud && <MostrarSolicitud title="Cambiar estado de la solicitud" solicitudRevisada={false} url={props.url}/>}
         <Typography variant="h4">Solicitudes pendientes </Typography>
         {props.local !== undefined ?
           <div style={{width:'100%'}}>
@@ -58,19 +85,21 @@ const RevisarSolicitudes = (props)=>{
             {solicitudes !== undefined?
                 localActual ===null?
                   solicitudes.map((item)=>{
-                    return(
-                      <Solicitud
-                        solicitud={item}
-                        local={item.cod_local}
-                        horario={item.cod_horario}
-                        materia={item.cod_materia}
-                        estado={item.estado_solicitud}
-                      />
-                    )
+                    if(item.estado_solicitud==="En Proceso"){
+                      return(
+                        <Solicitud
+                          solicitud={item}
+                          local={item.cod_local}
+                          horario={item.cod_horario}
+                          materia={item.cod_materia}
+                          estado={item.estado_solicitud}
+                        />
+                      )
+                  }
                   }):
                 //eslint-disable-next-line
                   solicitudes.map((item)=>{
-                    if(localActual.code === item.cod_local.cod_local){
+                    if(localActual.code === item.cod_local.cod_local && item.estado_solicitud==="En Proceso"){
                       return(
                         <Solicitud
                           solicitud={item}
