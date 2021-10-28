@@ -78,6 +78,7 @@ const RegistrarLocal = (props)=>{
   const [calificacion,setCalificacion]=useState(2);
   const [numeroImagenes, setNumero] = useState(3);
   const [imagenes, setImagenes]=useState([]);
+  const [ cover, setCever ] = useState(); //TOQUE
 
   //Component dimount
   useEffect(()=>{
@@ -110,6 +111,7 @@ const RegistrarLocal = (props)=>{
     handleClose()
     var formData = new FormData();
     formData.append('imagenes', imagenes[0])
+    formData.append('cover', cover, cover.name); //TOQUE
     mandarDatos("locales/registrarlocal-json/", formData)
   }
 
@@ -311,6 +313,7 @@ const RegistrarLocal = (props)=>{
            </DialogContent>
             <Grid item xs={11.5}>
               <DialogActions>
+              <input type="file" onChange={(evt) => setCever(evt.target.files[0])}/>  
                 <Button 
                   variant="outlined" 
                   onClick={handleClose}>Cancelar</Button>

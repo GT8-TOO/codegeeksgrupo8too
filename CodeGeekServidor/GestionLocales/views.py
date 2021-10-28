@@ -86,5 +86,9 @@ def registrar_local (request):
         "type":""
     }
     if request.method == "POST":
+        img =request.FILES.get('imagenes')
+        cover= request.FILES.get('cover')
+        print(img)
+        print(cover)
         print(str(request.POST.get("imagenes")))
     return JsonResponse(respuesta, safe=False)
