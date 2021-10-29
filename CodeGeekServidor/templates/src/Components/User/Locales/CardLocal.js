@@ -45,8 +45,7 @@ const customIcons = {
   },
 };
 
-
-
+//image= {require('../../../Media/LaboratoriosImagenes/EdificioB1.jpg')}/>
 const CardLocal = (props)=>{
   const userContext = useContext(UserContext);
   return(
@@ -55,7 +54,7 @@ const CardLocal = (props)=>{
         <CardMedia
           component="img"
           height="140"
-          image= {require('../../../Media/LaboratoriosImagenes/EdificioB1.jpg')}/>
+          image= {props.local.urlImg}/>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">{props.local.label}</Typography>
           <Typography variant="body2" color="text.secondary">

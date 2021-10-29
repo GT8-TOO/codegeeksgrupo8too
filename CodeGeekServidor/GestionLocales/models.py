@@ -34,6 +34,8 @@ class Local(models.Model):
     nivel = models.BigIntegerField()
     altitud = models.FloatField(blank=True, null=True)
     puntuacion = models.FloatField(blank=True, null=True)
+    imagen_local = models.ImageField(upload_to='templates/build/static/media', null=True)
+    url_img = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -57,7 +59,7 @@ class Imagen(models.Model):
     cod_local = models.ForeignKey('Local', models.DO_NOTHING, db_column='cod_local', null=True)
     titulo = models.CharField(max_length=256, blank=True, null=True)
     descripcion = models.CharField(max_length=50, blank=True, null=True)
-    imagen = models.ImageField(upload_to='templates/build/static/img', null=True)
+    imagen = models.ImageField(upload_to='templates/build/static/media', null=True)
     url = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:

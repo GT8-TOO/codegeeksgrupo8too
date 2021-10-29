@@ -22,7 +22,7 @@ const Solicitud =(props)=> {
       <Grid container spacing={2}>
         <Grid item>
           <ButtonBase sx={{ width: 128, height: 128 }}>
-            <Img alt="complex" src={require('../../../Media/LaboratoriosImagenes/EdificioB1.jpg')} />
+            <Img alt="complex" src={props.local.url_img} />
           </ButtonBase>
         </Grid>
         <Grid item xs={12} sm container>

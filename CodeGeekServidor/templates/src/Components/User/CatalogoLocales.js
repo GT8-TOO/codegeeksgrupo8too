@@ -25,6 +25,12 @@ const CatalogoLocales =(props)=>{
   useEffect(async()=>{
     document.title="Catalogo de locales";
     userContext.setCodigoLocal(undefined)
+    userContext.setRespuesta({
+		type:"",
+		message:"",
+      state:false,
+      type:""
+    })
   },[]);
 
   const openDialogClick = () => {
@@ -34,12 +40,15 @@ const CatalogoLocales =(props)=>{
   return(
     <Slide direction="up" in={true}>
       <div>
-        <WindowAlert 
-          state={props.error} 
-          type={"warning"} 
-          title="Pasó algo inesperado" 
-          message="No se ha podido comunicar con el servidor de manera correcta, puede ser problema de conexion o de el servidor, espere mientras se arregla."/>
-        {userContext.openLocal &&<RegistrarLocal url={props.url}/>}
+        {userContext.respuesta.state &&
+          <WindowAlert
+            state={userContext.respuesta.state}
+            type={userContext.respuesta.type}
+            title={userContext.respuesta.title}
+            message={userContext.respuesta.message}
+          />
+        }
+        {userContext.openLocal &&<RegistrarLocal edificios={props.edificios} url={props.url}/>}
         <Typography variant="h4">Catálogo de locales de la Facultad de Ingeniería y Arquietectura</Typography>
         { props.edificios !== undefined && props.local !== undefined ?
           <div style={{width:'100%'}}>
@@ -71,7 +80,7 @@ const CatalogoLocales =(props)=>{
                 return(
                   <CardLocal local={item}/>
                 );
-                })
+               })
               }
               {/*eslint-disable-next-line*/}
               {edificioActual !== null && props.local.map((item)=>{

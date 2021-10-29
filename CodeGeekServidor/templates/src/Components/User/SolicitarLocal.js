@@ -25,6 +25,7 @@ const SolicitarLocal = (props)=>{
     cod_horario:undefined,
     cod_local:undefined
   });
+  const [elegido, setElegido]= useState('')
   const classError = styleError();
   const usercontext = useContext(userContext);
   const [error, setError]= useState({
@@ -128,13 +129,14 @@ const SolicitarLocal = (props)=>{
               disablePortal
               id="combo-box-demo"
               options={props.local}
-              value ={usercontext.codigoLocal !== undefined ? usercontext.codigoLocal: ''}
+              value ={usercontext.codigoLocal !== undefined ? usercontext.codigoLocal: elegido}
               fullWidth={true}
               sx={{marginTop:5 }}
               renderInput={(params) => <TextField {...params} label="Local a solicitar" />}
               onChange={(_event, elegido) => {
                 if(elegido!== null){
                   setData({cod_horario: dataSelect.cod_horario, cod_local:elegido.code});
+                  setElegido(elegido.label)
                 }else{
                   setData({cod_horario: dataSelect.cod_horario, cod_local:""});
                 }

@@ -4,6 +4,7 @@ import {
   Button,
   TextField,
   Dialog,
+  Autocomplete,
   Rating,
   Slide,
   FormControl,
@@ -78,12 +79,19 @@ const RegistrarLocal = (props)=>{
   const [calificacion,setCalificacion]=useState(2);
   const [numeroImagenes, setNumero] = useState(3);
   const [imagenes, setImagenes]=useState([]);
-  const [ cover, setCever ] = useState(); //TOQUE
+  const [edificioActual, setEdificio]= useState();
 
   //Component dimount
   useEffect(()=>{
     setCalificacion(2)
     setNumero(3)
+    userContext.setRespuesta({
+		type:"",
+		message:"",
+      state:false,
+      type:""
+    })
+ 
   },[])
 
   //Cierra la ventana flotante
@@ -95,7 +103,6 @@ const RegistrarLocal = (props)=>{
     var promise = await axios.post(props.url+direccion, data,{
       headers: {
         'accept': 'application/json',
-        'Accept-Language': 'en-US,en;q=0.8',
         'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
       }
     }).then((res)=>{
@@ -104,17 +111,29 @@ const RegistrarLocal = (props)=>{
       console.log(error)
     })
     console.log(promise)
+    userContext.setRespuesta(promise)
   }
 
   //Validara el form y mandara a llamar el metodo de envio
   const registrarLocal =(data)=>{
     handleClose()
-    
-    var formData = new FormData();
-    formData.append('imagenes', imagenes[0], imagenes[0].name)
-    formData.append('imagenes2', imagenes[1], imagenes[1].name)
-    //formData.append('cover', cover, cover.name); //TOQUE
-    mandarDatos("locales/registrarlocal-json/", formData)
+   
+    if (edificioActual !== null && edificioActual !== undefined){
+      let formData = new FormData();
+      formData.append('codigoLocal',data.codigoLocal)
+      formData.append('nombreLocal',data.nombreLocal)
+      formData.append('codEdificio',edificioActual.code)
+      formData.append('nivel',data.nivel)
+      formData.append('altitud',data.altitud)
+      formData.append('calificacion',calificacion)
+      formData.append('descripcionLocal',data.descripcion)
+      formData.append('cantidadImagenes', numeroImagenes)
+      for (let i=0; i < numeroImagenes; i++){
+        formData.append('imagenes'+i, imagenes[i], imagenes[i].name)
+      }
+      //formData.append('cover', cover, cover.name); //TOQUE
+      mandarDatos("locales/registrarlocal-json/", formData)
+    }
   }
 
   //Renderizado de HTML
@@ -128,19 +147,19 @@ const RegistrarLocal = (props)=>{
               <Grid item xs={12}>
                 <TextField
                   autoFocus
-                  name="codigoCarrera"
-                  label="Codigo de carrera"
+                  name="codigoLocal"
+                  label="Codigo del local"
                   fullWidth
-                  {...register("codigoCarrera", {
+                  {...register("codigoLocal", {
                     required:{
                       value:true,
-                      message:"Debe de ingresar el codigo de la carrera"
+                      message:"Debe de ingresar el codigo del local"
                     }
                   })}
                 />
                 <ErrorMessage
                   errors={errors}
-                  name="codigoCarrera"
+                  name="codigoLocal"
                   render={({message})=><p className={errorClass.errors}><WarningIcon/> {message}</p>}
                 />
               </Grid>
@@ -162,22 +181,18 @@ const RegistrarLocal = (props)=>{
                 />
               </Grid>
               <Grid item xs={12} style={{marginTop:'15px'}}>
-                <TextField
-                  name="nombreEdificio"
-                  label="Nombre del edificio"
+                <Autocomplete
+                  disablePortal
                   fullWidth
-                  {...register("nombreEdifico",{
-                    required:{
-                      value:true,
-                      message:"Debe de dar ingresar el nombre del edificio que pertecenera"
-                    }
-                  })}
+                  id="combo-box-demo"
+                  options={props.edificios}
+                  sx={{marginTop:5 }}
+                  renderInput={(params) => <TextField {...params} label="Edificios disponibles" />}
+                  onChange={(_event, newLocal) => {
+                    setEdificio(newLocal);
+                 }}
                 />
-                <ErrorMessage
-                  errors={errors}
-                  name="nombreEdifico"
-                  render={({message})=><p className={errorClass.errors}><WarningIcon/> {message}</p>}
-                />
+                {edificioActual===null && <p className={errorClass.errors2}><WarningIcon/> Seleccione un edifcio </p>}
               </Grid>
               <Grid xs={12} columnSpacing={3} style={{display:'flex', marginTop:'15px'}}>
                 <Grid item xs={6}>
@@ -262,6 +277,8 @@ const RegistrarLocal = (props)=>{
                     <FormControlLabel value={5} control={<Radio />} label="Cinco" />
                   </RadioGroup>
                 </FormControl>
+                <br/>
+                <Typography variant="p">La imagen en el primer puesto se mostrara por defecto en el catalogo</Typography>
                 {
                   [...Array(numeroImagenes)].map((x, i)=>{
                     return(
