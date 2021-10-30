@@ -1,35 +1,27 @@
 self.__precacheManifest = [
   {
-    "revision": "7b6ccae5f5dba41d556b",
-    "url": "/static/css/main.85c735bf.chunk.css"
+    "revision": "3caafafd3d4ad2b45343",
+    "url": "/static/css/main.79cfec8d.chunk.css"
   },
   {
-    "revision": "7b6ccae5f5dba41d556b",
-    "url": "/static/js/main.9a6c1bb0.chunk.js"
+    "revision": "3caafafd3d4ad2b45343",
+    "url": "/static/js/main.dcabc527.chunk.js"
   },
   {
     "revision": "cab708f0e3eb265fe388",
     "url": "/static/js/runtime~main.dad2a76b.js"
   },
   {
-    "revision": "90195048710ec00d3e3d",
+    "revision": "c58eb10d3bd5dae10468",
     "url": "/static/css/2.573b0d66.chunk.css"
   },
   {
-    "revision": "90195048710ec00d3e3d",
-    "url": "/static/js/2.34d2f73c.chunk.js"
+    "revision": "c58eb10d3bd5dae10468",
+    "url": "/static/js/2.a07faa63.chunk.js"
   },
   {
     "revision": "ed073ed67c7d8b6a5d01",
     "url": "/static/js/3.8c793467.chunk.js"
-  },
-  {
-    "revision": "e356eb481b8cd8f93c07a1d524670ed8",
-    "url": "/static/media/logo.e356eb48.png"
-  },
-  {
-    "revision": "49346e458280f6a5124e680b6e2b44f7",
-    "url": "/static/media/logo-avatar.49346e45.jpg"
   },
   {
     "revision": "63ac3fde4f7863690f79029c870fc822",
@@ -48,7 +40,15 @@ self.__precacheManifest = [
     "url": "/static/media/AcademicaAtardecer.38efadb0.jpeg"
   },
   {
-    "revision": "77ec0d19d5ca02f29d0d4b9a964b5d39",
+    "revision": "e356eb481b8cd8f93c07a1d524670ed8",
+    "url": "/static/media/logo.e356eb48.png"
+  },
+  {
+    "revision": "49346e458280f6a5124e680b6e2b44f7",
+    "url": "/static/media/logo-avatar.49346e45.jpg"
+  },
+  {
+    "revision": "ab108452b8a58368cc1db49cca4f85bc",
     "url": "/index.html"
   }
 ];

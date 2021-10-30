@@ -84,6 +84,7 @@ const RevisarSolicitudes = (props)=>{
             <br/>
             {solicitudes !== undefined?
                 localActual ===null?
+                //eslint-disable-next-line
                   solicitudes.map((item)=>{
                     if(item.estado_solicitud==="En Proceso"){
                       return(

@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import WindowAlert from '../WindowAlert';
 import CardLocal from './Locales/CardLocal';
+import MostrarLocal from './Locales/MostrarLocal';
 import RegistrarLocal from './Locales/RegistrarLocal';
 
 //Iconos
@@ -26,7 +27,6 @@ const CatalogoLocales =(props)=>{
     document.title="Catalogo de locales";
     userContext.setCodigoLocal(undefined)
     userContext.setRespuesta({
-		type:"",
 		message:"",
       state:false,
       type:""
@@ -48,7 +48,8 @@ const CatalogoLocales =(props)=>{
             message={userContext.respuesta.message}
           />
         }
-        {userContext.openLocal &&<RegistrarLocal edificios={props.edificios} url={props.url}/>}
+        {userContext.openCrearLocal &&<RegistrarLocal edificios={props.edificios} url={props.url}/>}
+        {userContext.openLocal &&<MostrarLocal url={props.url}/>}
         <Typography variant="h4">Catálogo de locales de la Facultad de Ingeniería y Arquietectura</Typography>
         { props.edificios !== undefined && props.local !== undefined ?
           <div style={{width:'100%'}}>

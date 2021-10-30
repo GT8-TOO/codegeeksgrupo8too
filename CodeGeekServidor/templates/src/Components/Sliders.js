@@ -24,8 +24,9 @@ const Sliders = (props)=>{
       </div>)}
       </Slider>:
       <Slider {...settings}>
-        {props.images.map(image=><div key={image.id} >
+        {props.images.map(image=><div className="divCatalogo" key={image.id} >
           <img 
+            className="slider_images_catalogo" 
             src={image.image}
             alt ={image.description}/>               
         </div>)}

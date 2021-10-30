@@ -48,6 +48,12 @@ const customIcons = {
 //image= {require('../../../Media/LaboratoriosImagenes/EdificioB1.jpg')}/>
 const CardLocal = (props)=>{
   const userContext = useContext(UserContext);
+  
+  const mostrarLocal =()=>{
+    userContext.setMostrarLocal(true)
+    userContext.setCatalogo(props.local);
+  }
+
   return(
     <div>
       <Card style={{width:300}}>
@@ -70,7 +76,7 @@ const CardLocal = (props)=>{
               </Link>
           </Tooltip>
           <Tooltip title="Ver informacion del local">
-            <IconButton aria-label="ver informacion">
+            <IconButton onClick={mostrarLocal} aria-label="ver informacion">
               <PreviewIcon/>
             </IconButton>
           </Tooltip>

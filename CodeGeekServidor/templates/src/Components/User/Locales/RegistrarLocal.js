@@ -86,7 +86,6 @@ const RegistrarLocal = (props)=>{
     setCalificacion(2)
     setNumero(3)
     userContext.setRespuesta({
-		type:"",
 		message:"",
       state:false,
       type:""
@@ -139,7 +138,7 @@ const RegistrarLocal = (props)=>{
   //Renderizado de HTML
   return(
     <div>
-      <Dialog TransitionComponent={Transition} open={userContext.openLocal} maxWidth="md" onClose={handleClose}>
+      <Dialog TransitionComponent={Transition} open={userContext.openCrearLocal} maxWidth="md" onClose={handleClose}>
         <DialogTitle>Registrar un nuevo local</DialogTitle>
         <form onSubmit={handleSubmit(registrarLocal)}>
           <Grid  container spacing={1} >

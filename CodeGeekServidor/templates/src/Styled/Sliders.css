@@ -26,3 +26,12 @@
       margin-left: 50%;
       z-index: -100;
 }
+
+/*Catalogo de locales*/
+.divCatalogo:{
+      display:block;
+      width:70%;
+}
+.slider_images_catalogo{
+      width:100%;
+}
