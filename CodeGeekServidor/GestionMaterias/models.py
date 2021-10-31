@@ -78,7 +78,7 @@ class Horario(models.Model):
 class Imparte(models.Model):
     numero_de_ciclo = models.BigIntegerField(primary_key=True)
     cod_materia = models.ForeignKey('Materia', models.CASCADE, db_column='cod_materia', null=True)
-    cod_pensum = models.CharField(max_length=10)
+    cod_pensum = models.ForeignKey('Pensum', models.CASCADE, db_column='cod_pensum', null=False)
     ciclo_par = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
