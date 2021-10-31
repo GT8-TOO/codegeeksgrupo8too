@@ -118,7 +118,7 @@ def cambiar_estado(request):
             
             reserva=Reserva.objects.get(cod_reserva=cod_reserva)
             reserva.estado_solicitud=estado
-            reserva.adm_emp_dui=administrador
+            reserva.adm_cod_empleado=administrador
             reserva.fecha_aprobacion=timezone.now()
 
             if estado == "Denegado":
@@ -128,7 +128,7 @@ def cambiar_estado(request):
             
             elif estado == "Aprobado":
                 Reserva.objects.filter(cod_horario=reserva.cod_horario, cod_local= reserva.cod_local
-                        ).update(estado_solicitud="Denegado", adm_emp_dui=administrador.dui, fecha_aprobacion=timezone.now())           
+                        ).update(estado_solicitud="Denegado", adm_cod_empleado=administrador.dui, fecha_aprobacion=timezone.now())           
                 reserva.save()
                 
                 #Notificaciones              
