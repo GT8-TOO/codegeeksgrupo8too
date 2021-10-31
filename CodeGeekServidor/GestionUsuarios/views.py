@@ -179,21 +179,41 @@ def docentes_escuela(request):
     # recuperando admin
 
     if request.method =="POST":
-        dui=request.GET.get('admin_dui')
+        dui=request.POST.get('admin_dui')
         admin=Administrador.objects.get(dui=dui)
         cod_escuela=admin.cod_escuela.cod_escuela
         docentes=Docente.objects.filter(cod_escuela__cod_escuela=cod_escuela)
         serializer = DocenteSerializer(docentes, many = True)
         return JsonResponse(serializer.data, safe=False)
+   
     else: 
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."}, safe=False)
 @csrf_exempt
 def docentes_sin_escuela(request):
     if request.method =="POST":
-        
         docentes=Docente.objects.filter(cod_escuela__cod_escuela__isnull=True)
         serializer = DocenteSerializer(docentes, many = True)
         return JsonResponse(serializer.data, safe=False)
     else: 
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."}, safe=False)
-   
+
+
+@csrf_exempt
+def asignar_escuela(request):
+    if request.method =="POST":
+        try:
+            cod_escuela=request.POST.get('codEscuela')
+            escuela=Escuela.objects.get(pk=cod_escuela)
+        except Escuela.DoesNotExist:
+            return JsonResponse({"Error":"La Escuela no existe." }, safe=False)
+        try:
+            dui=request.POST.get('dui')
+            
+            docente=Docente.objects.get(pk=dui)
+            docente.cod_escuela=escuela
+            docente.save()
+            return JsonResponse({"message" : "El Docente "+docente.nombre+" ha sido asignado a la "+escuela.nombre_escuela+" correctamente."}, safe=False)
+        except Docente.DoesNotExist:
+            return JsonResponse({"Error":"El Docente no existe." }, safe=False)
+    else: 
+        return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."}, safe=False)
