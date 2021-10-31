@@ -6,7 +6,7 @@ from GestionUsuarios.models import Docente
 
 class Catedra(models.Model):
     cod_catedra = models.AutoField(primary_key=True)
-    cod_materia = models.ForeignKey('Materia', models.DO_NOTHING, db_column='cod_materia', null=True)
+    cod_materia = models.ForeignKey('Materia', models.CASCADE, db_column='cod_materia', null=True)
     anio = models.BigIntegerField(blank=True, null=True)
     ciclo_par = models.BooleanField(default=False, null=True)
     fecha_inicio = models.DateField()
@@ -29,9 +29,9 @@ class Ciclo(models.Model):
         db_table = 'ciclo'
 
 class EsParteDe(models.Model):
-    dui = models.OneToOneField(Docente, models.DO_NOTHING, db_column='dui', primary_key=True)
+    dui = models.OneToOneField(Docente, models.CASCADE, db_column='dui', primary_key=True)
     # cod_empleado = models.ForeignKey(Docente, models.DO_NOTHING, db_column='cod_empleado', related_name='empleado', null=True) #Field.E303
-    cod_catedra = models.ForeignKey(Catedra, models.DO_NOTHING, db_column='cod_catedra', null=True)
+    cod_catedra = models.ForeignKey(Catedra, models.CASCADE, db_column='cod_catedra', null=True)
     coordinador = models.BooleanField(default=False, null=True)
 
     class Meta:
@@ -64,8 +64,8 @@ class Hora(models.Model):
 
 
 class Horario(models.Model):
-    cod_hora = models.ForeignKey(Hora, models.DO_NOTHING, db_column='cod_hora', null=True)
-    cod_dia = models.ForeignKey(Dia, models.DO_NOTHING, db_column='cod_dia', null=True)
+    cod_hora = models.ForeignKey(Hora, models.CASCADE, db_column='cod_hora', null=True)
+    cod_dia = models.ForeignKey(Dia, models.CASCADE, db_column='cod_dia', null=True)
     cod_horario = models.AutoField(primary_key=True)
 
     def __str__(self):
@@ -77,7 +77,7 @@ class Horario(models.Model):
 
 class Imparte(models.Model):
     numero_de_ciclo = models.BigIntegerField(primary_key=True)
-    cod_materia = models.ForeignKey('Materia', models.DO_NOTHING, db_column='cod_materia', null=True)
+    cod_materia = models.ForeignKey('Materia', models.CASCADE, db_column='cod_materia', null=True)
     cod_pensum = models.CharField(max_length=10)
     ciclo_par = models.BigIntegerField(blank=True, null=True)
 
@@ -101,7 +101,7 @@ class Materia(models.Model):
 
 class Pensum(models.Model):
     cod_pensum = models.CharField(primary_key=True, max_length=10)
-    cod_escuela = models.ForeignKey('GestionLocales.Escuela', models.DO_NOTHING, db_column='cod_escuela', blank=True, null=True)
+    cod_escuela = models.ForeignKey('GestionLocales.Escuela', models.CASCADE, db_column='cod_escuela', blank=True, null=True)
     anio_publicacion = models.DateField()
     carrera = models.CharField(max_length=100, blank=True, null=True)
 
@@ -110,8 +110,8 @@ class Pensum(models.Model):
         db_table = 'pensum'
 
 class RequisitoDe(models.Model):
-    mat_cod_materia = models.OneToOneField(Materia, models.DO_NOTHING, db_column='mat_cod_materia', primary_key=True)
-    cod_materia = models.ForeignKey(Materia, models.DO_NOTHING, db_column='cod_materia', related_name='requisitos', null=True) #field.E305
+    mat_cod_materia = models.OneToOneField(Materia, models.CASCADE, db_column='mat_cod_materia', primary_key=True)
+    cod_materia = models.ForeignKey(Materia, models.CASCADE, db_column='cod_materia', related_name='requisitos', null=True) #field.E305
 
     class Meta:
         managed = True

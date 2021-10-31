@@ -200,20 +200,30 @@ def docentes_sin_escuela(request):
 
 @csrf_exempt
 def asignar_escuela(request):
+    respuesta ={
+        "type":"",
+        "message":""
+    }
     if request.method =="POST":
         try:
             cod_escuela=request.POST.get('codEscuela')
             escuela=Escuela.objects.get(pk=cod_escuela)
         except Escuela.DoesNotExist:
-            return JsonResponse({"Error":"La Escuela no existe." }, safe=False)
+            respuesta["type"]="error"
+            respuesta["message"]="La Escuela no existe."
+            return JsonResponse(respuesta, safe=False)
         try:
             dui=request.POST.get('dui')
             
             docente=Docente.objects.get(pk=dui)
             docente.cod_escuela=escuela
             docente.save()
-            return JsonResponse({"message" : "El Docente "+docente.nombre+" ha sido asignado a la "+escuela.nombre_escuela+" correctamente."}, safe=False)
+            respuesta["type"]="success"
+            respuesta["message"]="El Docente "+docente.nombre+" ha sido asignado a la "+escuela.nombre_escuela+" correctamente."
+            return JsonResponse(respuesta, safe=False)
         except Docente.DoesNotExist:
-            return JsonResponse({"Error":"El Docente no existe." }, safe=False)
+            respuesta["type"]="error"
+            respuesta["message"]="El Docente no existe."
+            return JsonResponse(respuesta, safe=False)
     else: 
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."}, safe=False)
