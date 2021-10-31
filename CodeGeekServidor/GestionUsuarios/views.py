@@ -173,4 +173,13 @@ def obtener_usuario(request):
     else:
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."},safe=False)
 
-
+# @csrf_exempt
+def docentes_escuela(request):
+    # recuperando admin
+   dui=request.GET.get('admin_dui')
+   admin=Administrador.objects.get(dui=dui)
+   cod_escuela=admin.cod_escuela.cod_escuela
+   docentes=Docente.objects.filter(cod_escuela__cod_escuela=cod_escuela)
+   return JsonResponse({'cod_escuela':admin.cod_escuela.cod_escuela},safe=False)
+   
+   

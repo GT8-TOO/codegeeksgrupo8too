@@ -4,7 +4,7 @@ from GestionMaterias.models import Dia,Hora,Horario
 from GestionUsuarios.serializers import DocenteSerializer 
 
 class ReservaSerializer(serializers.ModelSerializer):
-      doc_dui = DocenteSerializer()
+      doc_dui = serializers.StringRelatedField()
       class Meta:
             
             model = Reserva
