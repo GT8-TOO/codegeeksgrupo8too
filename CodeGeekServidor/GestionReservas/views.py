@@ -184,7 +184,7 @@ def horario_body(request):
      
 # El siguiente metodo requiere del cod_local y solo retorna 
 # las reservas de solicitudes en Proceso     
-@csrf_exempt
+# @csrf_exempt
 def solicitud_body(request):
     if request.method == "POST":
         cod_local = request.POST.get("cod_local")

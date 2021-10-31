@@ -5,5 +5,5 @@ from GestionUsuarios.models import Docente
 class DocenteSerializer(serializers.ModelSerializer):
       class Meta:
             model = Docente
-            fields=['nombre']
+            fields=['dui','nombre']
         

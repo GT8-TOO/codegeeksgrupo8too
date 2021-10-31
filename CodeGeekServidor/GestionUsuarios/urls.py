@@ -7,6 +7,7 @@ urlpatterns = [
     path('register/', registrar_usuario),
     path('logout/', logout_usuario),
     path('admin/', registrar_admin),
-    path('escuela/docentes/', docentes_escuela),
     path('obtenerusuario-json/', obtener_usuario),
+    path('escuela/docentes/', docentes_escuela),
+    path('docentes/', docentes_sin_escuela),
 ]

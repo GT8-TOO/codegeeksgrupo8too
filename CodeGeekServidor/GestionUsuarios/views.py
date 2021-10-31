@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models.query_utils import Q
 from datetime import datetime	
 import re
+from .serializers import DocenteSerializer
 
 # Create your views here.
 
@@ -173,13 +174,26 @@ def obtener_usuario(request):
     else:
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."},safe=False)
 
-# @csrf_exempt
+@csrf_exempt
 def docentes_escuela(request):
     # recuperando admin
-   dui=request.GET.get('admin_dui')
-   admin=Administrador.objects.get(dui=dui)
-   cod_escuela=admin.cod_escuela.cod_escuela
-   docentes=Docente.objects.filter(cod_escuela__cod_escuela=cod_escuela)
-   return JsonResponse({'cod_escuela':admin.cod_escuela.cod_escuela},safe=False)
-   
+
+    if request.method =="POST":
+        dui=request.GET.get('admin_dui')
+        admin=Administrador.objects.get(dui=dui)
+        cod_escuela=admin.cod_escuela.cod_escuela
+        docentes=Docente.objects.filter(cod_escuela__cod_escuela=cod_escuela)
+        serializer = DocenteSerializer(docentes, many = True)
+        return JsonResponse(serializer.data, safe=False)
+    else: 
+        return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."}, safe=False)
+@csrf_exempt
+def docentes_sin_escuela(request):
+    if request.method =="POST":
+        
+        docentes=Docente.objects.filter(cod_escuela__cod_escuela__isnull=True)
+        serializer = DocenteSerializer(docentes, many = True)
+        return JsonResponse(serializer.data, safe=False)
+    else: 
+        return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."}, safe=False)
    
