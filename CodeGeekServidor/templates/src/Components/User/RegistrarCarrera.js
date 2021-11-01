@@ -4,11 +4,13 @@ import {
   Slide,
   Button
 } from '@mui/material';
+import axios from 'axios';
 
 //Components
 import RegistrarPensum from './Carrera/RegistrarPensum';
 import RegistrarCiclo from './Carrera/RegistrarCiclo';
 import ConfirmacionEnvio from './Carrera/ConfirmacionEnvio';
+import Notificacion from '../Notifiacion';
 
 //Icons
 import SendIcon from '@mui/icons-material/Send';
@@ -25,8 +27,13 @@ const RegistrarCarrera = (props)=>{
   //Component di mount
   useEffect(()=>{
     document.title="Registrar carrera";
-    console.log(props.escuelas)
-  })
+    userContext.setRespuesta({
+      message:"",
+      state:false,
+      creado:false,
+      type:""
+    })
+  },[])
 
   //Siguiente componente
   const nextSlide =()=>{
@@ -37,13 +44,57 @@ const RegistrarCarrera = (props)=>{
     }
   }
 
+  const sendDataCarrera =async(direccion,data)=>{
+    userContext.setRespuesta({
+      message:"",
+      state:false,
+      creado:false,
+      type:""
+    })
+    let promise = await axios.post(props.url+direccion,data).then((res)=>{
+      return res.data;
+    }).catch((error)=>{
+      console.log(error)
+    })
+    userContext.setRespuesta(promise)
+  }
+
   //Componente anterior
   const previousSlide = ()=>{
     setSlide(slideChange-1);
   }
 
+  //Metodo para enviar la informacion de la carrera
+  const guardarCarrera =()=>{
+    let formData = new FormData();
+    //Informacion de la escuela
+    formData.append("codEscuela", userContext.inputCarrerra[0].escuela.code)
+
+    //Informacion de la carrera
+    formData.append("carrera", userContext.inputCarrerra[0].data.carrera)
+    formData.append("yearcarrer", userContext.inputCarrerra[0].data.yearcarrer)
+
+    //Año de pensum
+    formData.append("yearPensum", userContext.inputCarrerra[1].añoPensum)
+
+    //Pensum
+    formData.append("cantidad", userContext.inputCarrerra[1].pensum.length)
+    for(let i=0; i < userContext.inputCarrerra[1].pensum.length; i++){
+      formData.append("codMateria"+i, userContext.inputCarrerra[1].pensum[i].codigoMateria)
+      formData.append("codMateriaRequisito"+i, userContext.inputCarrerra[1].pensum[i].codigoMateriaRequisito)
+      formData.append("ciclo"+i, userContext.inputCarrerra[1].pensum[i].ciclo)
+    }
+    sendDataCarrera("materias/registrarcarrera/",formData)
+  }
+
   return (
     <div>
+      {userContext.respuesta.state && 
+      <Notificacion
+        state={userContext.respuesta.state}
+        type={userContext.respuesta.type}
+        message={userContext.respuesta.message}
+      />}
       <Typography variant="h4">Ingresar Carrera</Typography>
       <div style={{marginTop:'30px'}}>
         <Slide 
@@ -85,7 +136,7 @@ const RegistrarCarrera = (props)=>{
             variant="contained" 
             style={{backgroundColor:'#01818A'}}
             endIcon={<SendIcon />}
-            onClick={nextSlide}>Guardar</Button>}
+            onClick={guardarCarrera}>Guardar</Button>}
       </div>
     </div>
   ); }

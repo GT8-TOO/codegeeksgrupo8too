@@ -11,4 +11,5 @@ urlpatterns = [
     path('escuela/docentes/', docentes_escuela),
     path('escuela/docentes/asignar/', asignar_escuela),
     path('docentes/', docentes_sin_escuela),
+    path('enviarcorreos/', mandar_correos),
 ]

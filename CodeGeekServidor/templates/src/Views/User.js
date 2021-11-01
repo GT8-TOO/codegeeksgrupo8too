@@ -11,6 +11,7 @@ import SolicitarLocal from '../Components/User/SolicitarLocal';
 import RevisarSolicitudes from '../Components/User/RevisarSolicitudes';
 import CatalogoLocales from '../Components/User/CatalogoLocales';
 import ReporteLocales from '../Components/User/ReporteLocales';
+import SendEmail from '../Components/User/SendEmail';
 
 //Admin
 import RegistrarCarrera from '../Components/User/RegistrarCarrera';
@@ -48,6 +49,12 @@ const User =(props)=>{
       setSession(false);
     }
 
+    userContext.setRespuesta({
+      type:"",
+      message:"",
+      creado:false
+    })
+
     //Trae los datos
     getDatosLocales("locales/solicitarlocales-json/")
     getDatosHorarios("reservas/solicitarhorarios-json/")
@@ -56,6 +63,7 @@ const User =(props)=>{
 
     //const socketConection = new WebSocket('ws://localhost:8000/ws/socketconnection/');
   },[])
+
 
   //Cambia el estado de userContext
   const cambiarUsuario=(clave, valor)=>{
@@ -144,7 +152,9 @@ const User =(props)=>{
               />
           }
           {windows ==="sendemail" &&
-            <p>Aqui mandara emails</p>
+            <SendEmail
+              url={props.url}
+              />
           }
           {(windows==="registercarrer" && userContext.user.admin ===true)&&
             <RegistrarCarrera 

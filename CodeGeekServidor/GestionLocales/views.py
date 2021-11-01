@@ -77,11 +77,21 @@ def get_escuelas(request):
     return JsonResponse(lista, safe=False)
 
 @csrf_exempt
+def get_imagenes_local (request):
+    if request.method =="POST":
+        cod_local = request.POST.get("codLocal")
+        imagen = list(Imagen.objects.filter(cod_local_id=cod_local).values())
+        return JsonResponse(imagen,safe=False)
+    else:
+        return JsonResponse({"Error":"No se puede acceder a esta ruta"}, safe=False)
+
+@csrf_exempt
 def registrar_local (request):
     #Metodo que registrara un local para poder mostrarlo
     respuesta ={
         "title":"",
         "state":True,
+        "creado":False,
         "message":"",
         "type":""
     }
@@ -128,6 +138,7 @@ def registrar_local (request):
             nuevo_local.save()
             respuesta["title"]="Completado"
             respuesta["state"]=True
+            respuesta["creado"]=True
             respuesta["message"]="Se ha registrado con exito el nuevo local"
             respuesta["type"]="success"
         except:

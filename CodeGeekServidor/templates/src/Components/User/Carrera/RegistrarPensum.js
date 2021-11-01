@@ -102,7 +102,6 @@ const RegistrarPensum =(props)=>{
                   escuela:data,
                   error:false
                 })
-                console.log(escuelaV)
             }}}
             renderInput={(params) => <TextField {...params} label="Escuelas diponibles" />}/>
           <br/>

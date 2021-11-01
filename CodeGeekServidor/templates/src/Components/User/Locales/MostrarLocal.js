@@ -2,30 +2,23 @@ import React, { useState,forwardRef, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
-  TextField,
   Dialog,
-  Autocomplete,
   Rating,
   Slide,
-  FormControl,
-  FormLabel,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
+  CircularProgress,
   Typography,
+  FormGroup,
+  Checkbox,
+  FormControlLabel,
   DialogActions,
   DialogContent,
-  Grid,
   DialogTitle
 } from '@mui/material';
-import WarningIcon from '@mui/icons-material/Warning';
 import axios from 'axios';
 
 //Components
 import Slider from '../../Sliders';
-
-//Style
-import errorStyle from '../../../Styled/ErorCSS';
+import Mapa from './Mapa';
 
 //Icons
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
@@ -74,43 +67,43 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 const MostrarLocal = (props)=>{
-  const errorClass =errorStyle();
   const userContext = useContext(UserContext);
   const [calificacion,setCalificacion]=useState();
-  const images =[{
-    id:'1',
-    title:'Academica Frontal',
-    description:'Academica de frente',
-    image:require('../../../Media/Index/AcademicaFrontal.jpg')
-    },{
-    id:'2',
-    title:'Academica Lateral',
-    description:'Academica de lado izquierdo',
-    image:require('../../../Media/Index/AcademicaLateral.jpg')
-    } ,{
-    id:'3',
-    title:'Edificio B',
-    description:'Edificio B de frente',
-    image:require('../../../Media/Index/EdificioB.jpg')
-    },{
-    id:'4',
-    title:'Academica atardecer',
-    description:'Academica de atardecer',
-    image:require('../../../Media/Index/AcademicaAtardecer.jpeg')
-    }
-  ]
+  const [imagenesLocal, setImagenes]= useState();
+  const [click, setClick] =useState(false);
 
   //Component dimount
   useEffect(()=>{
-    setCalificacion(2)
-    console.log(userContext.catalogoLocal);
+    let data= new FormData();
+    data.append("codLocal",userContext.catalogoLocal.code);
+    getDataImages("locales/solicitarimagenes-json/", data)
     userContext.setRespuesta({
 		message:"",
       state:false,
       type:""
     })
- 
+    setCalificacion(userContext.catalogoLocal.calificacion)
   },[])
+
+  //Trae las imagenes del local cuando se monta el componente
+  const getDataImages =async(direccion, data)=>{
+    let promise = await axios.post(props.url +direccion,data).then((res)=>{
+      return res.data
+    }).catch((error)=>{
+      console.log(error)
+    })
+    setImagenes(promise)
+  }
+
+  //Envia la nueva ponderacion del local
+  const sendDataPonderacion = async (direccion, data)=>{
+    let promise = await axios.post(props.url+direccion, data).then((res)=>{
+      return res.data;
+    }).catch((error)=>{
+      console.log(error);
+    })
+    userContext.setRespuesta(promise);
+  }
 
   //Cierra la ventana flotante
   const handleClose = () => {
@@ -118,26 +111,83 @@ const MostrarLocal = (props)=>{
     userContext.setCatalogo(undefined);
   };
 
+  //Metodo que guarda el comentario del local
+  const ponderacionUsuario = ()=>{
+    handleClose();
+    if (click ==="true"){
+      let formData = new FormData();
+      formData.append("nuevaValoracion",calificacion)
+      sendDataPonderacion("locales/nuevacalificacion/", formData);
+    }
+  }
+
   //Renderizado de HTML
   return(
     <div>
       <Dialog TransitionComponent={Transition} open={userContext.openLocal} fullWidth={true} width="xl" onClose={handleClose}>
         <DialogTitle>Informacion del local {userContext.catalogoLocal.label}</DialogTitle>
-        <DialogContent style={{marginLeft:'15px'}}>
-          <div style={{display:'felx'}}>
-          <Slider 
-            inicio={false} 
-            autoplay={false} 
-            arrows={true}
-            images={images}/>
-              <p>Hola mundo</p>
+        {imagenesLocal !== undefined? <div>
+          <DialogContent style={{marginLeft:'15px'}}>
+            <div style={{display:'felx'}}>
+              <Slider 
+                inicio={false} 
+                autoplay={false} 
+                arrows={true}
+                images={imagenesLocal}/>
+              <Typography variant="subtitle1">Descripcion del local</Typography>
+              <Typography variant="body1" color="text.secondary">{userContext.catalogoLocal.descripcion}</Typography>
+              <br/>
+              <div style={{display:'flex'}}>
+                <Typography>Valorar el local:</Typography>
+                <Rating
+                  style={{marginLeft:'80px'}}
+                  defaultValue={calificacion}
+                  readOnly={click === "true" ? false : true}
+                  onChange={(event, data)=>{
+                    if(data!== null){
+                      setCalificacion(data);
+                      setClick(click+1);
+                    }
+                  }}
+                  IconContainerComponent={IconContainer}
+                  highlightSelectedOnly/>
+                {customIcons[calificacion].label !== null &&
+                  <Typography 
+                    variant="p" 
+                    style={{
+                      color:'#686767',
+                      marginLeft:'20px',
+                      fontSize:'15px'}}
+                  >{customIcons[calificacion].label}</Typography>
+                }
+              </div>
+              <Typography variant="body2" color="text.secondary">(La calificación que se muestra es la que tiene el local actualmente)</Typography>
+              <FormGroup>
+                <FormControlLabel control={
+                  <Checkbox 
+                    onChange={(e)=>{click === "true" ? setClick(""):setClick("true") }}
+                    />
+                } label="Habilitar calificación del usuario" />
+              </FormGroup>
+              <br/>
+              <br/>
+              <Mapa/>
             </div>
-        </DialogContent>
-        <DialogActions>
-          <Button 
-            variant="outlined" 
-            onClick={handleClose}>Cerrar</Button>
+          </DialogContent>
+          <DialogActions>
+            <Button 
+              variant="outlined" 
+              onClick={handleClose}>Cerrar</Button>
+             <Button 
+              disabled={click ==="true" ? false: true}
+              variant="outlined" 
+              onClick={ponderacionUsuario}>Guardar nueva calificación</Button>
           </DialogActions>
+        </div>:
+        <div style={{width: '100%', height: 80,display: 'flex', alignItems: 'center',justifyContent: 'center',}}>
+          <CircularProgress/>
+        </div>
+        }
       </Dialog>
     </div>
   );

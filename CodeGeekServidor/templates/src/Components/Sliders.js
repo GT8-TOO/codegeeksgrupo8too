@@ -27,8 +27,8 @@ const Sliders = (props)=>{
         {props.images.map(image=><div className="divCatalogo" key={image.id} >
           <img 
             className="slider_images_catalogo" 
-            src={image.image}
-            alt ={image.description}/>               
+            src={image.url}
+            alt ={image.descripcion}/>               
         </div>)}
       </Slider>}
     </div>

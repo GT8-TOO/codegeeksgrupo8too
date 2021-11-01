@@ -90,7 +90,6 @@ const RegistrarLocal = (props)=>{
       state:false,
       type:""
     })
- 
   },[])
 
   //Cierra la ventana flotante

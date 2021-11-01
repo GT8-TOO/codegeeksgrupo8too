@@ -199,6 +199,7 @@ def docentes_sin_escuela(request):
 
 
 @csrf_exempt
+#añadi el state que es el que ocupo yo para mostrar mensajes
 def asignar_escuela(request):
     respuesta ={
         "type":"",
@@ -227,3 +228,30 @@ def asignar_escuela(request):
             return JsonResponse(respuesta, safe=False)
     else: 
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."}, safe=False)
+
+@csrf_exempt
+#Metodo para mandar correos
+def mandar_correos(request):
+    respuesta ={
+        "type":"",
+        "state":True,
+        "title":"",
+        "message":""
+    }
+    if request.method =="POST":
+        email = request.POST.get("email")
+        dui = request.POST.get("dui")
+        asunto = request.POST.get("asunto")
+        cuerpo = request.POST.get("cuerpo")
+        print(email, '\n')
+        print(dui, '\n')
+        print(asunto, '\n')
+        print(cuerpo, '\n')
+        respuesta["type"]="success"
+        respuesta["title"]="Informacion enviada"
+        respuesta["state"]=True
+        respuesta["message"]="La informacion se envio de manera correcta, falta la parte de servidor"
+    else:
+        return JsonResponse({"Error":"No se puede acceder a este enlace"}, safe=False)
+ 
+    return JsonResponse(respuesta, safe=False)

@@ -127,12 +127,6 @@ const TablaMaterias =(props)=> {
         aria-label="customized table"
         sx={{ minWidth: 500 }}>
           <TableHead>
-            <StyledTableCell align="center" colSpan={2}>
-              Materia de requisito
-            </StyledTableCell>
-            <StyledTableCell align="center" colSpan={3}>
-              Materia a añadir
-            </StyledTableCell>
           <TableRow>
             <StyledTableCell>Codigo de materia</StyledTableCell>
             <StyledTableCell>Materia</StyledTableCell>

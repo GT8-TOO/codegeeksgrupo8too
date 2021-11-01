@@ -44,6 +44,57 @@ def registrar_materia (request):
     return JsonResponse(respuesta, safe=False)
 
 @csrf_exempt
+#Continuar con el metodo
+def registrar_carrera(request):
+    respuesta ={
+        "state":True,
+        "creado":False,
+        "type":"",
+        "message":""
+    }
+    if request.method =="POST":
+        #Lista materias
+        listaMaterias=[]
+        cantidad= int(request.POST.get("cantidad"))
+        for i in range(cantidad):
+            codMateria="codMateria"+str(i)
+            codMateriaRequisito="codMateriaRequisito"+str(i)
+            cicloMateria="ciclo"+str(i)
+            diccionario={
+                "codMateria":"",
+                "codMateriaRequisito":"",
+                "ciclo":""
+            }
+            diccionario["codMateria"]=request.POST.get(codMateria)
+            diccionario["codMateriaRequisito"]=request.POST.get(codMateriaRequisito)
+            diccionario["ciclo"]=request.POST.get(cicloMateria)
+            listaMaterias.append(diccionario)
+
+        for i in listaMaterias:
+            print(i, "\n'")
+
+        #Informacion de la carrera
+        carrera = request.POST.get("carrera")
+        yearcarrer=request.POST.get("yearcarrer")
+        codEscuela=request.POST.get("codEscuela")
+        yearPensum = request.POST.get("yearPensum")
+        print(carrera, "\n")
+        print(yearcarrer, "\n")
+        print(codEscuela, "\n")
+        print(yearPensum, "\n")
+
+        #Editar el mensaje de confirmacion, pero tiene que tener este formato
+        respuesta["type"]="success" #solo adminte warning, info, error, success
+        respuesta["state"]=True #Solo adminte True o False
+        respuesta["creado"]=True #Solo adminte True o False
+        respuesta["message"]="Informacion enviada correctamente" #Aqui ira la inforamcion si se creo o no, es personalizable
+        
+
+    else:
+        return JsonResponse({"Error":"No se puede acceder a este enlace"}, safe=False)
+    return JsonResponse(respuesta, safe=False)
+
+@csrf_exempt
 def mandar_materias (request):
     materias = list(Materia.objects.values())
     lista =[]
@@ -60,10 +111,13 @@ def mandar_materias (request):
     return JsonResponse(lista, safe=False)
 
 
-# @csrf_exempt
+@csrf_exempt
+#Iniciar ciclo corregir
 def crear_catedra (request):
     respuesta ={
         "type":"",
+        "state":True,
+        "creado":False,
         "message":""
     }
     # if request.method =="POST":
@@ -101,4 +155,5 @@ def crear_catedra (request):
            
     respuesta["type"]="success"
     respuesta["message"]="La Catedra de "+catedra.cod_materia.nombre_materia+" ha sido configurada correctamente."   
+    respuesta["creado"]=True
     return JsonResponse(respuesta, safe=False)

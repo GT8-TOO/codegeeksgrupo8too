@@ -7,7 +7,7 @@ import {
   Slide,
   Button
 } from '@mui/material';
-import WindowAlert from '../WindowAlert';
+import Notifiacion from '../Notifiacion';
 import CardLocal from './Locales/CardLocal';
 import MostrarLocal from './Locales/MostrarLocal';
 import RegistrarLocal from './Locales/RegistrarLocal';
@@ -23,7 +23,7 @@ const CatalogoLocales =(props)=>{
   const [edificioActual, setEdificio]=useState(null);
 
   //Component di mount
-  useEffect(async()=>{
+  useEffect(()=>{
     document.title="Catalogo de locales";
     userContext.setCodigoLocal(undefined)
     userContext.setRespuesta({
@@ -41,10 +41,9 @@ const CatalogoLocales =(props)=>{
     <Slide direction="up" in={true}>
       <div>
         {userContext.respuesta.state &&
-          <WindowAlert
+          <Notifiacion
             state={userContext.respuesta.state}
             type={userContext.respuesta.type}
-            title={userContext.respuesta.title}
             message={userContext.respuesta.message}
           />
         }

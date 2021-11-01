@@ -16,6 +16,8 @@ import WarningIcon from '@mui/icons-material/Warning';
 
 //Components
 import WindowAlert from '../WindowAlert';
+import CardLocal from './Locales/CardLocal';
+import MostrarLocal from './Locales/MostrarLocal';
 
 //Style
 import styleError from '../../Styled/ErorCSS';
@@ -122,50 +124,56 @@ const SolicitarLocal = (props)=>{
             redirect="/login"
           />
         }
+        {usercontext.openLocal &&<MostrarLocal url={props.url}/>}
         <Typography variant="h4">Realizar reserva de local</Typography>
         { props.horarios !== undefined ?
-          <div>
-            <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              options={props.local}
-              value ={usercontext.codigoLocal !== undefined ? usercontext.codigoLocal: elegido}
-              fullWidth={true}
-              sx={{marginTop:5 }}
-              renderInput={(params) => <TextField {...params} label="Local a solicitar" />}
-              onChange={(_event, elegido) => {
-                if(elegido!== null){
-                  setData({cod_horario: dataSelect.cod_horario, cod_local:elegido.code});
-                  setElegido(elegido.label)
-                }else{
-                  setData({cod_horario: dataSelect.cod_horario, cod_local:""});
-                }
-              }}
-            /> 
-            {dataSelect.cod_local ==="" &&<p className={classError.errors2}><WarningIcon/> Seleccione un local</p>}
-            {dataSelect.cod_local ===undefined && error.state &&<p className={classError.errors2}><WarningIcon/> Seleccione un local</p>}
-            <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              options={props.horarios}
-              fullWidth={true}
-              sx={{marginTop:5 }}
-              renderInput={(params) => <TextField {...params} label="Horarios para solicitar local" />}
-              onChange={(_event, elegido) => {
-                if(elegido !== null){
-                  setData({cod_horario:elegido.cod_horario, cod_local:dataSelect.cod_local});
-                }else{
-                  setData({cod_horario:"", cod_local:dataSelect.cod_local});
-                }
-              }}
-            /> 
-            {dataSelect.cod_horario ==="" &&<p className={classError.errors2}><WarningIcon/> Seleccione un horario</p>}
-            {dataSelect.cod_horario ===undefined && error.state&&<p className={classError.errors2}><WarningIcon/> Seleccione un horario</p>}
-            <br/>
-            <Button
-              variant="contained" 
-              style={{backgroundColor:'#01818A'}}
-              onClick={solicitarReserva}>Realizar reserva</Button>
+          <div style={{display:'flex'}}>
+            <div style={{width:400}}>
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={props.local}
+                value ={usercontext.codigoLocal !== undefined ? usercontext.codigoLocal: elegido.label}
+                fullWidth={true}
+                sx={{marginTop:5 }}
+                renderInput={(params) => <TextField {...params} label="Local a solicitar" />}
+                onChange={(_event, elegido) => {
+                  if(elegido!== null){
+                    setData({cod_horario: dataSelect.cod_horario, cod_local:elegido.code});
+                    setElegido(elegido)
+                  }else{
+                    setData({cod_horario: dataSelect.cod_horario, cod_local:""});
+                  }
+                }}
+              /> 
+              {dataSelect.cod_local ==="" &&<p className={classError.errors2}><WarningIcon/> Seleccione un local</p>}
+              {dataSelect.cod_local ===undefined && error.state &&<p className={classError.errors2}><WarningIcon/> Seleccione un local</p>}
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={props.horarios}
+                fullWidth={true}
+                sx={{marginTop:5 }}
+                renderInput={(params) => <TextField {...params} label="Horarios para solicitar local" />}
+                onChange={(_event, elegido) => {
+                  if(elegido !== null){
+                    setData({cod_horario:elegido.cod_horario, cod_local:dataSelect.cod_local});
+                  }else{
+                    setData({cod_horario:"", cod_local:dataSelect.cod_local});
+                  }
+                }}
+              /> 
+              {dataSelect.cod_horario ==="" &&<p className={classError.errors2}><WarningIcon/> Seleccione un horario</p>}
+              {dataSelect.cod_horario ===undefined && error.state&&<p className={classError.errors2}><WarningIcon/> Seleccione un horario</p>}
+              <br/>
+              <Button
+                variant="contained" 
+                style={{backgroundColor:'#01818A'}}
+                onClick={solicitarReserva}>Realizar reserva</Button>
+            </div>
+            <div style={{marginLeft:'50px'}}>
+              {dataSelect.cod_local !== undefined && dataSelect.cod_local !== "" && <CardLocal local={elegido}/>}
+            </div>
           </div>:
           <div style={{width: 500, height: 80,display: 'flex', alignItems: 'center',justifyContent: 'center',}}>
             <CircularProgress m="auto"/>

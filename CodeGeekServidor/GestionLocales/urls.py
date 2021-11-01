@@ -6,4 +6,5 @@ urlpatterns = [
     path('solicitarlocales-json/', get_locales),
     path('solicitarescuelas-json/', get_escuelas),
     path('registrarlocal-json/', registrar_local),
+    path('solicitarimagenes-json/', get_imagenes_local),
 ]

@@ -45,6 +45,7 @@ const RegistrarCiclo =(props)=>{
   const [numeroCiclo, setNumero]=useState(1)
   const [listaMateria, setLista]=useState([]);
   const [requisitosP, setRequisitos] =useState("si");
+  const mensaje ="La materia se ha guardado correctamente" 
   const [camposVacios, setCampos]= useState({
     type:"",
     state:false,
@@ -63,6 +64,19 @@ const RegistrarCiclo =(props)=>{
 		materiaGuardada:false
     })
   },[]);
+
+  //Component di update
+  useEffect(()=>{
+    if (userContext.respuesta.materiaGuardada=== true && userContext.respuesta.message === mensaje){
+      setMaterias(undefined)
+      getMaterias();
+      userContext.setRespuesta({
+        type:"",
+        message:"",
+        materiaGuardada:false
+      })
+    }
+  });
 
   const getMaterias =async()=>{
     var data = await axios.get(props.url+"materias/solicitarmaterias-json/").then((res)=>{
@@ -85,7 +99,7 @@ const RegistrarCiclo =(props)=>{
       title:"",
       message:""
     })
-    if(materia!== undefined && materiaRequisito!==undefined){
+    if(materia!== undefined && materiaRequisito!==undefined && requisitosP==="si"){
       if(materia.label !== materiaRequisito.label){
         setLista([...listaMateria, {
           codigoMateriaRequisito:materiaRequisito.code,
@@ -105,8 +119,8 @@ const RegistrarCiclo =(props)=>{
       }
     }else if(requisitosP==="no"){
         setLista([...listaMateria, {
-          codigoMateriaRequisito:"",
-          nombreMateriaR:"",
+          codigoMateriaRequisito:"No hay",
+          nombreMateriaR:"No hay",
           codigoMateria:materia.code,
           nombreMateria:materia.label,
           ciclo: numeroCiclo,
