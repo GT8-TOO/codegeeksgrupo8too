@@ -1,8 +1,28 @@
 from django.db import models
 from GestionUsuarios.models import Docente
-
-
+from django.core.validators import MaxValueValidator
 # Create your models here.
+class Materia(models.Model):
+    cod_materia = models.CharField(primary_key=True, max_length=6)
+    nombre_materia = models.CharField(max_length=50)
+    unidades_valorativas = models.BigIntegerField(blank=True, null=True)
+    obligatoria = models.BigIntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'materia'
+    
+    def __str__(self):
+        return str(self.cod_materia)+" - "+str(self.nombre_materia)
+
+class RequisitoDe(models.Model):
+    mat_cod_materia = models.OneToOneField(Materia, models.CASCADE, db_column='mat_cod_materia', primary_key=True)
+    cod_materia = models.ForeignKey(Materia, models.CASCADE, db_column='cod_materia', related_name='requisitos', null=True) #field.E305
+
+    class Meta:
+        managed = True
+        db_table = 'requisito_de'
+        unique_together = ('mat_cod_materia', 'cod_materia')
 
 class Catedra(models.Model):
     cod_catedra = models.AutoField(primary_key=True)
@@ -11,6 +31,11 @@ class Catedra(models.Model):
     ciclo_par = models.BooleanField(default=False, null=True)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
+    docentes = models.ManyToManyField(
+        Docente,
+        through='EsParteDe',
+        through_fields=('cod_catedra', 'dui'),
+    )
 
     def __str__(self):
         return str(self.cod_catedra)+" - "+str(self.cod_materia)
@@ -18,26 +43,25 @@ class Catedra(models.Model):
     class Meta:
         managed = True
         db_table = 'catedra'
+        unique_together = ('cod_materia', 'anio','ciclo_par')
 
 class Ciclo(models.Model):
-    anio_en_pensum = models.BigIntegerField(db_column='anio_en__pensum')  # Field renamed because it contained more than one '_' in a row.
-    numero_de_ciclo = models.BigIntegerField()
-    cod_pensum = models.OneToOneField('Pensum', models.DO_NOTHING, db_column='cod_pensum', primary_key=True)
-
+    numero_de_ciclo = models.BigIntegerField(primary_key=True)
+    anio_en_pensum = models.BigIntegerField(db_column='anio_en_pensum')
+    ciclo_par = models.BooleanField(default=False, null=False)
     class Meta:
         managed = True
         db_table = 'ciclo'
 
 class EsParteDe(models.Model):
-    dui = models.OneToOneField(Docente, models.CASCADE, db_column='dui', primary_key=True)
-    # cod_empleado = models.ForeignKey(Docente, models.DO_NOTHING, db_column='cod_empleado', related_name='empleado', null=True) #Field.E303
-    cod_catedra = models.ForeignKey(Catedra, models.CASCADE, db_column='cod_catedra', null=True)
+    dui = models.ForeignKey(Docente, models.CASCADE, db_column='dui')
+    cod_catedra = models.ForeignKey(Catedra, models.CASCADE, db_column='cod_catedra')
     coordinador = models.BooleanField(default=False, null=True)
 
     class Meta:
         managed = True
         db_table = 'es_parte_de'
-        unique_together = (('dui', 'cod_catedra'),)
+        unique_together = ('dui', 'cod_catedra')
 
 
 class Dia(models.Model):
@@ -76,45 +100,30 @@ class Horario(models.Model):
         unique_together=(('cod_hora','cod_dia'),)
 
 class Imparte(models.Model):
-    numero_de_ciclo = models.BigIntegerField(primary_key=True)
-    cod_materia = models.ForeignKey('Materia', models.CASCADE, db_column='cod_materia', null=True)
-    cod_pensum = models.ForeignKey('Pensum', models.CASCADE, db_column='cod_pensum', null=False)
-    ciclo_par = models.BigIntegerField(blank=True, null=True)
+    numero_de_ciclo = models.PositiveIntegerField(primary_key=True, validators=[MaxValueValidator(10)])
+    cod_materia = models.ForeignKey('Materia', models.CASCADE, db_column='cod_materia')
+    cod_pensum = models.ForeignKey('Pensum', models.CASCADE, db_column='cod_pensum')
+    
 
     class Meta:
         managed = True
         db_table = 'imparte'
-        unique_together = (('numero_de_ciclo', 'cod_materia'),)
+        unique_together = ('numero_de_ciclo', 'cod_materia','cod_pensum')
 
-class Materia(models.Model):
-    cod_materia = models.CharField(primary_key=True, max_length=6)
-    nombre_materia = models.CharField(max_length=50)
-    unidades_valorativas = models.BigIntegerField(blank=True, null=True)
-    obligatoria = models.BigIntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'materia'
-    
-    def __str__(self):
-        return str(self.cod_materia)+" - "+str(self.nombre_materia)
 
 class Pensum(models.Model):
     cod_pensum = models.CharField(primary_key=True, max_length=10)
     cod_escuela = models.ForeignKey('GestionLocales.Escuela', models.CASCADE, db_column='cod_escuela', blank=True, null=True)
     anio_publicacion = models.DateField()
     carrera = models.CharField(max_length=100, blank=True, null=True)
-
+    materias= models.ManyToManyField(
+        Materia,
+        through='Imparte',
+        through_fields=('cod_pensum', 'cod_materia'),
+    )
+    
     class Meta:
         managed = True
         db_table = 'pensum'
 
-class RequisitoDe(models.Model):
-    mat_cod_materia = models.OneToOneField(Materia, models.CASCADE, db_column='mat_cod_materia', primary_key=True)
-    cod_materia = models.ForeignKey(Materia, models.CASCADE, db_column='cod_materia', related_name='requisitos', null=True) #field.E305
-
-    class Meta:
-        managed = True
-        db_table = 'requisito_de'
-        unique_together = (('mat_cod_materia', 'cod_materia'),)
 

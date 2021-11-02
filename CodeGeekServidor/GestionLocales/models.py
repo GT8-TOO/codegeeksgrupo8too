@@ -2,6 +2,17 @@ from django.db import models
 
 # Create your models here.
 
+class Escuela(models.Model):
+    cod_escuela = models.CharField(primary_key=True, max_length=10)
+    nombre_escuela = models.CharField(max_length=256)
+
+    class Meta:
+        managed = True
+        db_table = 'escuela'
+    
+    def __str__(self):
+        return f'{self.nombre_escuela}'
+    
 class Edificio(models.Model):
     cod_edificio = models.CharField(primary_key=True, max_length=10)
     cod_escuela = models.ForeignKey('Escuela', models.DO_NOTHING, db_column='cod_escuela', null=True)
@@ -15,16 +26,6 @@ class Edificio(models.Model):
     def __str__(self):
         return f'{self.cod_edificio ,self.nombre_edificio}'
 
-class Escuela(models.Model):
-    cod_escuela = models.CharField(primary_key=True, max_length=10)
-    nombre_escuela = models.CharField(max_length=256)
-
-    class Meta:
-        managed = True
-        db_table = 'escuela'
-    
-    def __str__(self):
-        return f'{self.nombre_escuela}'
 
 class Local(models.Model):
     cod_local = models.CharField(primary_key=True, max_length=10)
@@ -51,7 +52,7 @@ class Puntuacion(models.Model):
     class Meta:
         managed = True
         db_table = 'puntuacion'
-        unique_together = (('dui', 'cod_local'),)
+        unique_together = ('dui', 'cod_local')
 
 
 class Imagen(models.Model):

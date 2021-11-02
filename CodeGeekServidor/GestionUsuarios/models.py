@@ -91,8 +91,8 @@ class Docente(models.Model):
 
 class Notificacion(models.Model):
     cod_notificacion = models.AutoField(primary_key=True)
-    cod_empleado = models.ForeignKey('GestionUsuarios.Empleado', models.DO_NOTHING, db_column='cod_empleado',related_name='notificaciones',null=True)
-    cod_reserva = models.ForeignKey('GestionReservas.Reserva', models.DO_NOTHING, db_column='cod_reserva', blank=True, null=True)
+    cod_empleado = models.ForeignKey('GestionUsuarios.Empleado', models.CASCADE, db_column='cod_empleado',related_name='notificaciones',null=True)
+    cod_reserva = models.ForeignKey('GestionReservas.Reserva', models.CASCADE, db_column='cod_reserva', blank=True, null=True)
     visto = models.BooleanField(null=False,default=False)
     fecha = models.DateField(blank=True, null=True)
     hora = models.TimeField(blank=True, null=True)
