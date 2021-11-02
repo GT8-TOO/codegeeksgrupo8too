@@ -48,7 +48,7 @@ class Catedra(models.Model):
 class Ciclo(models.Model):
     numero_de_ciclo = models.BigIntegerField(primary_key=True)
     anio_en_pensum = models.BigIntegerField(db_column='anio_en_pensum')
-    ciclo_par = models.BooleanField(default=False, null=False)
+    # ciclo_par = models.BooleanField(default=False, null=False)
     class Meta:
         managed = True
         db_table = 'ciclo'
