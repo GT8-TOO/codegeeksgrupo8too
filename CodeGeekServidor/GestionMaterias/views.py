@@ -115,13 +115,14 @@ def mandar_materias (request):
 #Iniciar ciclo corregir
 def crear_catedra (request):
     respuesta ={
-        "type":"",
+        "type":"error",
         "state":True,
         "creado":False,
         "message":""
     }
     # if request.method =="POST":
     # docentes=[]
+    # recuperando datos
     cod_materia = request.GET.get("cod_materia")
     cantidad = int(request.GET.get("cantidad"))
     coordinador_dui = request.GET.get("coordinador_dui")
@@ -129,31 +130,57 @@ def crear_catedra (request):
     ciclo_par = request.GET.get("ciclo_par")
     fecha_inicio=request.GET.get("fecha_inicio")
     fecha_fin=request.GET.get("fecha_fin")
-    
+    if ciclo_par==True: ciclo='II'
+    else: ciclo='I'
     #  recuperando materia
-    materia=Materia.objects.get(pk=cod_materia)
+    try:
+        materia=Materia.objects.get(pk=cod_materia) 
+    except Materia.DoesNotExist:
+        respuesta["message"]="La materia "+cod_materia+" no existe."   
+        return JsonResponse(respuesta, safe=False)
+        
+
+    existe=Catedra.objects.filter(cod_materia=materia,anio=anio,ciclo_par=ciclo_par).exists()
+    if existe==False:
+        catedra=Catedra(cod_materia=materia,anio=anio,ciclo_par=ciclo_par,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+        catedra.save()
+    else:
+        
+        respuesta["type"]="warning"          
+        respuesta["message"]="La Catedra de la Materia "+materia.nombre_materia+" ya existe para el ciclo "+ciclo+" - "+anio+"."   
+        return JsonResponse(respuesta, safe=False)
     
-    # catedra=Catedra(cod_materia=materia,anio=anio,ciclo_par=ciclo_par)
-    catedra=Catedra(cod_materia=materia,anio=anio,ciclo_par=ciclo_par,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
-    catedra.save()
     
     # recuperando coordinador
-    coordinador=Docente.objects.get(pk=coordinador_dui)
+    try:
+        coordinador=Docente.objects.get(pk=coordinador_dui)
+    except Docente.DoesNotExist:
+        respuesta["message"]="La materia "+cod_materia+" no existe."   
+        return JsonResponse(respuesta, safe=False)
     
     # agregando al coordinador a la catedra
-    add=EsParteDe(cod_catedra=catedra,dui=coordinador,coordinador=True)
-    add.save()
+    try:
+        
+        add=EsParteDe(cod_catedra=catedra,dui=coordinador,coordinador=True)
+        add.save()
+    except :
+        respuesta["message"]="Error al agregar Coordinador "+coordinador.nombre+"."   
+        return JsonResponse(respuesta, safe=False)
     
     # agregando todos los docentes a la catedra
     # recuperando los docentes
-    for i in range(1,cantidad):
+    for i in range(1,cantidad+1):
             nombre=request.GET.get("docente"+str(i))
-            print(nombre)
-            doc=Docente.objects.get(pk=nombre) 
-            add=EsParteDe(cod_catedra=catedra,dui=doc,coordinador=False)
-            add.save()
+            try:
+                doc=Docente.objects.get(dui=nombre) 
+                add=EsParteDe(cod_catedra=catedra,dui=doc,coordinador=False)
+                add.save()
+            except Docente.DoesNotExist:
+                respuesta["message"]="Error al agregar Docente con dui "+nombre   
+                return JsonResponse(respuesta, safe=False)
            
     respuesta["type"]="success"
-    respuesta["message"]="La Catedra de "+catedra.cod_materia.nombre_materia+" ha sido configurada correctamente."   
+    respuesta["message"]="La Catedra de "+catedra.cod_materia.nombre_materia+" ciclo "+ciclo+" - "+anio+" ha sido configurada correctamente."   
     respuesta["creado"]=True
     return JsonResponse(respuesta, safe=False)
+
