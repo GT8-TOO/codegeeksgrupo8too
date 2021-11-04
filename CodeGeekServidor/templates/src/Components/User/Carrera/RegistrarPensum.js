@@ -51,6 +51,7 @@ const RegistrarPensum =(props)=>{
         <Grid item xs={6}>
           <TextField 
             sx={{width:300}} 
+            autoFocus
             label="Carrera" 
             name="carrera"
             variant="outlined" 

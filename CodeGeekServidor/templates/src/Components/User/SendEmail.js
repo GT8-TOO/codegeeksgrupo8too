@@ -72,6 +72,7 @@ const SendEmail =(props)=>{
         <Typography variant="h4">Contactar con administrador</Typography>
         <form onSubmit={handleSubmit(enviarCorreo)} style={{width:800,marginTop:'50px'}}>
           <TextField 
+            autoFocus
             fullWidth
             name="destinatario"
             type="email"

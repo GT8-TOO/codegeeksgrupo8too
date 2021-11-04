@@ -4,7 +4,6 @@ from django.http import JsonResponse
 from GestionLocales.models import *
 
 # Create your views here.
-
 @csrf_exempt
 def get_edificios (request):
     #Metodo que envia los edificios mediante json

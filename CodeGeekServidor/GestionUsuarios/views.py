@@ -149,6 +149,7 @@ def obtener_usuario(request):
             "encontrado":False,
             "message":""
             }
+    #Trae solo la informacion de un docente
     if request.method =="POST":
         dui=request.POST.get('dui')
         docente = Docente.objects.filter(dui=dui).values('dui','nit', 'nombre','apellidos', 'cod_escuela', 'cod_empleado', 'fecha_nacimiento')
@@ -170,7 +171,6 @@ def obtener_usuario(request):
             respuesta["title"]="Usuario no encontrado"
             respuesta["message"]="El usuario no existe"   
             return JsonResponse(respuesta,safe=False)
-    
     else:
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."},safe=False)
 
@@ -185,9 +185,25 @@ def docentes_escuela(request):
         docentes=Docente.objects.filter(cod_escuela__cod_escuela=cod_escuela)
         serializer = DocenteSerializer(docentes, many = True)
         return JsonResponse(serializer.data, safe=False)
-   
+
+    #Trae la informacion de los docentes activos
+    elif request.method =="GET":
+        docente=list(Docente.objects.values('dui','nombre','apellidos'))
+        respuesta =[]
+        for i in range(len(docente)):
+            diccionario ={
+                "code":"",
+                "label":"",
+            }
+            diccionario["code"]= docente[i]["dui"]
+            diccionario["label"]=docente[i]["nombre"]+docente[i]["apellidos"]
+            respuesta.append(diccionario)
+            del diccionario
+        return JsonResponse(respuesta, safe=False)
+ 
     else: 
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."}, safe=False)
+
 @csrf_exempt
 def docentes_sin_escuela(request):
     if request.method =="POST":

@@ -15,6 +15,7 @@ import SendEmail from '../Components/User/SendEmail';
 
 //Admin
 import RegistrarCarrera from '../Components/User/RegistrarCarrera';
+import ComenzarCiclo from '../Components/User/ComenzarCiclo';
 import CrearAdministrador from '../Components/User/CrearAdministrador';
 
 
@@ -162,7 +163,9 @@ const User =(props)=>{
               url={props.url}/>
           }
           {(windows ==="start" && userContext.user.admin ===true)&&
-            <p>Aqui comenzara ciclo</p>
+            <ComenzarCiclo
+              url={props.url}
+            />
           }
           {(windows ==="authorize" && userContext.user.admin===true)&&
             <CrearAdministrador 

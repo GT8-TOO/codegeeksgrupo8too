@@ -87,6 +87,7 @@ const Register = (props) =>{
         //Mandar solicitud de metodos
         let formData= new FormData();
         formData.append("nombre", data.nombre);
+        formData.append("apellidos", data.apellidos);
         formData.append("dui", data.dui);
         formData.append("nit", data.nit);
         formData.append("fechaNacimiento", fecha);
@@ -174,7 +175,7 @@ const Register = (props) =>{
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 4,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -198,6 +199,22 @@ const Register = (props) =>{
                 <ErrorMessage
                   errors={errors}
                   name="nombre"
+                  render={({message})=><p className={classError.errors}><WarningIcon/> {message}</p>}/>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Apellidos"
+                  name="apellidos"
+                  {...register("apellidos",{
+                    required:{
+                      value:true,
+                      message:"Campo obligatorio, ingrese sus apellidos"
+                    },
+                  })}/>
+                <ErrorMessage
+                  errors={errors}
+                  name="apellidos"
                   render={({message})=><p className={classError.errors}><WarningIcon/> {message}</p>}/>
               </Grid>
               <Grid item xs={12} sm={6}>
