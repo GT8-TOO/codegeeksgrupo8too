@@ -53,7 +53,7 @@ const SendEmail =(props)=>{
   //Metodo para enviar correos
   const enviarCorreo = (data)=>{
     let formData = new FormData();
-    formData.append("email", data.email)
+    formData.append("email", data.destinatario)
     formData.append("dui", usercontext.user.dui)
     formData.append("asunto", data.asunto)
     formData.append("cuerpo", data.cuerpo)

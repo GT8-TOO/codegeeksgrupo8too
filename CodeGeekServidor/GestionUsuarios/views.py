@@ -4,7 +4,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from GestionUsuarios.models import Administrador, Empleado, Docente
 from GestionLocales.models import Escuela
+from GestionMaterias.models import EsParteDe
 from django.contrib.auth import authenticate, login, logout
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
 from django.db.models.query_utils import Q
 from datetime import datetime	
 import re
@@ -245,6 +248,21 @@ def asignar_escuela(request):
     else: 
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."}, safe=False)
 
+def datos_correo(dui, cuerpo):
+    try:
+        esparte = EsParteDe.objects.filter(dui=dui)    
+        materia = esparte[0].cod_catedra.cod_materia
+        nombre = esparte[0].dui.nombre
+        correo = esparte[0].dui.cod_empleado.email
+        data={'nombre': nombre, 'materia': materia, 'cuerpo': cuerpo, 'correo': correo}
+        return data
+    except:
+        materia='Actualmente no registrado.'
+        docente = Docente.objects.get(dui=dui)
+        data={'nombre': docente.nombre, 'materia': materia, 'cuerpo': cuerpo, 'correo': docente.cod_empleado.email}
+        return data
+
+
 @csrf_exempt
 #Metodo para mandar correos
 def mandar_correos(request):
@@ -259,14 +277,20 @@ def mandar_correos(request):
         dui = request.POST.get("dui")
         asunto = request.POST.get("asunto")
         cuerpo = request.POST.get("cuerpo")
-        print(email, '\n')
-        print(dui, '\n')
-        print(asunto, '\n')
-        print(cuerpo, '\n')
+
+        template = get_template("email.html")
+        data=datos_correo(dui, cuerpo)
+        content = template.render(data)
+        
+        correo=EmailMultiAlternatives(asunto, cuerpo, 'soporte@codegeeks.ml', [str(email)])
+        correo.attach_alternative(content, 'text/html')
+        correo.send()
+
         respuesta["type"]="success"
         respuesta["title"]="Informacion enviada"
         respuesta["state"]=True
-        respuesta["message"]="La informacion se envio de manera correcta, falta la parte de servidor"
+        respuesta["message"]="Su correo se ha enviado correctamente"
+
     else:
         return JsonResponse({"Error":"No se puede acceder a este enlace"}, safe=False)
  
