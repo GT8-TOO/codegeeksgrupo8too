@@ -1,6 +1,7 @@
 from django.db import models
 from GestionUsuarios.models import Docente
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator,MinValueValidator
+from datetime import datetime
 # Create your models here.
 class Materia(models.Model):
     cod_materia = models.CharField(primary_key=True, max_length=6)
@@ -16,13 +17,13 @@ class Materia(models.Model):
         return str(self.cod_materia)+" - "+str(self.nombre_materia)
 
 class RequisitoDe(models.Model):
-    mat_cod_materia = models.OneToOneField(Materia, models.CASCADE, db_column='mat_cod_materia', primary_key=True)
-    cod_materia = models.ForeignKey(Materia, models.CASCADE, db_column='cod_materia', related_name='requisitos', null=True) #field.E305
+    cod_materia = models.OneToOneField(Materia, models.CASCADE, db_column='cod_materia', primary_key=True)
+    cod_materia_requisito = models.ForeignKey(Materia, models.CASCADE, db_column='cod_materia_requisito', related_name='requisito', null=True) #field.E305
 
     class Meta:
         managed = True
         db_table = 'requisito_de'
-        unique_together = ('mat_cod_materia', 'cod_materia')
+        unique_together = ('cod_materia', 'cod_materia_requisito')
 
 class Catedra(models.Model):
     cod_catedra = models.AutoField(primary_key=True)
@@ -61,7 +62,7 @@ class EsParteDe(models.Model):
     class Meta:
         managed = True
         db_table = 'es_parte_de'
-        unique_together = ('dui', 'cod_catedra')
+        # unique_together = ('dui', 'cod_catedra')
 
 
 class Dia(models.Model):
@@ -100,7 +101,7 @@ class Horario(models.Model):
         unique_together=(('cod_hora','cod_dia'),)
 
 class Imparte(models.Model):
-    numero_de_ciclo = models.PositiveIntegerField(primary_key=True, validators=[MaxValueValidator(10)])
+    numero_de_ciclo = models.ForeignKey('Ciclo', models.CASCADE, db_column='cod_ciclo')
     cod_materia = models.ForeignKey('Materia', models.CASCADE, db_column='cod_materia')
     cod_pensum = models.ForeignKey('Pensum', models.CASCADE, db_column='cod_pensum')
     
@@ -114,7 +115,7 @@ class Imparte(models.Model):
 class Pensum(models.Model):
     cod_pensum = models.CharField(primary_key=True, max_length=10)
     cod_escuela = models.ForeignKey('GestionLocales.Escuela', models.CASCADE, db_column='cod_escuela', blank=True, null=True)
-    anio_publicacion = models.DateField()
+    anio_publicacion =models.PositiveIntegerField(validators=[MaxValueValidator(1950),MinValueValidator(datetime.now().year)])
     carrera = models.CharField(max_length=100, blank=True, null=True)
     materias= models.ManyToManyField(
         Materia,
