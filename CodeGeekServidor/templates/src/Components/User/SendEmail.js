@@ -53,7 +53,7 @@ const SendEmail =(props)=>{
   //Metodo para enviar correos
   const enviarCorreo = (data)=>{
     let formData = new FormData();
-    formData.append("email", data.email)
+    formData.append("email", data.destinatario)
     formData.append("dui", usercontext.user.dui)
     formData.append("asunto", data.asunto)
     formData.append("cuerpo", data.cuerpo)
@@ -72,6 +72,7 @@ const SendEmail =(props)=>{
         <Typography variant="h4">Contactar con administrador</Typography>
         <form onSubmit={handleSubmit(enviarCorreo)} style={{width:800,marginTop:'50px'}}>
           <TextField 
+            autoFocus
             fullWidth
             name="destinatario"
             type="email"

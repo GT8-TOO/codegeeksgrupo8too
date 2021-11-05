@@ -105,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 AUTH_USER_MODEL = 'GestionUsuarios.Empleado'
 #sesión de 25 minutos
-SESSION_COOKIE_AGE = 120
+SESSION_COOKIE_AGE = 1500
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Internationalization
@@ -134,3 +134,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, '../templates/build/static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.codegeeks.ml'  
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587 
+EMAIL_HOST_USER = 'soporte@codegeeks.ml' 
+EMAIL_HOST_PASSWORD = 'soporteAdmin' 

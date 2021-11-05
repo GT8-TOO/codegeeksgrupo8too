@@ -115,17 +115,20 @@ def registrar_carrera(request):
 def mandar_materias (request):
     materias = list(Materia.objects.values())
     lista =[]
-    for i in range(len(materias)):
-        diccionario={
-            "id":0,
-            "code":"",
-            "label":""
-        }
-        diccionario["id"]=i
-        diccionario["code"]=materias[i]["cod_materia"]
-        diccionario["label"]=materias[i]["nombre_materia"]
-        lista.append(diccionario)
-    return JsonResponse(lista, safe=False)
+    if request.method=="GET":
+        for i in range(len(materias)):
+            diccionario={
+                "id":0,
+                "code":"",
+                "label":""
+            }
+            diccionario["id"]=i
+            diccionario["code"]=materias[i]["cod_materia"]
+            diccionario["label"]=materias[i]["nombre_materia"]
+            lista.append(diccionario)
+        return JsonResponse(lista, safe=False)
+    else:
+        return JsonResponse({"Error":"No se puede acceder mediante este metodo"}, safe=False)
 
 
 @csrf_exempt
@@ -143,7 +146,7 @@ def crear_catedra (request):
         cod_materia = request.POST.get("cod_materia")
         cantidad = int(request.POST.get("cantidad"))
         coordinador_dui = request.POST.get("coordinador_dui")
-        anio = request.POST.get("anio")
+        anio = request.POST.get("year")
         ciclo_par = request.POST.get("ciclo_par")
         fecha_inicio=request.POST.get("fecha_inicio")
         fecha_fin=request.POST.get("fecha_fin")

@@ -182,6 +182,7 @@ const RegistrarCiclo =(props)=>{
           </Grid>
           <Grid item xs={6}>
             <TextField
+              autoFocus
               sx={{width:'50%'}} 
               label="Pensum" 
               name="yearPensum"

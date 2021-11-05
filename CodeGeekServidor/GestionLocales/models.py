@@ -48,6 +48,7 @@ class Local(models.Model):
 class Puntuacion(models.Model):
     dui = models.ForeignKey('GestionUsuarios.Docente', models.DO_NOTHING, db_column='doc_dui', related_name='puntuaciones', null=True)
     cod_local = models.ForeignKey(Local, models.DO_NOTHING, db_column='cod_local', related_name='puntuaciones_docentes', null=True) #Field E303 ralated_name
+    puntuacion = models.IntegerField(null=True)
 
     class Meta:
         managed = True

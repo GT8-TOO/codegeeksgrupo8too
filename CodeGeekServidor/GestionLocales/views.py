@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.db.models import Avg 
 from GestionLocales.models import *
+from GestionUsuarios.models import Docente
 
 # Create your views here.
-
 @csrf_exempt
 def get_edificios (request):
     #Metodo que envia los edificios mediante json
@@ -167,3 +168,52 @@ def registrar_local (request):
             respuesta["type"]="error"
 
     return JsonResponse(respuesta, safe=False)
+
+@csrf_exempt
+def nueva_calificacion(request):
+    respuesta ={
+        "title":"Error al actualizar la puntuación",
+        "state":True,
+        "creado":False,
+        "message":"",
+        "type":""
+    }
+    if request.method == "POST":
+        #Datos recibidos 
+        calificacion = int(request.POST.get('nuevaValoracion'))
+        local = request.POST.get('codLocal')
+        usuario = request.POST.get('codEmpleado') #dui
+        
+        if calificacion > 0 and calificacion < 6:
+            local= Local.objects.get(cod_local=local)
+            usuario=Docente.objects.get(dui=usuario)
+
+            #almacenar ountuación
+            try:
+                puntuacion=Puntuacion.objects.get(cod_local=local, dui=usuario)
+                puntuacion.puntuacion=calificacion
+                puntuacion.save()
+            except:
+                Puntuacion.objects.create(cod_local=local, dui=usuario, puntuacion = calificacion)
+            
+            #Calcular promedio nuevo
+            calificaciones= Puntuacion.objects.filter(cod_local= local).values('puntuacion')
+            suma=0
+            cantidad=0
+            for puntuacion in calificaciones:
+                suma=suma+puntuacion['puntuacion']
+                cantidad=cantidad+1
+            promedio=round(suma/cantidad)
+            
+            #actualizar promedio
+            local.puntuacion=promedio
+            local.save()
+            respuesta["title"]="Nueva puntuación."
+            respuesta["type"]="success"
+            respuesta["creado"]=True
+            respuesta["message"]="La puntuación del local ha sido actualizada."
+        else:
+            respuesta["type"]="error"
+            respuesta["message"]="La puntuació enviada es invalida."       
+    return JsonResponse(respuesta, safe=False)
+    pass

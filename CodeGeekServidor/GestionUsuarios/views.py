@@ -4,10 +4,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from GestionUsuarios.models import Administrador, Empleado, Docente
 from GestionLocales.models import Escuela
+from GestionMaterias.models import EsParteDe
 from django.contrib.auth import authenticate, login, logout
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
 from django.db.models.query_utils import Q
 from datetime import datetime	
-import re
 from .serializers import DocenteSerializer
 
 # Create your views here.
@@ -149,6 +151,7 @@ def obtener_usuario(request):
             "encontrado":False,
             "message":""
             }
+    #Trae solo la informacion de un docente
     if request.method =="POST":
         dui=request.POST.get('dui')
         docente = Docente.objects.filter(dui=dui).values('dui','nit', 'nombre','apellidos', 'cod_escuela', 'cod_empleado', 'fecha_nacimiento')
@@ -170,7 +173,6 @@ def obtener_usuario(request):
             respuesta["title"]="Usuario no encontrado"
             respuesta["message"]="El usuario no existe"   
             return JsonResponse(respuesta,safe=False)
-    
     else:
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."},safe=False)
 
@@ -185,9 +187,25 @@ def docentes_escuela(request):
         docentes=Docente.objects.filter(cod_escuela__cod_escuela=cod_escuela)
         serializer = DocenteSerializer(docentes, many = True)
         return JsonResponse(serializer.data, safe=False)
-   
+
+    #Trae la informacion de los docentes activos
+    elif request.method =="GET":
+        docente=list(Docente.objects.values('dui','nombre','apellidos'))
+        respuesta =[]
+        for i in range(len(docente)):
+            diccionario ={
+                "code":"",
+                "label":"",
+            }
+            diccionario["code"]= docente[i]["dui"]
+            diccionario["label"]=docente[i]["nombre"]+docente[i]["apellidos"]
+            respuesta.append(diccionario)
+            del diccionario
+        return JsonResponse(respuesta, safe=False)
+ 
     else: 
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."}, safe=False)
+
 @csrf_exempt
 def docentes_sin_escuela(request):
     if request.method =="POST":
@@ -229,6 +247,33 @@ def asignar_escuela(request):
     else: 
         return JsonResponse({"message" : "Los datos no fueron enviados de forma segura."}, safe=False)
 
+def datos_correo(dui, cuerpo):
+    try:
+        esparte = EsParteDe.objects.filter(dui=dui)    
+        materia = esparte[0].cod_catedra.cod_materia
+        titulo = "Tienes un nuevo mensaje de: "+ esparte[0].dui.nombre
+        correo = esparte[0].dui.cod_empleado.email
+        data={'titulo': titulo, 'materia': materia, 'cuerpo': cuerpo, 'correo': correo}
+        return data
+    except:
+        materia='Actualmente no registrado.'
+        docente = Docente.objects.get(dui=dui)
+        titulo = "Tienes un nuevo mensaje de: "+ docente.nombre
+        data={'titulo': titulo, 'materia': materia, 'cuerpo': cuerpo, 'correo': docente.cod_empleado.email}
+        return data
+
+def nuevo_correo(cuerpo, asunto, dui, email, tipo):
+    #datos
+    if tipo == 'correoAdmin':
+        data=datos_correo(dui, cuerpo)
+
+    template = get_template("email.html")
+    content = template.render(data)
+    #nuevo correo
+    correo=EmailMultiAlternatives(asunto, cuerpo, 'soporte@codegeeks.ml', [str(email)])
+    correo.attach_alternative(content, 'text/html')
+    correo.send()
+
 @csrf_exempt
 #Metodo para mandar correos
 def mandar_correos(request):
@@ -243,14 +288,18 @@ def mandar_correos(request):
         dui = request.POST.get("dui")
         asunto = request.POST.get("asunto")
         cuerpo = request.POST.get("cuerpo")
-        print(email, '\n')
-        print(dui, '\n')
-        print(asunto, '\n')
-        print(cuerpo, '\n')
+        '''
+        escuela= Docente.objects.filter(dui=dui).values('cod_escuela')
+        admin= Administrador.objects.filter(cod_escuela=escuela[0]['cod_escuela'])
+        correoAdmin = admin[0].cod_empleado.email
+        '''
+        nuevo_correo(cuerpo,asunto,dui,email, tipo='correoAdmin')
+
         respuesta["type"]="success"
         respuesta["title"]="Informacion enviada"
         respuesta["state"]=True
-        respuesta["message"]="La informacion se envio de manera correcta, falta la parte de servidor"
+        respuesta["message"]="Su correo se ha enviado correctamente"
+
     else:
         return JsonResponse({"Error":"No se puede acceder a este enlace"}, safe=False)
  
