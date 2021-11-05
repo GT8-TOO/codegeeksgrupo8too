@@ -10,7 +10,6 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.db.models.query_utils import Q
 from datetime import datetime	
-import re
 from .serializers import DocenteSerializer
 
 # Create your views here.
@@ -252,16 +251,28 @@ def datos_correo(dui, cuerpo):
     try:
         esparte = EsParteDe.objects.filter(dui=dui)    
         materia = esparte[0].cod_catedra.cod_materia
-        nombre = esparte[0].dui.nombre
+        titulo = "Tienes un nuevo mensaje de: "+ esparte[0].dui.nombre
         correo = esparte[0].dui.cod_empleado.email
-        data={'nombre': nombre, 'materia': materia, 'cuerpo': cuerpo, 'correo': correo}
+        data={'titulo': titulo, 'materia': materia, 'cuerpo': cuerpo, 'correo': correo}
         return data
     except:
         materia='Actualmente no registrado.'
         docente = Docente.objects.get(dui=dui)
-        data={'nombre': docente.nombre, 'materia': materia, 'cuerpo': cuerpo, 'correo': docente.cod_empleado.email}
+        titulo = "Tienes un nuevo mensaje de: "+ docente.nombre
+        data={'titulo': titulo, 'materia': materia, 'cuerpo': cuerpo, 'correo': docente.cod_empleado.email}
         return data
 
+def nuevo_correo(cuerpo, asunto, dui, email, tipo):
+    #datos
+    if tipo == 'correoAdmin':
+        data=datos_correo(dui, cuerpo)
+
+    template = get_template("email.html")
+    content = template.render(data)
+    #nuevo correo
+    correo=EmailMultiAlternatives(asunto, cuerpo, 'soporte@codegeeks.ml', [str(email)])
+    correo.attach_alternative(content, 'text/html')
+    correo.send()
 
 @csrf_exempt
 #Metodo para mandar correos
@@ -277,14 +288,12 @@ def mandar_correos(request):
         dui = request.POST.get("dui")
         asunto = request.POST.get("asunto")
         cuerpo = request.POST.get("cuerpo")
-
-        template = get_template("email.html")
-        data=datos_correo(dui, cuerpo)
-        content = template.render(data)
-        
-        correo=EmailMultiAlternatives(asunto, cuerpo, 'soporte@codegeeks.ml', [str(email)])
-        correo.attach_alternative(content, 'text/html')
-        correo.send()
+        '''
+        escuela= Docente.objects.filter(dui=dui).values('cod_escuela')
+        admin= Administrador.objects.filter(cod_escuela=escuela[0]['cod_escuela'])
+        correoAdmin = admin[0].cod_empleado.email
+        '''
+        nuevo_correo(cuerpo,asunto,dui,email, tipo='correoAdmin')
 
         respuesta["type"]="success"
         respuesta["title"]="Informacion enviada"

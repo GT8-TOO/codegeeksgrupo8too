@@ -7,4 +7,5 @@ urlpatterns = [
     path('solicitarescuelas-json/', get_escuelas),
     path('registrarlocal-json/', registrar_local),
     path('solicitarimagenes-json/', get_imagenes_local),
+    path('nuevacalificacion/', nueva_calificacion),
 ]
