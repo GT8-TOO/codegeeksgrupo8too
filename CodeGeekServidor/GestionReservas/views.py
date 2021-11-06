@@ -8,7 +8,7 @@ from django.db.models.query_utils import Q
 from datetime import datetime
 from GestionLocales.serializers import LocalSerializer
 from .models import Reserva
-from .serializers import DiaSerializer, HoraSerializer, ReservaSerializer
+from .serializers import DiaSerializer, HoraSerializer, SimpleHoraSerializer, ReservaSerializer, SimpleReservaSerializer
 from rest_framework.renderers import JSONRenderer
 from GestionUsuarios.models import Administrador, Docente, Empleado, Notificacion
 from GestionMaterias.models import Horario,Dia,Hora, Materia, Catedra, EsParteDe
@@ -226,3 +226,59 @@ def get_horario (request):
         lista.append(diccionario)
         del diccionario
     return JsonResponse(lista, safe=False)
+
+@csrf_exempt
+def get_horario_completo (request):
+                # fila={  
+                # }
+                # horario=[]
+                # horas=Hora.objects.all();
+                # dias=Dia.objects.all();
+                # fila["columna0"]="Hora"; 
+                # for diaj in range(len(dias)):
+                #     fila["columna"+str(diaj+1)]=dias[diaj].nombre_dia;        
+                # for horai in range(len(horas)):
+                #     fila["columna0"]=str(horas[horai])
+                #     for diaj in range(len(dias)):    
+                #         reservas=Reserva.objects.filter(cod_horario__cod_hora__cod_hora=1,cod_horario__cod_dia__cod_dia=1,cod_local__cod_local=request.GET.get('cod_local'))
+                #         fila["columna"+str(diaj+1)]=SimpleReservaSerializer(reservas,many=True)
+                #         horario.append(fila)
+                # for hora in horas:
+                #     for dia in dias:       
+                #         print(hora.cod_hora)
+                #         print(dia.cod_dia)
+                #         reservas=Reserva.objects.filter(cod_horario__cod_hora__cod_hora=hora.cod_hora,cod_horario__cod_dia__cod_dia=dia.cod_dia,cod_local__cod_local=request.GET.get('cod_local'))
+                #         serializer=SimpleReservaSerializer(reservas,many=True)
+                
+                
+                # reservas=Reserva.objects.filter(cod_local__cod_local=request.GET.get('cod_local')).order_by('cod_horario__cod_hora__cod_hora','cod_horario__cod_dia__cod_dia')
+                # serializer=SimpleReservaSerializer(reservas,many=True)
+                # reservas=Reserva.objects.filter(cod_local__cod_local=request.GET.get('cod_local'))
+                reservas=[]
+                row=[]
+                dias=Dia.objects.all().order_by('cod_dia').values('nombre_dia')
+                for dia in dias:
+                    row.append(dia['nombre_dia'])
+                reservas.append(row)
+                horas=Hora.objects.all()
+                for hora in horas:
+                    row=[]
+                    horarios=Horario.objects.filter(cod_hora=hora).order_by('cod_dia')
+                    horaSerializer=SimpleHoraSerializer(hora)         
+                    row.append(horaSerializer.data)
+                    
+                    for horario in horarios:
+                                   
+                        reserva=horario.reserva_set.filter(cod_local__cod_local=request.GET.get('cod_local'),estado_solicitud='ACEPTADA').first()
+                        serializer=SimpleReservaSerializer(reserva,many=False)
+                        row.append(serializer.data)
+                    reservas.append(row)
+                # reservas=[]
+                # horarios=Horario.objects.all().order_by('cod_hora','cod_dia')
+                # for horario in horarios:
+                #     reserva=horario.reserva_set.all().filter(cod_local__cod_local=request.GET.get('cod_local'),estado_solicitud='ACEPTADA')
+                #     serializer=SimpleReservaSerializer(reserva,many=True)
+                #     reservas.append(serializer.data)
+                return JsonResponse(reservas, safe=False)          
+              
+              
