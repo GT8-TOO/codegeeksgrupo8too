@@ -16,15 +16,15 @@ class ReservaSerializer(serializers.ModelSerializer):
             
 class SimpleReservaSerializer(serializers.ModelSerializer):
       materia = serializers.CharField(source='cod_materia.nombre_materia', read_only=True) 
-      hora = serializers.PrimaryKeyRelatedField(source='cod_horario.cod_hora', read_only=True) 
-      dia = serializers.PrimaryKeyRelatedField(source='cod_horario.cod_dia', read_only=True) 
+      # hora = serializers.PrimaryKeyRelatedField(source='cod_horario.cod_hora', read_only=True) 
+      # dia = serializers.PrimaryKeyRelatedField(source='cod_horario.cod_dia', read_only=True) 
       
       
       class Meta:
                       
             model = Reserva
             depth = 1
-            fields=['materia','hora','dia']
+            fields=['materia']
             
 class SimpleHoraSerializer(serializers.ModelSerializer):
            

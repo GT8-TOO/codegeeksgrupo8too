@@ -229,56 +229,40 @@ def get_horario (request):
 
 @csrf_exempt
 def get_horario_completo (request):
-                # fila={  
-                # }
-                # horario=[]
-                # horas=Hora.objects.all();
-                # dias=Dia.objects.all();
-                # fila["columna0"]="Hora"; 
-                # for diaj in range(len(dias)):
-                #     fila["columna"+str(diaj+1)]=dias[diaj].nombre_dia;        
-                # for horai in range(len(horas)):
-                #     fila["columna0"]=str(horas[horai])
-                #     for diaj in range(len(dias)):    
-                #         reservas=Reserva.objects.filter(cod_horario__cod_hora__cod_hora=1,cod_horario__cod_dia__cod_dia=1,cod_local__cod_local=request.GET.get('cod_local'))
-                #         fila["columna"+str(diaj+1)]=SimpleReservaSerializer(reservas,many=True)
-                #         horario.append(fila)
-                # for hora in horas:
-                #     for dia in dias:       
-                #         print(hora.cod_hora)
-                #         print(dia.cod_dia)
-                #         reservas=Reserva.objects.filter(cod_horario__cod_hora__cod_hora=hora.cod_hora,cod_horario__cod_dia__cod_dia=dia.cod_dia,cod_local__cod_local=request.GET.get('cod_local'))
-                #         serializer=SimpleReservaSerializer(reservas,many=True)
                 
+                reservas=[] # inicializando Array
+                row=[] #inicializando fila
                 
-                # reservas=Reserva.objects.filter(cod_local__cod_local=request.GET.get('cod_local')).order_by('cod_horario__cod_hora__cod_hora','cod_horario__cod_dia__cod_dia')
-                # serializer=SimpleReservaSerializer(reservas,many=True)
-                # reservas=Reserva.objects.filter(cod_local__cod_local=request.GET.get('cod_local'))
-                reservas=[]
-                row=[]
+                # agregando headers
                 dias=Dia.objects.all().order_by('cod_dia').values('nombre_dia')
+                row.append('Hora') 
                 for dia in dias:
                     row.append(dia['nombre_dia'])
                 reservas.append(row)
+                
+                #filtrando por hora
                 horas=Hora.objects.all()
                 for hora in horas:
-                    row=[]
+                    row=[] #inicializando nueva fila
                     horarios=Horario.objects.filter(cod_hora=hora).order_by('cod_dia')
-                    horaSerializer=SimpleHoraSerializer(hora)         
-                    row.append(horaSerializer.data)
+                            
+                    # agregando hora
+                    row.append(str(hora.hora_inicio)+" - "+str(hora.hora_fin))
                     
+                    # agregando reserva en especifica hora, local y dia, tomando en cuenta que esta aceptada, solo trae la primera aceptada, asi que por ende solo deberia haber una
                     for horario in horarios:
-                                   
+                        # filtrando reservas en este horario, solo trae el primero que cumpla las condiciones   
                         reserva=horario.reserva_set.filter(cod_local__cod_local=request.GET.get('cod_local'),estado_solicitud='ACEPTADA').first()
-                        serializer=SimpleReservaSerializer(reserva,many=False)
-                        row.append(serializer.data)
-                    reservas.append(row)
-                # reservas=[]
-                # horarios=Horario.objects.all().order_by('cod_hora','cod_dia')
-                # for horario in horarios:
-                #     reserva=horario.reserva_set.all().filter(cod_local__cod_local=request.GET.get('cod_local'),estado_solicitud='ACEPTADA')
-                #     serializer=SimpleReservaSerializer(reserva,many=True)
-                #     reservas.append(serializer.data)
+                       
+                        #  en caso de no devolver ninguno agrega una cadena vacia
+                        if reserva is not None:
+                            materia=reserva.cod_materia
+                            row.append(str(materia))
+                        else:
+                            row.append("")
+                                      
+                    reservas.append(row)# guardando fila de horario
+            
                 return JsonResponse(reservas, safe=False)          
               
               
