@@ -63,6 +63,8 @@ class EsParteDe(models.Model):
         managed = True
         db_table = 'es_parte_de'
         unique_together = ('dui', 'cod_catedra')
+    def __str__(self):
+        return str(self.dui)+" - "+str(self.cod_catedra)
 
 
 class Dia(models.Model):

@@ -47,8 +47,10 @@ def nueva_reserva(request):
                 cod_local = request.POST.get("cod_local")
 
                 docente=Docente.objects.get(cod_empleado=cod_empleado)
+                print (docente.dui)
                 try:
-                    esparte= EsParteDe.objects.get(dui=docente.dui)
+                    esparte= EsParteDe.objects.get(dui=docente.dui, coordinador=True)
+                    print(esparte)
                     try:
                         if esparte.coordinador==True:    
                             reserva =Reserva()
