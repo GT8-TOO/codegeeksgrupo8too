@@ -21,4 +21,4 @@ class Reserva(models.Model):
         db_table = 'reserva'
 
     def __str__(self):
-        return str(self.cod_reserva)+" - "+str(self.doc_dui)+" - "+str(self.cod_local)+" - "+str(self.cod_materia)
+        return str(self.cod_reserva)+" - "+str(self.cod_horario)+" - "+str(self.cod_local)+" - "+str(self.cod_materia)
