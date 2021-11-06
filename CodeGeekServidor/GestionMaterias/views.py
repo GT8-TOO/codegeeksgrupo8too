@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.urls.resolvers import LocaleRegexDescriptor
 from django.views.decorators.csrf import csrf_exempt
 from GestionMaterias.models import *;
+from GestionLocales.models import Escuela;
 
 # Create your views here
 @csrf_exempt
@@ -52,47 +53,63 @@ def registrar_carrera(request):
         "type":"",
         "message":""
     }
-    if request.method =="POST":
-        #Lista materias
-        listaMaterias=[]
-        cantidad= int(request.POST.get("cantidad"))
-        for i in range(cantidad):
-            codMateria="codMateria"+str(i)
-            codMateriaRequisito="codMateriaRequisito"+str(i)
-            cicloMateria="ciclo"+str(i)
-            diccionario={
-                "codMateria":"",
-                "codMateriaRequisito":"",
-                "ciclo":""
-            }
-            diccionario["codMateria"]=request.POST.get(codMateria)
-            diccionario["codMateriaRequisito"]=request.POST.get(codMateriaRequisito)
-            diccionario["ciclo"]=request.POST.get(cicloMateria)
-            listaMaterias.append(diccionario)
+    # if request.method =="POST":
+    # datos pensum
+    carrera = request.GET.get("carrera")
+    # yearcarrer=request.GET.get("yearcarrer")
+    codEscuela=request.GET.get("codEscuela")
+    yearPensum = request.GET.get("yearPensum")
+ 
+    # recuperando Escuela
+    escuela=Escuela(pk=codEscuela)
+    
+    # creando pensum
+    # calculando codPensum
+    codPensum=""
+    for word in carrera.split():
+         if (word[0].isupper()): codPensum+=word[0]
+    codPensum+=str(yearPensum)
+    pensum=Pensum(cod_pensum=codPensum,cod_escuela=escuela,anio_publicacion=yearPensum,carrera=carrera)
+    pensum.save()
+    
+    
+    # guardando materias
+    cantidad= int(request.GET.get("cantidad"))
+    for i in range(1,cantidad+1):
+        codMateriaString="codMateria"+str(i)
+        cicloMateriaString="ciclo"+str(i)
+        codMateriaRequisitoString="codMateriaRequisito"+str(i)
+        
+        codMateria=request.GET.get(codMateriaString)
+        codMateriaRequisito=request.GET.get(codMateriaRequisitoString)
+        
+        
+        ciclo=Ciclo.objects.get(pk=request.GET.get(cicloMateriaString))
+        
+        materia=Materia.objects.get(pk=codMateria)
+        if codMateriaRequisito is not None:
+                  
+            # creando requisito de materia
+            materiaRequisito=Materia.objects.get(pk=codMateriaRequisito)
+            requisito=RequisitoDe(mat_cod_materia=materia,cod_materia=materiaRequisito)
+            requisito.save()
+        
+        # agregando materia al pensum
+        imparte=Imparte(numero_de_ciclo =int(request.GET.get(cicloMateriaString)),cod_materia=materia,cod_pensum=pensum)
+        imparte.save()
 
-        for i in listaMaterias:
-            print(i, "\n'")
 
-        #Informacion de la carrera
-        carrera = request.POST.get("carrera")
-        yearcarrer=request.POST.get("yearcarrer")
-        codEscuela=request.POST.get("codEscuela")
-        yearPensum = request.POST.get("yearPensum")
-        print(carrera, "\n")
-        print(yearcarrer, "\n")
-        print(codEscuela, "\n")
-        print(yearPensum, "\n")
 
-        #Editar el mensaje de confirmacion, pero tiene que tener este formato
-        respuesta["type"]="success" #solo adminte warning, info, error, success
-        respuesta["state"]=True #Solo adminte True o False
-        respuesta["creado"]=True #Solo adminte True o False
-        respuesta["message"]="Informacion enviada correctamente" #Aqui ira la inforamcion si se creo o no, es personalizable
+    #Editar el mensaje de confirmacion, pero tiene que tener este formato
+    respuesta["type"]="success" #solo adminte warning, info, error, success
+    respuesta["state"]=True #Solo adminte True o False
+    respuesta["creado"]=True #Solo adminte True o False
+    respuesta["message"]="Informacion enviada correctamente" #Aqui ira la inforamcion si se creo o no, es personalizable
+    return JsonResponse(respuesta, safe=False)
         
 
-    else:
-        return JsonResponse({"Error":"No se puede acceder a este enlace"}, safe=False)
-    return JsonResponse(respuesta, safe=False)
+    # else:
+    #     return JsonResponse({"Error":"No se puede acceder a este enlace"}, safe=False)
 
 @csrf_exempt
 def mandar_materias (request):
