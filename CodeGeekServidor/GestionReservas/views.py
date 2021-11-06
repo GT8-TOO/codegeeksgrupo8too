@@ -229,40 +229,59 @@ def get_horario (request):
 
 @csrf_exempt
 def get_horario_completo (request):
-                
-                reservas=[] # inicializando Array
-                row=[] #inicializando fila
-                
-                # agregando headers
-                dias=Dia.objects.all().order_by('cod_dia').values('nombre_dia')
-                row.append('Hora') 
-                for dia in dias:
-                    row.append(dia['nombre_dia'])
-                reservas.append(row)
-                
-                #filtrando por hora
-                horas=Hora.objects.all()
-                for hora in horas:
-                    row=[] #inicializando nueva fila
-                    horarios=Horario.objects.filter(cod_hora=hora).order_by('cod_dia')
-                            
-                    # agregando hora
-                    row.append(str(hora.hora_inicio)+" - "+str(hora.hora_fin))
+    if request.method == 'POST':
+        # recuperando local
+        try:
+            codLocal=request.POST.get('cod_local')
+            local=Local.objects.get(pk=codLocal)
+        except  Local.DoesNotExist:
+            respuesta ={
+                    "type":"error",
+                    "state": True,
+                    "message":'El Local '+str(codLocal)+' no existe.'
+            }
+            return JsonResponse(respuesta, safe=False)     
+           
+        reservas=[] # inicializando Array
+        row=[] #inicializando fila
+        
+        # agregando headers
+        dias=Dia.objects.all().order_by('cod_dia').values('nombre_dia')
+        row.append('Hora') 
+        for dia in dias:
+            row.append(dia['nombre_dia'])
+        reservas.append(row)
+        
+        #filtrando por hora
+        horas=Hora.objects.all()
+        for hora in horas:
+            row=[] #inicializando nueva fila
+            horarios=Horario.objects.filter(cod_hora=hora).order_by('cod_dia')
                     
-                    # agregando reserva en especifica hora, local y dia, tomando en cuenta que esta aceptada, solo trae la primera aceptada, asi que por ende solo deberia haber una
-                    for horario in horarios:
-                        # filtrando reservas en este horario, solo trae el primero que cumpla las condiciones   
-                        reserva=horario.reserva_set.filter(cod_local__cod_local=request.GET.get('cod_local'),estado_solicitud='ACEPTADA').first()
-                       
-                        #  en caso de no devolver ninguno agrega una cadena vacia
-                        if reserva is not None:
-                            materia=reserva.cod_materia
-                            row.append(str(materia))
-                        else:
-                            row.append("")
-                                      
-                    reservas.append(row)# guardando fila de horario
+            # agregando hora
+            row.append(str(hora.hora_inicio)+" - "+str(hora.hora_fin))
             
-                return JsonResponse(reservas, safe=False)          
+            # agregando reserva en especifica hora, local y dia, tomando en cuenta que esta aceptada, solo trae la primera aceptada, asi que por ende solo deberia haber una
+            for horario in horarios:
+                # filtrando reservas en este horario, solo trae el primero que cumpla las condiciones   
+                reserva=horario.reserva_set.filter(cod_local=local,estado_solicitud='ACEPTADA').first()
+            
+                #  en caso de no devolver ninguno agrega una cadena vacia
+                if reserva is not None:
+                    materia=reserva.cod_materia
+                    row.append(str(materia))
+                else:
+                    row.append("")
+                            
+            reservas.append(row)# guardando fila de horario
+    
+        return JsonResponse(reservas, safe=False)   
+    else:
+        respuesta ={
+        "type":"error",
+        "state": True,
+        "message":'No se puede acceder a esta informacion, debe utilizar Metodo POST.'
+    }
+        return JsonResponse(respuesta, safe=False)        
               
               
