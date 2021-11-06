@@ -94,6 +94,8 @@ def registrar_carrera(request):
             requisito=RequisitoDe(mat_cod_materia=materia,cod_materia=materiaRequisito)
             requisito.save()
         
+        # recuperando ciclo
+        # ciclo=Ciclo.objects.get(pk=int(request.GET.get(cicloMateriaString)))
         # agregando materia al pensum
         imparte=Imparte(numero_de_ciclo =int(request.GET.get(cicloMateriaString)),cod_materia=materia,cod_pensum=pensum)
         imparte.save()

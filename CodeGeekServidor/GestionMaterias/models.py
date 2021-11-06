@@ -101,7 +101,8 @@ class Horario(models.Model):
         unique_together=(('cod_hora','cod_dia'),)
 
 class Imparte(models.Model):
-    numero_de_ciclo = models.PositiveIntegerField(primary_key=True, validators=[MaxValueValidator(10)])
+    numero_de_ciclo = models.IntegerField(primary_key=True)
+    
     cod_materia = models.ForeignKey('Materia', models.CASCADE, db_column='cod_materia')
     cod_pensum = models.ForeignKey('Pensum', models.CASCADE, db_column='cod_pensum')
     
