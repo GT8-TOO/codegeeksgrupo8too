@@ -257,7 +257,11 @@ def datos_correo(dui, cuerpo):
         return data
     except:
         materia='Actualmente no registrado.'
-        docente = Docente.objects.get(dui=dui)
+        try:
+            docente = Docente.objects.get(dui=dui)
+        except:
+            docente=Administrador.objects.get(dui=dui)
+            materia = "Administrador de "+str(docente.cod_escuela)
         titulo = "Tienes un nuevo mensaje de: "+ docente.nombre
         data={'titulo': titulo, 'materia': materia, 'cuerpo': cuerpo, 'correo': docente.cod_empleado.email}
         return data
