@@ -1,6 +1,7 @@
 from django.db import models
 from GestionUsuarios.models import Docente
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator,MinValueValidator
+from datetime import datetime
 # Create your models here.
 class Materia(models.Model):
     cod_materia = models.CharField(primary_key=True, max_length=6)
@@ -114,7 +115,7 @@ class Imparte(models.Model):
 class Pensum(models.Model):
     cod_pensum = models.CharField(primary_key=True, max_length=10)
     cod_escuela = models.ForeignKey('GestionLocales.Escuela', models.CASCADE, db_column='cod_escuela', blank=True, null=True)
-    anio_publicacion = models.DateField()
+    anio_publicacion = models.PositiveIntegerField(validators=[MaxValueValidator(1950),MinValueValidator(datetime.now().year)])
     carrera = models.CharField(max_length=100, blank=True, null=True)
     materias= models.ManyToManyField(
         Materia,
