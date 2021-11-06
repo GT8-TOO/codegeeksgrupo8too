@@ -1,0 +1,37 @@
+/*AQUI ANDREA*/
+.slider_images{
+      display:block;
+      z-index: -100;
+      margin:7% 15px;
+}
+.div{
+      display:inline-block;
+      z-index: -100;
+      width:60%;
+      margin-top: 10px;
+      margin-right: 10%;
+      position:relative;
+}
+.div:after{
+      width:100%;
+      content:"";
+      position:absolute;
+      top: 0;
+      right: 0;
+      height: 95%;
+      background:linear-gradient(to right, rgba(255, 255,255, 1), rgba(0,0,0,0))
+
+} 
+.slider{
+      margin-left: 50%;
+      z-index: -100;
+}
+
+/*Catalogo de locales*/
+.divCatalogo:{
+      display:block;
+      width:70%;
+}
+.slider_images_catalogo{
+      width:100%;
+}

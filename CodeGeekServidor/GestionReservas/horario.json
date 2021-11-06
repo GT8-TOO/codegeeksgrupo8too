@@ -1,0 +1,19 @@
+[{
+    columna1: "hora"
+    columna2: "lunes",
+    columna3: "martes",
+    columna4: "miercoles",
+    columna5: "jueves",
+    columna6: "viernes",
+    columna7: "sabado"
+
+}, {
+    columna1: "6:20 - 8:05"
+    columna2: "Introduccion a la Informatica",
+    columna3: "",
+    columna4: "Sistemas Contables"
+    columna5: "",
+    columna6: "",
+    columna7: ""
+
+}]
