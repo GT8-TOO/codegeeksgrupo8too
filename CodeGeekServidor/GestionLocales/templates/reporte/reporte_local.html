@@ -1,0 +1,45 @@
+<html>
+ <head>
+   <title>Test</title>
+   <style>
+     h1 {
+       text-align: center;
+     }
+
+     table {
+       border: 1px solid;
+       margin: 0 auto;
+       width: 70%;
+     }
+
+     td, th {
+       text-align: center;
+       border: 1px solid;
+     }
+   </style>
+ </head>
+ <body>
+   <center>
+       <img width="30px" src="https://i.ibb.co/NC1pX6p/logo-e356eb48.png">
+   </center>
+   <h1>Lista de locales:</h1>
+   <table>
+     <thead>
+       <tr>
+         <th>Codigo de local</th>
+         <th>Codigo de edificio</th>
+         <th>Nombre de local</th>
+       </tr>
+     </thead>
+     <tbody>
+        {%for local in locales%}
+        <tr>
+         <td>{{local.cod_local}}</td>
+         <td>{{local.cod_edificio}}</td>
+         <td>{{local.nombre_local}}</td>
+        </tr>
+        {%endfor%}
+     </tbody>
+   </table>
+ </body>
+</html>
