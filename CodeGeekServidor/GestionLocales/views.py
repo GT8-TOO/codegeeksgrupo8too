@@ -187,8 +187,8 @@ def nueva_calificacion(request):
         #Datos recibidos 
         calificacion = int(request.POST.get('nuevaValoracion'))
         local = request.POST.get('codLocal')
-        usuario = request.POST.get('codEmpleado') #dui
-        
+        usuario = request.POST.get('dui') #dui
+
         if calificacion > 0 and calificacion < 6:
             local= Local.objects.get(cod_local=local)
             usuario=Docente.objects.get(dui=usuario)

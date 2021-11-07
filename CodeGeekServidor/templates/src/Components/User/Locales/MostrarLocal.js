@@ -130,6 +130,8 @@ const MostrarLocal = (props)=>{
     if (click ==="true"){
       let formData = new FormData();
       formData.append("nuevaValoracion",calificacion)
+      formData.append("codLocal",userContext.catalogoLocal.code)
+      formData.append("dui", userContext.user.dui)
       sendDataPonderacion("locales/nuevacalificacion/", formData);
     }
   }
