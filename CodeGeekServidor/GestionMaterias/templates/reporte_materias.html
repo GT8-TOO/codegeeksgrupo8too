@@ -38,6 +38,36 @@
     	<br>
        
         <h1>Reporte de Materias</h1>
+        <h2>{{materia.nombre_materia}}</h2>
+        <table style="margin: 0 auto; WIDTH: 500;"  >
+            <tr>
+                <td style="width: 4cm;">Hora</td>
+                <td style="width: 4cm;">Lunes</td>
+                <td style="width: 4cm;">Martes</td>
+                <td style="width: 4cm;">Miércoles</td>
+                <td style="width: 4cm;">Jueves</td>
+                <td style="width: 4cm;">Viernes</td>
+                <td style="width: 4cm;">Sábado</td>
+            </tr>
+            {%for objetos in objeto%}
+            {{objetos |safe}}
+            {%endfor%}
+        </table>
+        <table>
+        <p><strong>Número de Locales con Reserva: </strong>{{contadorLocales}}</p>
+        <p><strong># Horarios que se han reservado: </strong></p>
+        {%for locales in objeto3 %}
+        <p>{{locales.local}} = {{locales.cantidad}}</p>
+        {%empty%}
+        <p>Sin datos</p>
+        {%endfor%}
+        <p><strong># Dias en que se han reservado: </strong></p>
+        {%for dia in objeto5 %}
+        <p>{{dia.dias}} = {{dia.cantidad}}</p>
+        {%empty%}
+        <p>Sin datos</p>
+        {%endfor%}
+        </table>
         
     </body>
 </html>

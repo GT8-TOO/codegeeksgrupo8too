@@ -67,6 +67,7 @@ def reporte_local(request, idLocal):
                 #print(reserva.cod_materia.nombre_materia + ',' + str(reserva.cod_reserva) + ',' + str(reserva.cod_local)+','+str(reserva.cod_horario))
     contadorMaterias = Counter(objeto2)
     contadorDias = Counter(objeto4)
+    
     for a in contadorDias:
         objeto5.append({'dias':a,'cantidad':contadorDias[a]})
     #Horarios por materia
