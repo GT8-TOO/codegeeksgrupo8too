@@ -78,7 +78,7 @@ const CatalogoLocales =(props)=>{
             <div style={{display:'flex', gap:'30px', width:'100%',flexWrap:'wrap',marginTop:'30px'}}>
               { edificioActual === null &&props.local.map((item)=>{
                 return(
-                  <CardLocal local={item}/>
+                  <CardLocal key={item.code} id={item.code} local={item}/>
                 );
                })
               }
@@ -86,7 +86,7 @@ const CatalogoLocales =(props)=>{
               {edificioActual !== null && props.local.map((item)=>{
                 if(edificioActual.code ===item.codEdificio){
                   return(
-                    <CardLocal local={item}/>
+                    <CardLocal key={item.code} id={item.code} local={item}/>
                   );
                 }
               })}

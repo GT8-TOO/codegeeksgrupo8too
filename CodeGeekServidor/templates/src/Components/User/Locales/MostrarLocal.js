@@ -70,13 +70,16 @@ const MostrarLocal = (props)=>{
   const userContext = useContext(UserContext);
   const [calificacion,setCalificacion]=useState();
   const [imagenesLocal, setImagenes]= useState();
+  const [edificio, setEdificio]= useState([]);
   const [click, setClick] =useState(false);
 
   //Component dimount
   useEffect(()=>{
     let data= new FormData();
     data.append("codLocal",userContext.catalogoLocal.code);
+    data.append("codEdificio",userContext.catalogoLocal.codEdificio);
     getDataImages("locales/solicitarimagenes-json/", data)
+    getDataEdificio("locales/solicitaredificios-json/",data)
     userContext.setRespuesta({
 		message:"",
       state:false,
@@ -93,6 +96,16 @@ const MostrarLocal = (props)=>{
       console.log(error)
     })
     setImagenes(promise)
+  }
+
+  //Trae la itnformacion del edificio
+  const getDataEdificio = async(direccion, data)=>{
+    let promise = await  axios.post(props.url+direccion,data).then((res)=>{
+      return res.data;
+    }).catch((error)=>{
+      console.log(error)
+    })
+    setEdificio(promise);
   }
 
   //Envia la nueva ponderacion del local
@@ -117,6 +130,8 @@ const MostrarLocal = (props)=>{
     if (click ==="true"){
       let formData = new FormData();
       formData.append("nuevaValoracion",calificacion)
+      formData.append("codLocal",userContext.catalogoLocal.code)
+      formData.append("dui", userContext.user.dui)
       sendDataPonderacion("locales/nuevacalificacion/", formData);
     }
   }
@@ -171,7 +186,11 @@ const MostrarLocal = (props)=>{
               </FormGroup>
               <br/>
               <br/>
-              <Mapa/>
+              {edificio[0] !== undefined &&
+              <Mapa
+                edificio={edificio[0]}
+              />
+              }
             </div>
           </DialogContent>
           <DialogActions>

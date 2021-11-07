@@ -4,8 +4,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
-import PlaceIcon from '@mui/icons-material/Place';
 import EmailIcon from '@mui/icons-material/Email';
+import ExploreIcon from '@mui/icons-material/Explore';
 
 export const SidebarData = [
   {
@@ -36,7 +36,7 @@ export const SidebarData = [
     key:'local',
     title: 'Mostrar los locales',
     path: 'local',
-    icon:<PlaceIcon/>,
+    icon:<ExploreIcon/>,
   },
   {
     key:'report',

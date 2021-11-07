@@ -248,35 +248,47 @@ def get_horario_completo (request):
         row=[] #inicializando fila
         
         # agregando headers
-        dias=Dia.objects.all().order_by('cod_dia').values('nombre_dia')
-        row.append('Hora') 
-        for dia in dias:
-            row.append(dia['nombre_dia'])
+        dias=list(Dia.objects.all().order_by('cod_dia').values('nombre_dia'))
+        diccionario={
+            'hora':'Hora'
+        }
+        for i in range(len(dias)):
+            diccionario["columna"+str(i)]= dias[i]['nombre_dia']
+        
+        row.append(diccionario)
         reservas.append(row)
+        del diccionario
         
         #filtrando por hora
-        horas=Hora.objects.all()
-        for hora in horas:
+        horas=list(Hora.objects.all())
+        for i in range(len(horas)):
+            diccionario={
+            }
             row=[] #inicializando nueva fila
-            horarios=Horario.objects.filter(cod_hora=hora).order_by('cod_dia')
+            horarios=Horario.objects.filter(cod_hora=horas[i]).order_by('cod_dia')
                     
             # agregando hora
-            row.append(str(hora.hora_inicio)+" - "+str(hora.hora_fin))
+            diccionario["columna"] =str(horas[i].hora_inicio)+" - "+str(horas[i].hora_fin)
             
             # agregando reserva en especifica hora, local y dia, tomando en cuenta que esta aceptada, solo trae la primera aceptada, asi que por ende solo deberia haber una
-            for horario in horarios:
+            j=0
+            for horarios in horarios:
                 # filtrando reservas en este horario, solo trae el primero que cumpla las condiciones   
-                reserva=horario.reserva_set.filter(cod_local=local,estado_solicitud='ACEPTADA').first()
+                reserva=horarios.reserva_set.filter(cod_local=local,estado_solicitud='ACEPTADA').first()
             
                 #  en caso de no devolver ninguno agrega una cadena vacia
                 if reserva is not None:
                     materia=reserva.cod_materia
-                    row.append(str(materia))
+                    diccionario["columna"+str(j)]=str(materia)
+                    row.append(diccionario2)
                 else:
-                    row.append("")
+                    diccionario["columna"+str(j)]="Disponible"
                             
+                j=j+1
+            row.append(diccionario)
             reservas.append(row)# guardando fila de horario
     
+        #print(reservas)
         return JsonResponse(reservas, safe=False)   
     else:
         respuesta ={
