@@ -5,15 +5,19 @@ import tempfile
 from .models import Local
 from GestionReservas.models import Reserva 
 from GestionMaterias.models import Materia
+
 #Tiempo
 from datetime import datetime, timedelta
 #Contar
 from collections import Counter
 from collections import defaultdict
-
+#Para generar el reporte
+##Se tiene que iterar objeto para
+##Generar URL Dinamica
+#{% url 'reporte_local' idLocal=objeto.cod_local %}
 def reporte_local(request, idLocal):
     locales = Local.objects.get(cod_local=idLocal)
-    reservas = Reserva.objects.filter(cod_local=locales)
+    reservas = Reserva.objects.filter(cod_local=locales, estado_solicitud='ACEPTADA')
     materias = Materia.objects.all()
     objeto = []
     objeto2 = []
@@ -50,7 +54,7 @@ def reporte_local(request, idLocal):
             for reserva in reservas:
                 if reserva.cod_horario.cod_dia.nombre_dia == dia and (reserva.cod_horario.cod_hora.hora_inicio).strftime("%H:%M") == hora:
                     html2 = ''
-                    html2 += '<td style="width: 4cm;">'+ str(reserva.cod_materia.nombre_materia) +'['+str(reserva.doc_dui.nombre)+']'+', '+ str(reserva.cod_horario) + '</td>'
+                    html2 += '<td style="width: 4cm;">'+ str(reserva.cod_materia.nombre_materia) +'['+str(reserva.doc_dui.nombre)+']'+', '+ '</td>'
             html+=html2
         html += '</tr>'
     objeto.append(html)
@@ -85,7 +89,9 @@ def reporte_local(request, idLocal):
     return response
 
 def reporte_escuelas(request):
-    #locales = Local.objects.all()
+    #escuelas = Escuela.objects.get(pk=idEscuela)
+    horas = ['06:20','08:05','09:50','11:35','01:20','03:05','04:50','06:35']
+    objeto = []
     html_string = render_to_string('reporte/reporte_escuela.html',{})
     html = HTML(string=html_string)
     result = html.write_pdf()

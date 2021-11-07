@@ -7,5 +7,6 @@ urlpatterns = [
     path('solicitarmaterias-json/', mandar_materias),
     path('catedra/', crear_catedra),
     path('registrarcarrera/', registrar_carrera),
-    path('generar/pdf',reporte_materias),
+    path('generar/pdf/<str:idMateria>',reporte_materias),
+    #path('generar/pdf/escuela/<str:idEscuela>',reporte_materias),
 ]

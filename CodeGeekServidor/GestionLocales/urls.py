@@ -1,6 +1,6 @@
 from django.urls import path
 from GestionLocales.views import *
-from .generarReporte import reporte_local
+from .generarReporte import reporte_local, reporte_escuelas
 
 urlpatterns = [
     path('solicitaredificios-json/', get_edificios),
@@ -10,4 +10,5 @@ urlpatterns = [
     path('solicitarimagenes-json/', get_imagenes_local),
     path('nuevacalificacion/', nueva_calificacion),
     path('generar/pdf/<str:idLocal>',reporte_local),
+    path('generar/pdf/escuela/<str:idEscuela>',reporte_escuelas),
 ]
