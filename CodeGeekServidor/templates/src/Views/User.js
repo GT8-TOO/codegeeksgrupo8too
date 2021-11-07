@@ -27,6 +27,7 @@ import axios from 'axios';
 const User =(props)=>{
   const userContext = useContext(UserContext);
   const [local, setLocal]=useState();
+  const [usuario, setUsuario]=useState();
   const [horarios, setHorarios] =useState();
   const [edificios, setEdificios]=useState();
   const [escuelas, setEscuelas]=useState();
@@ -57,14 +58,15 @@ const User =(props)=>{
     })
 
     //Trae los datos
-    getDatosLocales("locales/solicitarlocales-json/")
-    getDatosHorarios("reservas/solicitarhorarios-json/")
+    let data = new FormData();
+    data.append("dui", sessionStorage.getItem("dui"));
+    getDatosLocales("locales/solicitarlocales-json/");
+    getDatosHorarios("reservas/solicitarhorarios-json/");
     getDatosEdificios("locales/solicitaredificios-json/");
     getDatosEscuelas("locales/solicitarescuelas-json/");
-
+    getDatosUsuario("user/obtenerusuario-json/", data);
     //const socketConection = new WebSocket('ws://localhost:8000/ws/socketconnection/');
   },[])
-
 
   //Cambia el estado de userContext
   const cambiarUsuario=(clave, valor)=>{
@@ -113,6 +115,16 @@ const User =(props)=>{
     setEscuelas(promise);
   }
 
+  //Trae la informacion del usuario
+  const getDatosUsuario = async(direccion, data)=>{
+    let promise = await axios.post(props.url+direccion, data).then((res)=>{
+      return res.data;
+    }).catch((error)=>{
+      console.log(error);
+    })
+    setUsuario(promise);
+  }
+
   //Renderizado de HTML
   return(
     <div style={{display:'flex'}}>
@@ -127,6 +139,8 @@ const User =(props)=>{
           }
           {windows ==="profile" &&
             <UserProfile 
+              escuelas={escuelas}
+              usuario={usuario}
               url={props.url}/>
           }
           {windows ==="requestlocal" &&

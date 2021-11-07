@@ -1,31 +1,36 @@
 import React from "react";
 import GoogleMapReact from 'google-map-react';
+import PlaceIcon from '@mui/icons-material/Place';
+import Tooltip from '@mui/material/Tooltip';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const AnyReactComponent = ({ text }) => <div><Tooltip title={text}><PlaceIcon sx={{ color: '#FC4030',fontSize: 40 }}/></Tooltip></div>;
 
-const Mapa= ()=>{
+const Mapa= (props)=>{
+
+  //component di mount
   const defaultProps = {
     center: {
-      lat: 10.99835602,
-      lng: 77.01502627
+      lat: props.edificio.latitud,
+      lng: props.edificio.longitud 
     },
     zoom: 11
   };
 
   return (
-    // Important! Always set the container height explicitly
     <div style={{ height: '40vh', width: '100%' }}>
+      {props.edificio !== undefined &&
       <GoogleMapReact
-        bootstrapURLKeys={{ key: " /* YOUR KEY HERE */" }}
+        bootstrapURLKeys={{ key: "AIzaSyDnnEwalpH6c1Clka1CpwLQ6gQi1jnTQBw" }}
         defaultCenter={defaultProps.center}
+        yesIWantToUseGoogleMapApiInternals
         defaultZoom={defaultProps.zoom}
       >
         <AnyReactComponent
-          lat={59.955413}
-          lng={30.337844}
-          text="My Marker"
+          lat={defaultProps.center.lat}
+          lng={defaultProps.center.lng}
+          text={props.text}
         />
-      </GoogleMapReact>
+      </GoogleMapReact>}
     </div>
   );
 }

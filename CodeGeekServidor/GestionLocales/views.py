@@ -9,24 +9,29 @@ from GestionUsuarios.models import Docente
 @csrf_exempt
 def get_edificios (request):
     #Metodo que envia los edificios mediante json
-    edificio=list(Edificio.objects.values())
-    lista =[]
-    for i in range(len(edificio)):
-        diccionario={
-            "id":0,
-            "code":"",
-            "label":"",
-            "longuitud":"",
-            "latitud":""
-        }
-        diccionario["id"]= i
-        diccionario["code"]= edificio[i]["cod_edificio"]
-        diccionario["label"]= edificio[i]["nombre_edificio"]
-        diccionario["longitud"]= edificio[i]["longitud"]
-        diccionario["latitud"]= edificio[i]["latitud"]
-        lista.append(diccionario);
-        del diccionario
-    return JsonResponse(lista, safe=False)
+    if request.method == "GET":
+        edificio=list(Edificio.objects.values())
+        lista =[]
+        for i in range(len(edificio)):
+            diccionario={
+                "id":0,
+                "code":"",
+                "label":"",
+                "longuitud":"",
+                "latitud":""
+            }
+            diccionario["id"]= i
+            diccionario["code"]= edificio[i]["cod_edificio"]
+            diccionario["label"]= edificio[i]["nombre_edificio"]
+            diccionario["longitud"]= edificio[i]["longitud"]
+            diccionario["latitud"]= edificio[i]["latitud"]
+            lista.append(diccionario);
+            del diccionario
+        return JsonResponse(lista, safe=False)
+    elif request.method=="POST":
+        codEdificio = request.POST.get('codEdificio')
+        respuesta = list(Edificio.objects.filter(cod_edificio=codEdificio).values())
+        return JsonResponse (respuesta, safe=False)
 
 @csrf_exempt
 def get_locales(request):

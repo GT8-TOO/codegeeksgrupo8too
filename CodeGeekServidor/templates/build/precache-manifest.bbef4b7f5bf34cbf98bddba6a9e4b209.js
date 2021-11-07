@@ -1,31 +1,35 @@
 self.__precacheManifest = [
   {
-    "revision": "5b0c30f1720b6bc94158",
+    "revision": "97bcbbe4ec281a0990cd",
     "url": "/static/css/main.79cfec8d.chunk.css"
   },
   {
-    "revision": "5b0c30f1720b6bc94158",
-    "url": "/static/js/main.6d4bd0be.chunk.js"
+    "revision": "97bcbbe4ec281a0990cd",
+    "url": "/static/js/main.3b02ba06.chunk.js"
   },
   {
-    "revision": "80d94a5509a10bbf0832",
-    "url": "/static/js/runtime~main.6f233040.js"
+    "revision": "79b0fa5338d8dd6100f5",
+    "url": "/static/js/runtime~main.2655cbd9.js"
   },
   {
-    "revision": "b30b221f265cfe0883d7",
+    "revision": "31ece1883fafc14a0e24",
     "url": "/static/css/2.573b0d66.chunk.css"
   },
   {
-    "revision": "b30b221f265cfe0883d7",
-    "url": "/static/js/2.55a306c2.chunk.js"
+    "revision": "31ece1883fafc14a0e24",
+    "url": "/static/js/2.ae6a00a2.chunk.js"
   },
   {
-    "revision": "46e58dcc3c92ed48c7e5",
-    "url": "/static/js/3.ff36ac53.chunk.js"
+    "revision": "26a009bee1a206e7812f",
+    "url": "/static/js/3.babd5acd.chunk.js"
   },
   {
     "revision": "e356eb481b8cd8f93c07a1d524670ed8",
     "url": "/static/media/logo.e356eb48.png"
+  },
+  {
+    "revision": "883c82c0400e135a64313828cce798f5",
+    "url": "/static/media/Minerva-Universidad-de-El-Salvador-UES.883c82c0.jpg"
   },
   {
     "revision": "49346e458280f6a5124e680b6e2b44f7",
@@ -48,7 +52,7 @@ self.__precacheManifest = [
     "url": "/static/media/AcademicaAtardecer.38efadb0.jpeg"
   },
   {
-    "revision": "3ec70c256eb1f2e49e107f2b6ff885b0",
+    "revision": "22f064a6aac498315072229e4df8ba7c",
     "url": "/index.html"
   }
 ];

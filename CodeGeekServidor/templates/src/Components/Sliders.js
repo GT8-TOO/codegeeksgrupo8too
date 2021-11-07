@@ -15,21 +15,29 @@ const Sliders = (props)=>{
     <div style={{zIndex:'-1'}}>
       {props.inicio?
         <Slider className="slider" {...settings} >
-        {props.images.map(image=><div className="div" key={image.id} >
+        {props.images.map(image=>{
+          return(
+          <div className="div" key={image.id} id={image.id}>
           <img 
+            title={image.title}
             className="slider_images" 
             src={image.image}
             height="500"
             alt ={image.description}/>               
-      </div>)}
+      </div>);
+        })}
       </Slider>:
       <Slider {...settings}>
-        {props.images.map(image=><div className="divCatalogo" key={image.id} >
+        {props.images.map(image=>{
+          return(
+        <div className="divCatalogo" key={image.cod_imagen} id={image.cod_imagen}>
           <img 
+            title={image.titulo}
             className="slider_images_catalogo" 
             src={image.url}
             alt ={image.descripcion}/>               
-        </div>)}
+        </div>);
+        })}
       </Slider>}
     </div>
   );

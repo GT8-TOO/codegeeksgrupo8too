@@ -137,29 +137,30 @@ const NavBar=(props)=> {
         <List>
           {SidebarData.map((item)=>{
             return(
-              <Link to={`/user/${item.path}`} className="link2">
-                <ListItem button  key={item.key}>
+              <Link to={`/user/${item.path}`} className="link2" key={item.key} id={item.key}>
+                <ListItem button  >
                   <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.title} />
                 </ListItem>
               </Link>)})}
         </List>
         {props.admin===true &&<div>
+          <List>
           <Divider />
           {SliderAdminData.map((item)=>{
             return(
-            <List>
-            <Link to={`/user/${item.path}`} className="link2">
-              <ListItem button  key={item.key}>
+            <Link to={`/user/${item.path}`} className="link2" key={item.key} id={item.key}>
+              <ListItem button  >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.title} />
               </ListItem>
             </Link>
-          </List>)})}
+          )})}
+        </List>
         </div>}
         <Divider />
         <List>
-           <Link to={``} className="link2">
+           <Link to={``} className="link2" key="logout">
             <ListItem button  onClick={cerrarSesion} key="logout">
               <ListItemIcon><LogoutIcon/></ListItemIcon>
               <ListItemText primary="Cerrar sesion" />
