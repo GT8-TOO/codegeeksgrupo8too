@@ -5,11 +5,6 @@ import {
   Autocomplete,
   CircularProgress,
   Button,
-  FormControl,
-  FormLabel,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
   Typography
 } from '@mui/material';
 import axios from 'axios';
@@ -41,10 +36,8 @@ const RegistrarCiclo =(props)=>{
   const [materias, setMaterias]=useState();
   const [materia, setMateria]=useState();
   const {register, formState:{errors}, handleSubmit} = useForm();
-  const [materiaRequisito, setMateriaR]=useState();
   const [numeroCiclo, setNumero]=useState(1)
   const [listaMateria, setLista]=useState([]);
-  const [requisitosP, setRequisitos] =useState("si");
   const mensaje ="La materia se ha guardado correctamente" 
   const [camposVacios, setCampos]= useState({
     type:"",
@@ -99,11 +92,9 @@ const RegistrarCiclo =(props)=>{
       title:"",
       message:""
     })
-    if(materia!== undefined && materiaRequisito!==undefined && requisitosP==="si"){
-      if(materia.label !== materiaRequisito.label){
+    if(materia!== undefined ){
+      if(materia.label !== ""){
         setLista([...listaMateria, {
-          codigoMateriaRequisito:materiaRequisito.code,
-          nombreMateriaR:materiaRequisito.label,
           codigoMateria:materia.code,
           nombreMateria:materia.label,
           ciclo: numeroCiclo,
@@ -117,14 +108,6 @@ const RegistrarCiclo =(props)=>{
           message:"Las materias no pueden tener una misma dependencia de requisito"
         })
       }
-    }else if(requisitosP==="no"){
-        setLista([...listaMateria, {
-          codigoMateriaRequisito:"No hay",
-          nombreMateriaR:"No hay",
-          codigoMateria:materia.code,
-          nombreMateria:materia.label,
-          ciclo: numeroCiclo,
-        }])
     }else{
       setCampos({
         type:"error",
@@ -219,7 +202,7 @@ const RegistrarCiclo =(props)=>{
                   sx={{ width: '100%' }}
                   renderInput={(params) => <TextField {...params} label="Materias a poner en el pensum" />}/>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={6}>
                 <Button 
                   onClick={openCrearMateria}
                   variant="outlined"
@@ -227,25 +210,7 @@ const RegistrarCiclo =(props)=>{
                   style={{ width:'100%', marginLeft:'40px', marginTop:'5px'}}>Crear una materia</Button>
               </Grid>
               <Grid item xs={6}>
-                <Autocomplete
-                  disablePortal
-                  name="materiaRequisito"
-                  options={materias}
-                  onChange={(_event, newMateria)=>{
-                    setMateriaR(newMateria);
-                  }}
-                  sx={{ width: '100%' }}
-                  renderInput={(params) => <TextField {...params} label="Materias de requisito" />}/>
-              </Grid>
-              <Grid item xs={4}>
-                <Button 
-                  variant="outlined"
-                  onClick={agregarLista}
-                  startIcon={<PlaylistAddIcon/>}
-                  style={{ width:'100%',marginLeft:'40px', marginTop:'5px'}}>Agregar a la lista</Button>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField 
+                 <TextField 
                   label="Ciclo que se impartira"
                   type="number"
                   style={{width:'100%'}}
@@ -256,22 +221,15 @@ const RegistrarCiclo =(props)=>{
                       }
                   }}
                 />
-              </Grid>
-              <Grid item xs={4}>
-                <FormControl component="fieldset" style={{marginLeft:'30px'}}>
-                  <FormLabel component="legend">¿Tiene requisitos previos?</FormLabel>
-                  <RadioGroup
-                    row
-                    defaultValue="si"
-                    onChange={(event)=>{
-                        setRequisitos(event.target.value);
-                    }}
-                    name="radio-buttons-group">
-                    <FormControlLabel value="si" control={<Radio />} label="Si" />
-                    <FormControlLabel value="no" control={<Radio />} label="No" />
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
+             </Grid>
+              <Grid item xs={6}>
+                 <Button 
+                  variant="outlined"
+                  fullWidth
+                  onClick={agregarLista}
+                  startIcon={<PlaylistAddIcon/>}
+                  style={{ marginLeft:'40px', marginTop:'5px'}}>Agregar a la lista</Button>
+             </Grid>
               {camposVacios.state && 
               <p className={errorClass.errors}><WarningIcon /> Tiene un error al ingresar los datos, reviselo y vuelva a intentar
                   (datos duplicados o campos vacios)

@@ -81,7 +81,6 @@ const RegistrarCarrera = (props)=>{
     formData.append("cantidad", userContext.inputCarrerra[1].pensum.length)
     for(let i=0; i < userContext.inputCarrerra[1].pensum.length; i++){
       formData.append("codMateria"+i, userContext.inputCarrerra[1].pensum[i].codigoMateria)
-      formData.append("codMateriaRequisito"+i, userContext.inputCarrerra[1].pensum[i].codigoMateriaRequisito)
       formData.append("ciclo"+i, userContext.inputCarrerra[1].pensum[i].ciclo)
     }
     sendDataCarrera("materias/registrarcarrera/",formData)

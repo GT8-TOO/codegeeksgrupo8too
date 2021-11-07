@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "97bcbbe4ec281a0990cd",
+    "revision": "362a11c7f08b45d0148b",
     "url": "/static/css/main.79cfec8d.chunk.css"
   },
   {
-    "revision": "97bcbbe4ec281a0990cd",
-    "url": "/static/js/main.3b02ba06.chunk.js"
+    "revision": "362a11c7f08b45d0148b",
+    "url": "/static/js/main.319b58d0.chunk.js"
   },
   {
     "revision": "79b0fa5338d8dd6100f5",
@@ -52,7 +52,7 @@ self.__precacheManifest = [
     "url": "/static/media/AcademicaAtardecer.38efadb0.jpeg"
   },
   {
-    "revision": "22f064a6aac498315072229e4df8ba7c",
+    "revision": "9e8245b1df0eb6d07e5ebee8ec26127e",
     "url": "/index.html"
   }
 ];

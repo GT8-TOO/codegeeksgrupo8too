@@ -130,8 +130,6 @@ const TablaMaterias =(props)=> {
           <TableRow>
             <StyledTableCell>Codigo de materia</StyledTableCell>
             <StyledTableCell>Materia</StyledTableCell>
-            <StyledTableCell>Codigo de materia</StyledTableCell>
-            <StyledTableCell>Materia</StyledTableCell>
             <StyledTableCell>Ciclo que pertecenera</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -141,12 +139,6 @@ const TablaMaterias =(props)=> {
             : props.rows
           ).map((row) => (
             <TableRow key={row.codigoMateriaRequisito}>
-              <TableCell style={{ width: 160 }}>
-                {row.codigoMateriaRequisito}
-              </TableCell>
-              <TableCell style={{ width: 160 }}>
-                {row.nombreMateriaR}
-              </TableCell>
               <TableCell style={{ width: 160 }}>
                 {row.codigoMateria}
               </TableCell>
