@@ -54,8 +54,19 @@
             {%endfor%}
         </table>
         <table>
-        
-        
+        <p><strong>Número de Materias con Reserva: </strong>{{contadorMaterias}}</p>
+        <p><strong># Horarios que se han reservado: </strong></p>
+        {%for materias in objeto3 %}
+        <p>{{materias.materia}} = {{materias.cantidad}}</p>
+        {%empty%}
+        <p>Sin datos</p>
+        {%endfor%}
+        <p><strong># Dias en que se han reservado: </strong></p>
+        {%for dia in objeto5 %}
+        <p>{{dia.dias}} = {{dia.cantidad}}</p>
+        {%empty%}
+        <p>Sin datos</p>
+        {%endfor%}
         </table>
     </body>
 </html>
