@@ -88,11 +88,17 @@ def reporte_local(request, idLocal):
         response.write(output.read())
     return response
 
-def reporte_escuelas(request):
+#Para generar el reporte
+##Se tiene que iterar objeto para
+##Generar URL Dinamica
+#{% url 'reporte_local' idLocal=objeto.cod_local %}
+def reporte_escuelas(request,idEscuela):
     #escuelas = Escuela.objects.get(pk=idEscuela)
-    horas = ['06:20','08:05','09:50','11:35','01:20','03:05','04:50','06:35']
-    objeto = []
-    html_string = render_to_string('reporte/reporte_escuela.html',{})
+    #horas = ['06:20','08:05','09:50','11:35','01:20','03:05','04:50','06:35']
+    #objeto = []
+    id = idEscuela
+    contexto = {'id':id}
+    html_string = render_to_string('reporte/reporte_escuela.html',contexto)
     html = HTML(string=html_string)
     result = html.write_pdf()
     response = HttpResponse(content_type='application/pdf')

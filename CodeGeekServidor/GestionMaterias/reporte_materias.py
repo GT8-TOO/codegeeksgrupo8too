@@ -9,12 +9,12 @@ from GestionReservas.models import Reserva
 
 def reporte_materias(request,idMateria):
     #locales = Local.objects.all()
-    materia = Materia.objects.get(pk=idMateria) 
-    reserva = Reserva.objects.filter(cod_materia=materia)
-    horas = ['06:20','08:05','09:50','11:35','01:20','03:05','04:50','06:35']
-    objeto = []
-
-    html_string = render_to_string('reporte/reporte_maeterias.html',{})
+    #materia = Materia.objects.get(pk=idMateria) 
+    #reserva = Reserva.objects.filter(cod_materia=materia)
+    #horas = ['06:20','08:05','09:50','11:35','01:20','03:05','04:50','06:35']
+    #objeto = []
+    contexto = {}
+    html_string = render_to_string('reporte/reporte_maeterias.html',contexto)
     html = HTML(string=html_string)
     result = html.write_pdf()
     response = HttpResponse(content_type='application/pdf')

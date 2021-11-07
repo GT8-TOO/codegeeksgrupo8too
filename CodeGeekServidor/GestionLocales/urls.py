@@ -9,6 +9,6 @@ urlpatterns = [
     path('registrarlocal-json/', registrar_local),
     path('solicitarimagenes-json/', get_imagenes_local),
     path('nuevacalificacion/', nueva_calificacion),
-    path('generar/pdf/<str:idLocal>',reporte_local),
-    path('generar/pdf/escuela/<str:idEscuela>',reporte_escuelas),
+    path('generar/pdf/<str:idLocal>',reporte_local,name="reporte_local"),
+    path('generar/pdf/escuela/<str:idEscuela>',reporte_escuelas,name="reporte_escuelas"),
 ]
