@@ -217,3 +217,4 @@ def nueva_calificacion(request):
             respuesta["message"]="La puntuació enviada es invalida."       
     return JsonResponse(respuesta, safe=False)
     pass
+
