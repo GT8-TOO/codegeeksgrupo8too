@@ -55,13 +55,13 @@
         </table>
         <table>
         <p><strong>Número de Materias con Reserva: </strong>{{contadorMaterias}}</p>
-        <p><strong># Horarios que se han reservado: </strong></p>
+        <p><strong>Materias reservadas y cantidad de horarios reservados por materia:</strong></p>
         {%for materias in objeto3 %}
         <p>{{materias.materia}} = {{materias.cantidad}}</p>
         {%empty%}
         <p>Sin datos</p>
         {%endfor%}
-        <p><strong># Dias en que se han reservado: </strong></p>
+        <p><strong>Cantidad de horarios reservados por dia: </strong></p>
         {%for dia in objeto5 %}
         <p>{{dia.dias}} = {{dia.cantidad}}</p>
         {%empty%}
