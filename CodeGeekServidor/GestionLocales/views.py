@@ -138,7 +138,7 @@ def registrar_local (request):
             imagen_local= imagen[0]
         )
         ruta1=str(nuevo_local.imagen_local)
-        nuevo_local.url_img = ruta1.replace('templates/build/static/media/', 'http://127.0.0.1:8000/static/media/')
+        nuevo_local.url_img = ruta1.replace('templates/build/static/media/', 'http://www.codegeeks.tk/static/static/media/')
 
         try:
             nuevo_local.save()
@@ -163,7 +163,7 @@ def registrar_local (request):
                     imagen=i
                 )
                 ruta=str(img.imagen)
-                ruta=ruta.replace('templates/build/static/media/', 'http://127.0.0.1:8000/static/static/media/')
+                ruta=ruta.replace('templates/build/static/media/', 'http://www.codegeeks.tk/static/static/media/')
                 img.url = ruta
                 img.save()
         except:
