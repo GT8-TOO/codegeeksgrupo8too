@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/static/media/Minerva-Universidad-de-El-Salvador-UES.883c82c0.jpg"
   },
   {
-    "revision": "23f07d7ac23314547fef",
+    "revision": "ce3cb63426a62f3bed90",
     "url": "/static/css/main.5f6381d2.chunk.css"
   },
   {
@@ -28,8 +28,8 @@ self.__precacheManifest = [
     "url": "/static/media/logo.e356eb48.png"
   },
   {
-    "revision": "23f07d7ac23314547fef",
-    "url": "/static/js/main.8d50daee.chunk.js"
+    "revision": "ce3cb63426a62f3bed90",
+    "url": "/static/js/main.09f078d2.chunk.js"
   },
   {
     "revision": "49346e458280f6a5124e680b6e2b44f7",
@@ -52,7 +52,7 @@ self.__precacheManifest = [
     "url": "/static/css/2.36d9a441.chunk.css"
   },
   {
-    "revision": "d82bf0d0c3f3f63de8e6c3b6a9e8256c",
+    "revision": "feba690f5f9116c41b0615da7a982811",
     "url": "/index.html"
   }
 ];
