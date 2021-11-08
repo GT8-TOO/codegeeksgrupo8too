@@ -50,68 +50,69 @@ def registrar_carrera(request):
     respuesta ={
         "state":True,
         "creado":False,
-        "type":"",
+        "type":"error",
         "message":""
     }
-    # if request.method =="POST":
+    if request.method =="POST":
     # datos pensum
-    carrera = request.GET.get("carrera")
-    # yearcarrer=request.GET.get("yearcarrer")
-    codEscuela=request.GET.get("codEscuela")
-    yearPensum = request.GET.get("yearPensum")
- 
-    # recuperando Escuela
-    escuela=Escuela(pk=codEscuela)
+        carrera = request.POST.get("carrera")
+        # yearcarrer=request.GET.get("yearcarrer")
+        codEscuela=request.POST.get("codEscuela")
+        yearPensum = request.POST.get("yearPensum")
     
-    # creando pensum
-    # calculando codPensum
-    codPensum=""
-    for word in carrera.split():
-         if (word[0].isupper()): codPensum+=word[0]
-    codPensum+=str(yearPensum)
-    pensum=Pensum(cod_pensum=codPensum,cod_escuela=escuela,anio_publicacion=yearPensum,carrera=carrera)
-    pensum.save()
-    
-    
-    # guardando materias
-    cantidad= int(request.GET.get("cantidad"))
-    for i in range(1,cantidad+1):
-        codMateriaString="codMateria"+str(i)
-        cicloMateriaString="ciclo"+str(i)
-        codMateriaRequisitoString="codMateriaRequisito"+str(i)
+        # recuperando Escuela
+        escuela=Escuela(pk=codEscuela)
         
-        codMateria=request.GET.get(codMateriaString)
-        codMateriaRequisito=request.GET.get(codMateriaRequisitoString)
+        # creando pensum
+        # calculando codPensum
+        codPensum=""
+        for word in carrera.split():
+            if (word[0].isupper()): codPensum+=word[0]
+        codPensum+=str(yearPensum)
+        pensum=Pensum(cod_pensum=codPensum,cod_escuela=escuela,anio_publicacion=yearPensum,carrera=carrera)
+        pensum.save()
         
         
-        ciclo=Ciclo.objects.get(pk=request.GET.get(cicloMateriaString))
-        
-        materia=Materia.objects.get(pk=codMateria)
-        if codMateriaRequisito is not None:
-                  
-            # creando requisito de materia
-            materiaRequisito=Materia.objects.get(pk=codMateriaRequisito)
-            requisito=RequisitoDe(mat_cod_materia=materia,cod_materia=materiaRequisito)
-            requisito.save()
-        
-        # recuperando ciclo
-        # ciclo=Ciclo.objects.get(pk=int(request.GET.get(cicloMateriaString)))
-        # agregando materia al pensum
-        imparte=Imparte(numero_de_ciclo =int(request.GET.get(cicloMateriaString)),cod_materia=materia,cod_pensum=pensum)
-        imparte.save()
+        # guardando materias
+        cantidad= int(request.POST.get("cantidad"))
+        for i in range(cantidad):
+            codMateriaString="codMateria"+str(i)
+            cicloMateriaString="ciclo"+str(i)
+            #codMateriaRequisitoString="codMateriaRequisito"+str(i)
+            
+            codMateria=request.POST.get(codMateriaString)
+            #codMateriaRequisito=request.GET.get(codMateriaRequisitoString)
+            
+            
+            #ciclo=Ciclo.objects.get(pk=request.GET.get(cicloMateriaString))
+            
+            materia=Materia.objects.get(pk=codMateria)
+            '''if codMateriaRequisito is not None:
+                    
+                # creando requisito de materia
+                materiaRequisito=Materia.objects.get(pk=codMateriaRequisito)
+                requisito=RequisitoDe(mat_cod_materia=materia,cod_materia=materiaRequisito)
+                requisito.save()'''
+            
+            # recuperando ciclo
+            # ciclo=Ciclo.objects.get(pk=int(request.GET.get(cicloMateriaString)))
+            # agregando materia al pensum
+            imparte=Imparte(numero_de_ciclo =int(request.POST.get(cicloMateriaString)),cod_materia=materia,cod_pensum=pensum)
+            imparte.save()
 
 
 
-    #Editar el mensaje de confirmacion, pero tiene que tener este formato
-    respuesta["type"]="success" #solo adminte warning, info, error, success
-    respuesta["state"]=True #Solo adminte True o False
-    respuesta["creado"]=True #Solo adminte True o False
-    respuesta["message"]="Informacion enviada correctamente" #Aqui ira la inforamcion si se creo o no, es personalizable
-    return JsonResponse(respuesta, safe=False)
+        #Editar el mensaje de confirmacion, pero tiene que tener este formato
+        respuesta["type"]="success" #solo adminte warning, info, error, success
+        respuesta["state"]=True #Solo adminte True o False
+        respuesta["creado"]=True #Solo adminte True o False
+        respuesta["message"]="Informacion enviada correctamente" #Aqui ira la inforamcion si se creo o no, es personalizable
+        return JsonResponse(respuesta, safe=False)
         
 
-    # else:
-    #     return JsonResponse({"Error":"No se puede acceder a este enlace"}, safe=False)
+    else:
+        respuesta["message"]="El método tiene que ser POST." #Aqui ira la inforamcion si se creo o no, es personalizable
+        return JsonResponse(respuesta, safe=False)
 
 @csrf_exempt
 def mandar_materias (request):
@@ -152,7 +153,11 @@ def crear_catedra (request):
         ciclo_par = request.POST.get("ciclo_par")
         fecha_inicio=request.POST.get("fecha_inicio")
         fecha_fin=request.POST.get("fecha_fin")
-        if ciclo_par==True: ciclo='II'
+
+        fecha_inicio = datetime.strptime(fecha_inicio, '%Y/%m/%d')
+        fecha_fin = datetime.strptime(fecha_fin, '%Y/%m/%d')
+
+        if ciclo_par=="1": ciclo='II'
         else: ciclo='I'
         #  recuperando materia
         try:
@@ -191,8 +196,8 @@ def crear_catedra (request):
         
         # agregando todos los docentes a la catedra
         # recuperando los docentes
-        for i in range(1,cantidad+1):
-                nombre=request.POST.get("docente"+str(i))
+        for i in range(cantidad):
+                nombre=request.POST.get("codDocente"+str(i))
                 try:
                     doc=Docente.objects.get(dui=nombre) 
                     add=EsParteDe(cod_catedra=catedra,dui=doc,coordinador=False)

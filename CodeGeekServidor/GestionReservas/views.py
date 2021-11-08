@@ -49,7 +49,7 @@ def nueva_reserva(request):
                 docente=Docente.objects.get(cod_empleado=cod_empleado)
                 print (docente.dui)
                 try:
-                    esparte= EsParteDe.objects.get(dui=docente.dui, coordinador=True)
+                    esparte= EsParteDe.objects.filter(dui=docente.dui, coordinador=True).first()
                     print(esparte)
                     try:
                         if esparte.coordinador==True:    

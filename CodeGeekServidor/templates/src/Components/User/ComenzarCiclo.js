@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import{
   Slide,
   FormControl,
@@ -33,11 +33,12 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 //Componentes
 import WindowAlert from '../WindowAlert';
 
-//Context
-import UserContext from '../../Context/UserContext';
+
 
 const ComenzarCiclo =(props)=>{
   const [materias, setMaterias]= useState();
+  const [coordinador, setCoordinador]= useState();
+  const [coordinadorElegido, setCoordinadorElegido]= useState(null);
   const [docentes, setDocentes]= useState();
   const [materiaElegida, setMateriaElegida]=useState(null);
   const [docenteElegido, setDocentesElegido]= useState(null);
@@ -45,8 +46,8 @@ const ComenzarCiclo =(props)=>{
   const [validacion, setValidacion]=useState([]);
   const [calendarValueInicio, setCalendarValueInicio]=useState();
   const [calendarValueFin, setCalendarValueFin]=useState();
-  const [ciclo, setCiclo]=useState("false");
-  const usecontext = useContext(UserContext);
+  const [ciclo, setCiclo]=useState("0");
+  
   const [notificacion, setNotificacion]= useState({
     state:false,
     title:"",
@@ -59,6 +60,8 @@ const ComenzarCiclo =(props)=>{
     document.title="Comenzar ciclo"
     getDataDocentes("user/escuela/docentes/")
     getDataMaterias("materias/solicitarmaterias-json/")
+    getDataCoordinador("user/escuela/docentes/")
+
   },[]);
 
   //Trae los datos del docente
@@ -69,6 +72,15 @@ const ComenzarCiclo =(props)=>{
       console.log(error);
     })
     setDocentes(promise)
+  }
+
+  const getDataCoordinador = async(direccion)=>{
+    let promise = await axios.get(props.url+direccion).then((res)=>{
+      return res.data;
+    }).catch((error)=>{
+      console.log(error);
+    })
+    setCoordinador(promise)
   }
   
   //Trae la informacion de la materia
@@ -108,10 +120,10 @@ const ComenzarCiclo =(props)=>{
 
     if(calendarValueInicio instanceof Date && isFinite(calendarValueInicio) && calendarValueFin instanceof Date && isFinite(calendarValueFin)){
       let formData = new FormData();
-      let fechaInicio = calendarValueInicio.getDay() + "/" + calendarValueInicio.getMonth()+"/"+calendarValueInicio.getFullYear();
-      let fechaFin = calendarValueFin.getDay() + "/" + calendarValueFin.getMonth()+"/"+calendarValueFin.getFullYear();
+      let fechaInicio = calendarValueInicio.getFullYear() + "/" + calendarValueInicio.getMonth()+"/"+calendarValueInicio.getDay();
+      let fechaFin = calendarValueFin.getFullYear() + "/" + calendarValueFin.getMonth()+"/"+calendarValueFin.getDay();
       let year = calendarValueFin.getFullYear();
-      formData.append("coordinador_dui", usecontext.user.dui)
+      formData.append("coordinador_dui", coordinadorElegido.code)
       formData.append("cantidad", listaDocentes.length)
       formData.append("cod_materia", materiaElegida.code)
       formData.append("ciclo_par", ciclo)
@@ -163,6 +175,7 @@ const ComenzarCiclo =(props)=>{
         <Typography variant="h4">Configurar ciclo</Typography>
         { (materias !== undefined && docentes !== undefined) ?
           <div style={{width:700, marginTop:'40px'}}>
+           
            <Autocomplete
               disablePortal
               name="materias"
@@ -181,7 +194,7 @@ const ComenzarCiclo =(props)=>{
                 <LocalizationProvider dateAdapter={DateAdapter}>
                   <DesktopDatePicker
                     label="Fecha de inicio de ciclo"
-                    inputFormat="MM/dd/yyyy"
+                    inputFormat="yyyy/MM/dd"
                     value={calendarValueInicio}
                     name="calendar"
                     onChange={handleChangeCalendarInicio}
@@ -192,7 +205,7 @@ const ComenzarCiclo =(props)=>{
                 <LocalizationProvider dateAdapter={DateAdapter}>
                   <DesktopDatePicker
                     label="Fecha de fin de ciclo"
-                    inputFormat="MM/dd/yyyy"
+                    inputFormat="yyyy/MM/dd"
                     value={calendarValueFin}
                     name="calendar"
                     onChange={handleChangeCalendarFin}
@@ -202,10 +215,27 @@ const ComenzarCiclo =(props)=>{
               <FormControl component="fieldset">
                 <FormLabel component="legend">Ciclo que pertecenera</FormLabel>
                 <RadioGroup defaultValue={ciclo} onChange={(e)=>setCiclo(e.target.value)} name="row-radio-buttons-group">
-                  <FormControlLabel value="false" control={<Radio />} label="Ciclo 1" />
-                  <FormControlLabel value="true" control={<Radio />} label="Ciclo 2" />
+                  <FormControlLabel value="0" control={<Radio />} label="Ciclo 1" />
+                  <FormControlLabel value="1" control={<Radio />} label="Ciclo 2" />
                 </RadioGroup>
               </FormControl>
+              {coordinador !== undefined && 
+              <Autocomplete
+                disablePortal
+                name="coordinador"
+                style={{marginTop:'15px'}}
+                fullWidth
+                value ={coordinadorElegido !== null ?  coordinadorElegido : null}
+                options={coordinador}
+                
+                onChange={(_event, newCoordinador)=>{
+                  setCoordinadorElegido(newCoordinador)
+                  console.log(newCoordinador)
+                  console.log(coordinadorElegido)
+                }}
+                renderInput={(params) => <TextField {...params} label="Asignar Coordinador" />}/> 
+                }
+
               <Autocomplete
                 disablePortal
                 name="docentes"
@@ -229,7 +259,7 @@ const ComenzarCiclo =(props)=>{
                 style={{marginTop:'15px', width:250}}
                 onClick={agregarDocente}>Añadir docente</Button>
                <Button 
-                 disabled={listaDocentes.length > 0 ? false: true}
+                 disabled={listaDocentes.length > 0 && coordinadorElegido !== null ? false: true}
                 startIcon={<SaveOutlinedIcon/>}
                 variant="outlined"
                  style={{marginLeft:'10px',marginTop:'15px', width:250}}

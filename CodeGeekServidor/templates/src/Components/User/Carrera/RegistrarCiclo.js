@@ -120,7 +120,7 @@ const RegistrarCiclo =(props)=>{
   }
 
   const guardarPensum =(data)=>{
-    if(listaMateria.length>0){
+    if(listaMateria.length>5){
       userContext.setCarrera([
         userContext.inputCarrerra,{
           añoPensum:data.yearPensum,
