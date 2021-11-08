@@ -3,7 +3,8 @@ from .base import *
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DEBUG =True
 
-ALLOWED_HOSTS=["18.204.209.131:8000"]
+ALLOWED_HOSTS=[    
+    "http://18.204.209.131:8000",]
 
 DATABASES = {
     'default': {
