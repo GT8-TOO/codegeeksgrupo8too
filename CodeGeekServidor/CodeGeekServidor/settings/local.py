@@ -4,7 +4,8 @@ from .base import *
 DEBUG =True
 
 ALLOWED_HOSTS=[    
-    "18.204.209.131",]
+    "18.204.209.131",
+    "www.codegeeks.tk",]
 
 DATABASES = {
     'default': {
