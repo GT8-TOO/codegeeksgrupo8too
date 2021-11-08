@@ -3,8 +3,10 @@ from django.template.loader import render_to_string
 from weasyprint import HTML
 import tempfile
 from .models import Local
+from .models import Escuela
 from GestionReservas.models import Reserva 
-from GestionMaterias.models import Materia
+from GestionMaterias.models import Materia ,Pensum,Imparte
+
 
 #Tiempo
 from datetime import datetime, timedelta
@@ -29,23 +31,7 @@ def reporte_local(request, idLocal):
     html = ''
     html2 = ''
     contadorMaterias = 0
-    #for dia in dias:  
-    #    objeto.append({'reservas':reservas, 'dia':dia})
-    #print(objeto)
-    #contexto = {'objeto':objeto, 'local':locales, 'dias':dias, 'horas':horas, 'html':html}
-    # for reserva in reservas:
-    #     if reserva.cod_horario.cod_dia.nombre_dia == 'Lunes':
-    #         objeto2.append({'dia':'lunes', 'reserva':reserva})
-    #     if reserva.cod_horario.cod_dia.nombre_dia == 'Martes':
-    #         objeto2.append({'dia':'Martes', 'reserva':reserva})
-    #     if reserva.cod_horario.cod_dia.nombre_dia == 'Miercoles':
-    #         objeto2.append({'dia':'Miercoles', 'reserva':reserva})
-    #     if reserva.cod_horario.cod_dia.nombre_dia == 'Jueves':
-    #         objeto2.append({'dia':'Jueves', 'reserva':reserva})
-    #     if reserva.cod_horario.cod_dia.nombre_dia == 'Viernes':
-    #         objeto2.append({'dia':'Viernes', 'reserva':reserva})
-    #     if reserva.cod_horario.cod_dia.nombre_dia == 'Sábado':
-    #         objeto2.append({'dia':'Sábado', 'reserva':reserva})
+
     for hora in horas:
         html += '<tr>'
         html += '<td style="width: 4cm;">'+ hora + '</td>'
@@ -95,13 +81,17 @@ def reporte_local(request, idLocal):
 #{% url 'reporte_local' idLocal=objeto.cod_local %}
 
 
-def reporte_escuelas(request,idEscuela):
+def reporte_escuela(request,idEscuela):
     #escuelas = Escuela.objects.get(pk=idEscuela)
     #horas = ['06:20','08:05','09:50','11:35','01:20','03:05','04:50','06:35']
     #objeto = []
  
     escuelas=Escuela.objects.get(cod_escuela=idEscuela)
-    reservas = Reserva.objects.filter(cod_escuela=escuelas, estado_solicitud='ACEPTADA')
+    
+    locales=Local.objects.filter(cod_edificio__cod_escuela__cod_escuela=idEscuela).values_list("cod_local")
+   
+   
+    reservas = Reserva.objects.filter(cod_local__in=locales, estado_solicitud='ACEPTADA')
     locales=Local.objects.all()
     objeto = []
     objeto2 = []
@@ -147,11 +137,11 @@ def reporte_escuelas(request,idEscuela):
     #Por cuantos días
     
     contexto = {'objeto':objeto, 'escuela':escuelas, 'contadorLocales':len(contadorLocales),'objeto3':objeto3,'objeto5':objeto5}
-    html_string = render_to_string('reporte_escuelas.html',contexto)
+    html_string = render_to_string('reporte/reporte_escuela.html',contexto)
     html = HTML(string=html_string)
     result = html.write_pdf()
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'inline; filename="reporte_escuelas.pdf"'
+    response['Content-Disposition'] = 'inline; filename="reporte_escuela.pdf"'
     response['Content-Transfer-Encoding'] = 'binary'
     with tempfile.NamedTemporaryFile(delete=True) as output:
         output.write(result)

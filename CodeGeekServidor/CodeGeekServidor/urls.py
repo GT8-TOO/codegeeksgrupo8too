@@ -23,5 +23,6 @@ urlpatterns = [
     path('locales/', include('GestionLocales.urls')),
     path('reservas/', include('GestionReservas.urls')),
     path('materias/', include('GestionMaterias.urls')),
+    
     path('', include('VistasGenerales.urls')), #Cambiar despues a metodo
 ]
