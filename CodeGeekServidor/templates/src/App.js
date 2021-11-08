@@ -11,7 +11,7 @@ import User from './Views/User';
 import Login from './Views/Login';
 import Register from './Views/Register';
 
-const baseURL = "http://localhost:8000/";
+const baseURL = "http://18.204.209.131:8000/";
 
 const App=() =>{
  return (
