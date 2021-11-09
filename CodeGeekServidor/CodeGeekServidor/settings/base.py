@@ -83,7 +83,7 @@ CORS_ALLOWED_ORIGINS=[
     "http://127.0.0.1:8000",
     "http://0.0.0.0:8000",
     "http://18.204.209.131:8000",
-    "http://www.codegeeks.tk",
+    "https://www.codegeeks.tk",
     
 ]
 CORS_ORIGIN_WHITELIST=[
@@ -92,7 +92,7 @@ CORS_ORIGIN_WHITELIST=[
     "http://localhost:8000",
     "http://0.0.0.0:8000",
     "http://18.204.209.131:8000",
-    "http://www.codegeeks.tk",
+    "https://www.codegeeks.tk",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
