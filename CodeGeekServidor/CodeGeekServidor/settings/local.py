@@ -1,7 +1,7 @@
 from .base import *
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-DEBUG =False
+DEBUG =True
 
 ALLOWED_HOSTS=[    
     "18.204.209.131",
