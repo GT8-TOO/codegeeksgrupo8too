@@ -71,19 +71,7 @@ const SendEmail =(props)=>{
         />}
         <Typography variant="h4">Contactar con administrador</Typography>
         <form onSubmit={handleSubmit(enviarCorreo)} style={{width:800,marginTop:'50px'}}>
-          <TextField 
-            autoFocus
-            fullWidth
-            name="destinatario"
-            type="email"
-            label="Para:"
-            {...register("destinatario", {
-              required:{
-                value:true,
-                message:"Tiene que ingresar el correo de la persona a quien quiere contactar"
-              }
-            })}
-          />
+          
           <ErrorMessage 
             errors={errors} 
             name="destinatario"
