@@ -19,7 +19,7 @@ from collections import defaultdict
 #{% url 'reporte_local' idLocal=objeto.cod_local %}
 def reporte_local(request, idLocal):
     locales = Local.objects.get(cod_local=idLocal)
-    reservas = Reserva.objects.filter(cod_local=locales, estado_solicitud='ACEPTADA')
+    reservas = Reserva.objects.filter(cod_local=locales, estado_solicitud='Aprobado')
     materias = Materia.objects.all()
     objeto = []
     objeto2 = []
@@ -91,7 +91,7 @@ def reporte_escuela(request,idEscuela):
     locales=Local.objects.filter(cod_edificio__cod_escuela__cod_escuela=idEscuela).values_list("cod_local")
    
    
-    reservas = Reserva.objects.filter(cod_local__in=locales, estado_solicitud='ACEPTADA')
+    reservas = Reserva.objects.filter(cod_local__in=locales, estado_solicitud='Aprobado')
     locales=Local.objects.all()
     objeto = []
     objeto2 = []

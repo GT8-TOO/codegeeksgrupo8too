@@ -20,7 +20,7 @@ def reporte_materias(request,idMateria):
     #horas = ['06:20','08:05','09:50','11:35','01:20','03:05','04:50','06:35']
     #objeto = []
     materias=Materia.objects.get(cod_materia=idMateria)
-    reservas = Reserva.objects.filter(cod_materia=materias, estado_solicitud='ACEPTADA')
+    reservas = Reserva.objects.filter(cod_materia=materias, estado_solicitud='Aprobado')
     locales=Local.objects.all()
     objeto = []
     objeto2 = []
