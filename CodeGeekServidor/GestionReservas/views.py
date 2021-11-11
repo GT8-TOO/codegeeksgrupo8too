@@ -58,7 +58,7 @@ def nueva_reserva(request):
                             reserva.cod_local = Local.objects.get(cod_local=cod_local)
                             reserva.doc_dui = esparte.dui
                             reserva.cod_materia=esparte.cod_catedra.cod_materia
-                            reserva.estado_solicitud = "En Proceso"
+                            reserva.estado_solicitud = "EN_PROCESO"
                             reserva.save()
                             respuesta["type"]="success"
                             respuesta["message"]="La reservación se ha registrado correctamente"
@@ -95,7 +95,7 @@ def crear_notificación(reserva):
     notificacion.titulo= "Reserva: "+reserva.estado_solicitud
     notificacion.save()
 
-#El siguiente metodo recibe el codigo de solicitud y el nuevo estado (Aprobado/Denegado) 
+#El siguiente metodo recibe el codigo de solicitud y el nuevo estado (ACEPTADA/DENEGADA) 
 #Es necesario ocupar un usuario registrado como administrador.
 #codAdmin, cod_reserva, estado
 #email: patoso77@ues.edu.sv     password: 3enero1999
@@ -103,7 +103,7 @@ def crear_notificación(reserva):
 def cambiar_estado(request):
     respuesta ={
         "type":"error",
-        "aprobado":False,
+        "ACEPTADA":False,
         "state": True,
         "message":"Hay un error en los datos enviados."
     }
@@ -123,14 +123,14 @@ def cambiar_estado(request):
             reserva.adm_cod_empleado=administrador
             reserva.fecha_aprobacion=timezone.now()
 
-            if estado == "Denegado":
+            if estado == "DENEGADA":
                 reserva.save()
                 crear_notificación(reserva)
                 respuesta["message"]="El estado de la solicitud fue actualizado exitosamente."
             
-            elif estado == "Aprobado":
+            elif estado == "ACEPTADA":
                 Reserva.objects.filter(cod_horario=reserva.cod_horario, cod_local= reserva.cod_local
-                        ).update(estado_solicitud="Denegado", adm_cod_empleado=administrador.dui, fecha_aprobacion=timezone.now())           
+                        ).update(estado_solicitud="DENEGADA", adm_cod_empleado=administrador.dui, fecha_aprobacion=timezone.now())           
                 reserva.save()
                 
                 #Notificaciones              
@@ -141,7 +141,7 @@ def cambiar_estado(request):
                 respuesta["message"]="La solicitud fue aprobada, las otras solicitudes realiazadas para el mismo local en la misma hora fueron denegadas."
             
             respuesta["type"]="success"
-            respuesta["aprobado"]=True
+            respuesta["ACEPTADA"]=True
             return JsonResponse(respuesta,safe=False)       
         except:
             respuesta["message"]="Los datos no fueron enviados de forma segura o hay un error en el codigo de reservay."
@@ -174,27 +174,27 @@ def horario_headers(request):
 def horario_body(request):
     if request.method == "POST":
         cod_local = request.POST.get("cod_local")
-        reservas=Reserva.objects.filter(cod_local__cod_local=cod_local,estado_solicitud='Aprobado')
+        reservas=Reserva.objects.filter(cod_local__cod_local=cod_local,estado_solicitud='ACEPTADA')
         serializer = ReservaSerializer(reservas, many = True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method =="GET":
-        reservas=Reserva.objects.filter(Q(estado_solicitud='Denegado')|Q(estado_solicitud='Aprobado'))
+        reservas=Reserva.objects.filter(Q(estado_solicitud='DENEGADA')|Q(estado_solicitud='ACEPTADA'))
         serializer = ReservaSerializer(reservas, many = True)
         return JsonResponse(serializer.data, safe=False)
     else:
         return JsonResponse({"Error":'Debe utilizar Metodo POST para consultar Reservas'}, safe=False)      
      
 # El siguiente metodo requiere del cod_local y solo retorna 
-# las reservas de solicitudes en Proceso     
+# las reservas de solicitudes EN_PROCESO     
 # @csrf_exempt
 def solicitud_body(request):
     if request.method == "POST":
         cod_local = request.POST.get("cod_local")
-        reservas=Reserva.objects.filter(cod_local__cod_local=cod_local,estado_solicitud='En Proceso').order_by('cod_horario__cod_dia')          
+        reservas=Reserva.objects.filter(cod_local__cod_local=cod_local,estado_solicitud='EN_PROCESO').order_by('cod_horario__cod_dia')          
         serializer = ReservaSerializer(reservas, many = True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method =="GET":
-        reservas=Reserva.objects.filter(estado_solicitud='En Proceso').order_by('cod_horario__cod_dia')          
+        reservas=Reserva.objects.filter(estado_solicitud='EN_PROCESO').order_by('cod_horario__cod_dia')          
         serializer = ReservaSerializer(reservas, many = True)
         return JsonResponse(serializer.data, safe=False)
     else:
