@@ -8,13 +8,20 @@ ALLOWED_HOSTS=[
     "www.codegeeks.tk",]
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'geek',
-        'USER': 'code',
+     'default': {
+
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+        'NAME': 'too',
+
+        'USER': 'too',
+
         'PASSWORD': 'admin',
-        'HOST': 'geek3.czoy1vdwgmhj.us-east-1.rds.amazonaws.com',
-        'PORT': '1521',
+
+        'HOST': 'proyectos.czoy1vdwgmhj.us-east-1.rds.amazonaws.com',
+
+        'PORT': '5432',
+
     }
 }
 # sqlplus /nolog
