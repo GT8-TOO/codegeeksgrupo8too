@@ -1,0 +1,44 @@
+[
+    {
+        "model": "GestionLocales.escuela",
+        "pk": "EARQ",
+        "fields": {
+            "nombre_escuela": "Escuela de Arquitectura"
+        }
+    },
+    {
+        "model": "GestionLocales.escuela",
+        "pk": "EIC",
+        "fields": {
+            "nombre_escuela": "Escuela de ingeniería Civil"
+        }
+    },
+    {
+        "model": "GestionLocales.escuela",
+        "pk": "EIE",
+        "fields": {
+            "nombre_escuela": "ESCUELA DE ELECTRICA"
+        }
+    },
+    {
+        "model": "GestionLocales.escuela",
+        "pk": "EIM",
+        "fields": {
+            "nombre_escuela": "Escuela de ingeniería Mecánica"
+        }
+    },
+    {
+        "model": "GestionLocales.escuela",
+        "pk": "EIQ",
+        "fields": {
+            "nombre_escuela": "Escuela de Ing Quimica"
+        }
+    },
+    {
+        "model": "GestionLocales.escuela",
+        "pk": "EISI",
+        "fields": {
+            "nombre_escuela": "Escuela de Sistemas"
+        }
+    }
+]

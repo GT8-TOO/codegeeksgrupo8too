@@ -1,0 +1,458 @@
+[
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$ZviH2JTxHOE8WyYp1uYcus$bm+V+cmbiOvukUk4rCDGjAqD74sumpBvrccwk4XsSd8=",
+            "last_login": "2021-10-20T00:22:48.281Z",
+            "email": "andre@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": true
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$h5BDj8F3wavJUcypBbOktb$nczd82X/WSRv8GECNUXMGwgegjobCy6hh3aEDvjH6qA=",
+            "last_login": null,
+            "email": "patoso@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": true
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$tH4h0yNhSvrqvZYrsOIVZo$BtCjjT+rUw32hXRhGkksn2TdXzI5T4nF5Jp/aMyiA8A=",
+            "last_login": null,
+            "email": "patoso45@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": true
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 5,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$Ymv5TZugKhQt8HKCacfbMH$87vcINpKZXTx9zLkM2/Ungpe3SofXu7XEvX4EL0uTvM=",
+            "last_login": "2021-11-11T16:47:45.429Z",
+            "email": "patoso77@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": true
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 13,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$GFP64crSpHfiecPSKy3RxG$ym8mQ/Ho4ePmCe+xZwQjxgIX5GpfpwrliWSi0qo9MyM=",
+            "last_login": "2021-11-16T08:11:33.320Z",
+            "email": "docente1@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 14,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$LwbjknxDDOefj1fPHpWTop$oXe+xkVpNj7B9xbPThlCLfTR5RIJo9KTBsW1SOaOvcw=",
+            "last_login": null,
+            "email": "qw18136@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 24,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$YWejOlzFnT6qrQ26n0Umb2$Fvuuq2h5AXNKtpjY3zViLoySPhyv1H8QCs+Fk+mIK7s=",
+            "last_login": null,
+            "email": "docente4@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 34,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$i3ypcPY6Cb5dhAxBrFdm5p$sVFLBZ6PFNFIRGfNTY3a3Yf1zQg01lUey6AkOwHfMnI=",
+            "last_login": "2021-11-16T02:43:33.645Z",
+            "email": "docente3@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 35,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$4lxqlEjyuZjQXQ3pRuBdro$OaB74Nd5fl9piJAsDu37mWl63IK30bH4ZHBEIdlHcuY=",
+            "last_login": "2021-11-06T22:08:54.891Z",
+            "email": "mr18136@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 41,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$aUpT3Ak3rjv9JmCQWLws0V$x7YxEKGBzYqW4g7WMe76UZRdZuk3+tifPqstjwYYkpg=",
+            "last_login": null,
+            "email": "aa18136@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 48,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$sRSMmqlTE2XofBRenaAPCI$zja8lkreTvbewJts7h2QUM5efFZHpIE73wf303uo4I4=",
+            "last_login": null,
+            "email": "admintest1@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": true
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 81,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$nQDTpuMC3G59ppmwKQRkfY$wtS4bqiELiZcddJlwryD+eJUo7dNQwL9eH6mhdgfwWY=",
+            "last_login": null,
+            "email": "mm18057@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 82,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$Z22OJp1hsr9cy2hHRqwwO1$Up5Z8SjxEZlQ6xrMguipKypAcWo/WBrU4SJd3UDHwpo=",
+            "last_login": "2021-10-31T05:30:03.062Z",
+            "email": "mm180573@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 101,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$DtZERyr1GWXscgHmzy4xcU$FRUlmiRrK6moAzI2y3E8/m8EcUjErovRaWAI5BNViVA=",
+            "last_login": "2021-11-06T22:52:59.402Z",
+            "email": "ml17017@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 121,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$x4lznNEljwDm6B52PMhqke$3pyslz38HKbGxoBrxdWYoPN8jl2PbtiJMDrhzRD6KwE=",
+            "last_login": "2021-11-02T18:09:51.378Z",
+            "email": "docente2@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": true
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 122,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$1zK7tD8zSToxfQtCwdsMDf$k9ahZmpZ+zke8H898Ql9ICyOS4bchkWyBw/Q0dYijW4=",
+            "last_login": "2021-11-05T17:34:33.585Z",
+            "email": "admin@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": true
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 141,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$fZBWnR1OB3PAVmAEmMmm7w$FcqpJDv8hJDEh/m6e3DtCAB29mCkBeTLzLfEB3JFdWA=",
+            "last_login": "2021-11-04T07:11:00.933Z",
+            "email": "isai@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 161,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$a33il0LmMCKDmOPBBhI2Gg$kV1EsGCJbYUn1U0416nUttdSpMY02vG/TThh81JYcm0=",
+            "last_login": "2021-11-08T09:31:31.751Z",
+            "email": "isaimv@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 181,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$nB9BU6zOaKoyD0f30cr7xD$l1X3EvoPAVpQXAo1kYzjp9K/g+fG6zET/3mkSy88EiM=",
+            "last_login": "2021-11-11T03:33:26.043Z",
+            "email": "docente5@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": true
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 182,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$Y7cmaDlds6QVGxpbCt0o6r$y8BzNu86JdZgW9gkMoeGnuGN0oqi5iX2TzEhhzA0jnQ=",
+            "last_login": null,
+            "email": "irmv_0311@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": true
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 185,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$EM2zX0JgJD6sUoHyoirTrx$AHRVfDNL2oJaxQTdU8ues6inARpK4Rw11YTR4jT/Gdw=",
+            "last_login": "2021-11-28T00:52:37.158Z",
+            "email": "mv17012@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": true
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 188,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$44ZLoXaDnRwDUaj9fpAYuo$aUJ2KjBY1fABk3CsxaMG4mhDCcz/Uaaq2zgODRwZOkQ=",
+            "last_login": "2021-11-11T07:56:33.279Z",
+            "email": "electrica@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 189,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$u9PX99AlpnOL2U0IPp5ANJ$9f0fir1fETcu92MWZo1hnrWsulxQ+v4QLdrPFVs5jnk=",
+            "last_login": "2021-11-11T16:29:24.838Z",
+            "email": "docente7@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.empleado",
+        "pk": 201,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$mPQymw90ytcQTKpWkoI3E4$Y9DB/69TYO2mC/ADPeFqDukeq2FnkyXjVmMX0OjU2PM=",
+            "last_login": "2021-11-16T02:44:45.930Z",
+            "email": "algo@ues.edu.sv",
+            "estado": false,
+            "usuario_administrador": false
+        }
+    },
+    {
+        "model": "GestionUsuarios.administrador",
+        "pk": 60522575,
+        "fields": {
+            "cod_empleado": 185,
+            "cod_escuela": "EIE",
+            "nit": 1234567891012,
+            "nombre": "Isaí Ronaldo ",
+            "apellidos": "Martínez Vásquez",
+            "fecha_nacimiento": null
+        }
+    },
+    {
+        "model": "GestionUsuarios.administrador",
+        "pk": 394459774,
+        "fields": {
+            "cod_empleado": 5,
+            "cod_escuela": "EISI",
+            "nit": 382944543272,
+            "nombre": "patoso77",
+            "apellidos": "Patoso77",
+            "fecha_nacimiento": "2020-04-01"
+        }
+    },
+    {
+        "model": "GestionUsuarios.administrador",
+        "pk": 565656566,
+        "fields": {
+            "cod_empleado": 182,
+            "cod_escuela": "EIQ",
+            "nit": 1234567891012,
+            "nombre": "Ronaldo",
+            "apellidos": "Vasquez",
+            "fecha_nacimiento": null
+        }
+    },
+    {
+        "model": "GestionUsuarios.administrador",
+        "pk": 989898989,
+        "fields": {
+            "cod_empleado": 181,
+            "cod_escuela": "EISI",
+            "nit": 123456789123,
+            "nombre": "docente5",
+            "apellidos": "",
+            "fecha_nacimiento": null
+        }
+    },
+    {
+        "model": "GestionUsuarios.docente",
+        "pk": 34034228,
+        "fields": {
+            "cod_empleado": 141,
+            "cod_escuela": null,
+            "nit": 1234567891012,
+            "nombre": "isai",
+            "apellidos": "",
+            "fecha_nacimiento": "2000-05-10"
+        }
+    },
+    {
+        "model": "GestionUsuarios.docente",
+        "pk": 46052185,
+        "fields": {
+            "cod_empleado": 35,
+            "cod_escuela": "EISI",
+            "nit": 1235484258475,
+            "nombre": "Benjamin3",
+            "apellidos": "",
+            "fecha_nacimiento": "2000-01-04"
+        }
+    },
+    {
+        "model": "GestionUsuarios.docente",
+        "pk": 77642877,
+        "fields": {
+            "cod_empleado": 161,
+            "cod_escuela": null,
+            "nit": 1234567891122,
+            "nombre": "Isai2",
+            "apellidos": "Martinez",
+            "fecha_nacimiento": "2000-06-02"
+        }
+    },
+    {
+        "model": "GestionUsuarios.docente",
+        "pk": 123456789,
+        "fields": {
+            "cod_empleado": 101,
+            "cod_escuela": null,
+            "nit": 1234567890132,
+            "nombre": "Carolina",
+            "apellidos": "",
+            "fecha_nacimiento": "2021-02-10"
+        }
+    },
+    {
+        "model": "GestionUsuarios.docente",
+        "pk": 218329093,
+        "fields": {
+            "cod_empleado": 82,
+            "cod_escuela": "EISI",
+            "nit": 2132132145897,
+            "nombre": "Andrea",
+            "apellidos": "",
+            "fecha_nacimiento": "1998-04-09"
+        }
+    },
+    {
+        "model": "GestionUsuarios.docente",
+        "pk": 323232329,
+        "fields": {
+            "cod_empleado": 188,
+            "cod_escuela": null,
+            "nit": 1234567891122,
+            "nombre": "Docente",
+            "apellidos": "Electrica",
+            "fecha_nacimiento": "2021-01-10"
+        }
+    },
+    {
+        "model": "GestionUsuarios.docente",
+        "pk": 337777661,
+        "fields": {
+            "cod_empleado": 34,
+            "cod_escuela": "EISI",
+            "nit": 1234567891234,
+            "nombre": "docente 3",
+            "apellidos": "",
+            "fecha_nacimiento": "2021-04-09"
+        }
+    },
+    {
+        "model": "GestionUsuarios.docente",
+        "pk": 352146842,
+        "fields": {
+            "cod_empleado": 41,
+            "cod_escuela": "EIE",
+            "nit": 1245841245145,
+            "nombre": "Benjamin",
+            "apellidos": "",
+            "fecha_nacimiento": "2021-04-09"
+        }
+    },
+    {
+        "model": "GestionUsuarios.docente",
+        "pk": 365842142,
+        "fields": {
+            "cod_empleado": 14,
+            "cod_escuela": "EIE",
+            "nit": 1234571290123,
+            "nombre": "Benjamin2",
+            "apellidos": "",
+            "fecha_nacimiento": "2013-03-09"
+        }
+    },
+    {
+        "model": "GestionUsuarios.docente",
+        "pk": 545454545,
+        "fields": {
+            "cod_empleado": 13,
+            "cod_escuela": "EIE",
+            "nit": 1234567891234,
+            "nombre": "docente 1",
+            "apellidos": "",
+            "fecha_nacimiento": "2021-02-09"
+        }
+    },
+    {
+        "model": "GestionUsuarios.docente",
+        "pk": 755853845,
+        "fields": {
+            "cod_empleado": 201,
+            "cod_escuela": null,
+            "nit": 1234567891012,
+            "nombre": "Ronaldo",
+            "apellidos": "Vasquez",
+            "fecha_nacimiento": "2000-05-10"
+        }
+    },
+    {
+        "model": "GestionUsuarios.docente",
+        "pk": 787878789,
+        "fields": {
+            "cod_empleado": 189,
+            "cod_escuela": null,
+            "nit": 1234567891122,
+            "nombre": "docente7",
+            "apellidos": "Martinez",
+            "fecha_nacimiento": "2021-02-10"
+        }
+    }
+]
